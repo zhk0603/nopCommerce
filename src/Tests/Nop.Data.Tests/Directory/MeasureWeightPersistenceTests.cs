@@ -1,5 +1,4 @@
-﻿using Nop.Core.Domain.Directory;
-using Nop.Tests;
+﻿using Nop.Tests;
 using NUnit.Framework;
 
 namespace Nop.Data.Tests.Directory
@@ -10,13 +9,7 @@ namespace Nop.Data.Tests.Directory
         [Test]
         public void Can_save_and_load_measureWeight()
         {
-            var measureWeight = new MeasureWeight
-            {
-                Name = "ounce(s)",
-                SystemKeyword = "ounce",
-                Ratio = 1.12345678M,
-                DisplayOrder = 2,
-            };
+            var measureWeight = TestHelper.GetMeasureWeight();
 
             var fromDb = SaveAndLoadEntity(measureWeight);
             fromDb.ShouldNotBeNull();

@@ -49,6 +49,3 @@ namespace Nop.Services.Tests.Seo
         }
     }
 }
-
-
-

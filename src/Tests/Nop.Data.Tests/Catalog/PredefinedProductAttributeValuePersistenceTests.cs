@@ -1,5 +1,4 @@
-﻿using Nop.Core.Domain.Catalog;
-using Nop.Tests;
+﻿using Nop.Tests;
 using NUnit.Framework;
 
 namespace Nop.Data.Tests.Catalog
@@ -10,19 +9,7 @@ namespace Nop.Data.Tests.Catalog
         [Test]
         public void Can_save_and_load_predefinedProductAttributeValue()
         {
-            var pav = new PredefinedProductAttributeValue
-            {
-                Name = "Name 1",
-                PriceAdjustment = 1.1M,
-                WeightAdjustment = 2.1M,
-                Cost = 3.1M,
-                IsPreSelected = true,
-                DisplayOrder = 3,
-                ProductAttribute = new ProductAttribute
-                {
-                    Name = "Name 1"
-                }
-            };
+            var pav = TestHelper.GetPredefinedProductAttributeValue();
 
             var fromDb = SaveAndLoadEntity(pav);
             fromDb.ShouldNotBeNull();

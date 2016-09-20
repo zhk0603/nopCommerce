@@ -57,7 +57,6 @@ namespace Nop.Services.Tests.Shipping
 
         #region Properties
         
-
         /// <summary>
         /// Gets a shipping rate computation method type
         /// </summary>

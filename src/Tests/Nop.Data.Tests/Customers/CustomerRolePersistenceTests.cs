@@ -1,6 +1,4 @@
 ﻿using System.Linq;
-using Nop.Core.Domain.Customers;
-using Nop.Core.Domain.Security;
 using Nop.Tests;
 using NUnit.Framework;
 
@@ -12,7 +10,7 @@ namespace Nop.Data.Tests.Customers
         [Test]
         public void Can_save_and_load_customerRole()
         {
-            var customerRole = GetTestCustomerRole();
+            var customerRole = TestHelper.GetCustomerRole("Administrators");
 
             var fromDb = SaveAndLoadEntity(customerRole);
             fromDb.ShouldNotBeNull();
@@ -28,16 +26,8 @@ namespace Nop.Data.Tests.Customers
         [Test]
         public void Can_save_and_load_customerRole_with_permissions()
         {
-            var customerRole = GetTestCustomerRole();
-            customerRole.PermissionRecords.Add
-            (
-                new PermissionRecord
-                {
-                    Name = "Name 1",
-                    SystemName = "SystemName 2",
-                    Category = "Category 4",
-                }
-            );
+            var customerRole = TestHelper.GetCustomerRole("Administrators");
+            customerRole.PermissionRecords.Add(TestHelper.GetPermissionRecord());
 
             var fromDb = SaveAndLoadEntity(customerRole);
             fromDb.ShouldNotBeNull();
@@ -46,20 +36,6 @@ namespace Nop.Data.Tests.Customers
             fromDb.PermissionRecords.ShouldNotBeNull();
             (fromDb.PermissionRecords.Count == 1).ShouldBeTrue();
             fromDb.PermissionRecords.First().Name.ShouldEqual("Name 1");
-        }
-
-        protected CustomerRole GetTestCustomerRole()
-        {
-            return new CustomerRole
-            {
-                Name = "Administrators",
-                FreeShipping = true,
-                TaxExempt = true,
-                Active = true,
-                IsSystemRole = true,
-                SystemName = "Administrators",
-                PurchasedWithProductId = 1
-            };
         }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using System;
-using Nop.Core.Domain.Messages;
 using Nop.Tests;
 using NUnit.Framework;
 
@@ -11,40 +10,9 @@ namespace Nop.Data.Tests.Messages
         [Test]
         public void Can_save_and_load_queuedEmail()
         {
-            var qe = new QueuedEmail
-            {
-                PriorityId = 5,
-                From = "From",
-                FromName = "FromName",
-                To = "To",
-                ToName = "ToName",
-                ReplyTo = "ReplyTo",
-                ReplyToName = "ReplyToName",
-                CC = "CC",
-                Bcc = "Bcc",
-                Subject = "Subject",
-                Body = "Body",
-                AttachmentFilePath = "some file path",
-                AttachmentFileName = "some file name",
-                AttachedDownloadId = 3,
-                CreatedOnUtc = new DateTime(2010, 01, 01),
-                SentTries = 5,
-                SentOnUtc = new DateTime(2010, 02, 02),
-                DontSendBeforeDateUtc = new DateTime(2016, 2 , 23),
-                EmailAccount = new EmailAccount
-                {
-                    Email = "admin@yourstore.com",
-                    DisplayName = "Administrator",
-                    Host = "127.0.0.1",
-                    Port = 125,
-                    Username = "John",
-                    Password = "111",
-                    EnableSsl = true,
-                    UseDefaultCredentials = true
-                }
+            var qe = TestHelper.GetQueuedEmail();
 
-            };
-
+            qe.EmailAccount = TestHelper.GetEmailAccount();
 
             var fromDb = SaveAndLoadEntity(qe);
             fromDb.ShouldNotBeNull();

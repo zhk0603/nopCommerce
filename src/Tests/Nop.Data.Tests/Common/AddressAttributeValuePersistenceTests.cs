@@ -1,6 +1,4 @@
-﻿using Nop.Core.Domain.Catalog;
-using Nop.Core.Domain.Common;
-using Nop.Tests;
+﻿using Nop.Tests;
 using NUnit.Framework;
 
 namespace Nop.Data.Tests.Common
@@ -11,19 +9,7 @@ namespace Nop.Data.Tests.Common
         [Test]
         public void Can_save_and_load_addressAttributeValue()
         {
-            var cav = new AddressAttributeValue
-                    {
-                        Name = "Name 2",
-                        IsPreSelected = true,
-                        DisplayOrder = 1,
-                        AddressAttribute = new AddressAttribute
-                        {
-                            Name = "Name 1",
-                            IsRequired = true,
-                            AttributeControlType = AttributeControlType.DropdownList,
-                            DisplayOrder = 2
-                        }
-                    };
+            var cav = TestHelper.GetAddressAttributeValue(true);
 
             var fromDb = SaveAndLoadEntity(cav);
             fromDb.ShouldNotBeNull();

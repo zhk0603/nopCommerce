@@ -13,55 +13,26 @@ namespace Nop.Services.Tests.Catalog
         [SetUp]
         public new void SetUp()
         {
-
         }
 
         [Test]
         public void Can_remove_duplicatedQuantities()
         {
-            var tierPrices = new List<TierPrice>();
-            tierPrices.Add(new TierPrice
+            var tierPrices = new List<TierPrice>
             {
                 //will be removed
-                Id = 1,
-                Price = 150,
-                Quantity = 1
-            });
-            tierPrices.Add(new TierPrice
-            {
+                TestHelper.GetTierPrice(price: 150),
                 //will stay
-                Id = 2,
-                Price = 100,
-                Quantity = 1
-            });
-            tierPrices.Add(new TierPrice
-            {
+                TestHelper.GetTierPrice(price: 100, id: 2),
                 //will stay
-                Id = 3,
-                Price = 200,
-                Quantity = 3
-            });
-            tierPrices.Add(new TierPrice
-            {
+                TestHelper.GetTierPrice(price: 300, quantity: 3, id: 3),
                 //will stay
-                Id = 4,
-                Price = 250,
-                Quantity = 4
-            });
-            tierPrices.Add(new TierPrice
-            {
+                TestHelper.GetTierPrice(price: 250, quantity: 4, id: 4),
                 //will be removed
-                Id = 5,
-                Price = 300,
-                Quantity = 4
-            });
-            tierPrices.Add(new TierPrice
-            {
-                //will stay
-                Id = 6,
-                Price = 350,
-                Quantity = 5
-            });
+                TestHelper.GetTierPrice(price: 300, quantity: 4, id: 5),
+                 //will stay
+                TestHelper.GetTierPrice(price: 350, quantity: 5, id: 6)
+            };
 
             tierPrices.RemoveDuplicatedQuantities();
 

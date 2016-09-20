@@ -1,5 +1,4 @@
-﻿using Nop.Core.Domain.Directory;
-using Nop.Tests;
+﻿using Nop.Tests;
 using NUnit.Framework;
 
 namespace Nop.Data.Tests.Directory
@@ -10,13 +9,7 @@ namespace Nop.Data.Tests.Directory
         [Test]
         public void Can_save_and_load_measureDimension()
         {
-            var measureDimension = new MeasureDimension
-            {
-                Name = "inch(es)",
-                SystemKeyword = "inches",
-                Ratio = 1.12345678M,
-                DisplayOrder = 2,
-            };
+            var measureDimension = TestHelper.GetMeasureDimension();
 
             var fromDb = SaveAndLoadEntity(measureDimension);
             fromDb.ShouldNotBeNull();

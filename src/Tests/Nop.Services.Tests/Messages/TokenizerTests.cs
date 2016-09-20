@@ -18,14 +18,12 @@ namespace Nop.Services.Tests.Messages
             };
             var tokenizer = new Tokenizer(messageTemplatesSettings);
 
-            var tokens = new List<Token>
-            {
-                new Token("Token1", "Value1")
-            };
+            var tokens = TestHelper.GeTokens();
+
             //correct case
             tokenizer
                 .Replace("Some text %Token1%", tokens, false)
-                .ShouldEqual("Some text Value1");
+                .ShouldEqual("Some text <Value1>");
             //wrong case
             tokenizer
                 .Replace("Some text %TOKeN1%", tokens, false)
@@ -40,14 +38,10 @@ namespace Nop.Services.Tests.Messages
                 CaseInvariantReplacement = true
             };
             var tokenizer = new Tokenizer(messageTemplatesSettings);
-
-            var tokens = new List<Token>
-            {
-                new Token("Token1", "Value1")
-            };
+            
             tokenizer
-                .Replace("Some text %TOKEn1%", tokens, false)
-                .ShouldEqual("Some text Value1");
+                .Replace("Some text %TOKEn1%", TestHelper.GeTokens(), false)
+                .ShouldEqual("Some text <Value1>");
         }
 
         [Test]
@@ -58,14 +52,9 @@ namespace Nop.Services.Tests.Messages
                 CaseInvariantReplacement = false
             };
             var tokenizer = new Tokenizer(messageTemplatesSettings);
-
-            var tokens = new List<Token>
-            {
-                new Token("Token1", "<Value1>")
-            };
-
+            
             tokenizer
-                .Replace("Some text %Token1%", tokens, true)
+                .Replace("Some text %Token1%", TestHelper.GeTokens(), true)
                 .ShouldEqual("Some text &lt;Value1&gt;");
         }
 
@@ -77,14 +66,9 @@ namespace Nop.Services.Tests.Messages
                 CaseInvariantReplacement = false
             };
             var tokenizer = new Tokenizer(messageTemplatesSettings);
-
-            var tokens = new List<Token>
-            {
-                new Token("Token1", "<Value1>", true)
-            };
-
+            
             tokenizer
-                .Replace("Some text %Token1%", tokens, true)
+                .Replace("Some text %Token1%", TestHelper.GeTokens(neverHtmlEncoded: true), true)
                 .ShouldEqual("Some text <Value1>");
         }
     }

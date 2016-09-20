@@ -45,8 +45,7 @@ namespace Nop.Services.Tests.Catalog
             _categoryService = MockRepository.GenerateMock<ICategoryService>();
             _manufacturerService = MockRepository.GenerateMock<IManufacturerService>();
             _productService = MockRepository.GenerateMock<IProductService>();
-
-
+            
             _productAttributeParser = MockRepository.GenerateMock<IProductAttributeParser>();
 
             _shoppingCartSettings = new ShoppingCartSettings();
@@ -69,54 +68,28 @@ namespace Nop.Services.Tests.Catalog
         [Test]
         public void Can_get_final_product_price()
         {
-            var product = new Product
-            {
-                Id = 1,
-                Name = "Product name 1",
-                Price = 12.34M,
-                CustomerEntersPrice = false,
-                Published = true,
-            };
+            var product = TestHelper.GetProduct();
 
             //customer
             var customer = new Customer();
 
-            _priceCalcService.GetFinalPrice(product, customer, 0, false, 1).ShouldEqual(12.34M);
-            _priceCalcService.GetFinalPrice(product, customer, 0, false, 2).ShouldEqual(12.34M);
+            _priceCalcService.GetFinalPrice(product, customer, 0, false, 1).ShouldEqual(21.1M);
+            _priceCalcService.GetFinalPrice(product, customer, 0, false, 2).ShouldEqual(21.1M);
         }
 
         [Test]
         public void Can_get_final_product_price_with_tier_prices()
         {
-            var product = new Product
-            {
-                Id = 1,
-                Name = "Product name 1",
-                Price = 12.34M,
-                CustomerEntersPrice = false,
-                Published = true,
-            };
+            var product = TestHelper.GetProduct();
 
             //add tier prices
-            product.TierPrices.Add(new TierPrice
-                {
-                    Price = 10,
-                    Quantity = 2,
-                    Product = product
-                });
-            product.TierPrices.Add(new TierPrice
-            {
-                Price = 8,
-                Quantity = 5,
-                Product = product
-            });
-            //set HasTierPrices property
-            product.HasTierPrices = true;
+            product.AddTierPrices(10, 2);
+            product.AddTierPrices(8, 5);
 
             //customer
             var customer = new Customer();
 
-            _priceCalcService.GetFinalPrice(product, customer, 0, false, 1).ShouldEqual(12.34M);
+            _priceCalcService.GetFinalPrice(product, customer, 0, false, 1).ShouldEqual(21.1M);
             _priceCalcService.GetFinalPrice(product, customer, 0, false, 2).ShouldEqual(10);
             _priceCalcService.GetFinalPrice(product, customer, 0, false, 3).ShouldEqual(10);
             _priceCalcService.GetFinalPrice(product, customer, 0, false, 5).ShouldEqual(8);
@@ -125,66 +98,23 @@ namespace Nop.Services.Tests.Catalog
         [Test]
         public void Can_get_final_product_price_with_tier_prices_by_customerRole()
         {
-            var product = new Product
-            {
-                Id = 1,
-                Name = "Product name 1",
-                Price = 12.34M,
-                CustomerEntersPrice = false,
-                Published = true,
-            };
+            var product = TestHelper.GetProduct();
 
             //customer roles
-            var customerRole1 = new CustomerRole
-            {
-                Id = 1,
-                Name = "Some role 1",
-                Active = true,
-            };
-            var customerRole2 = new CustomerRole
-            {
-                Id = 2,
-                Name = "Some role 2",
-                Active = true,
-            };
+            var customerRole1 = TestHelper.GetCustomerRole("Some role 1");
+            var customerRole2 = TestHelper.GetCustomerRole("Some role 2");
 
             //add tier prices
-            product.TierPrices.Add(new TierPrice
-            {
-                Price = 10,
-                Quantity = 2,
-                Product= product,
-                CustomerRole = customerRole1
-            });
-            product.TierPrices.Add(new TierPrice
-            {
-                Price = 9,
-                Quantity = 2,
-                Product = product,
-                CustomerRole = customerRole2
-            });
-            product.TierPrices.Add(new TierPrice
-            {
-                Price = 8,
-                Quantity = 5,
-                Product= product,
-                CustomerRole = customerRole1
-            });
-            product.TierPrices.Add(new TierPrice
-            {
-                Price = 5,
-                Quantity = 10,
-                Product = product,
-                CustomerRole = customerRole2
-            });
-            //set HasTierPrices property
-            product.HasTierPrices = true;
-
+            product.AddTierPrices(10, 2, customerRole1);
+            product.AddTierPrices(9, 2, customerRole2);
+            product.AddTierPrices(8, 5, customerRole1);
+            product.AddTierPrices(5, 10, customerRole2);
+            
             //customer
             var customer = new Customer();
             customer.CustomerRoles.Add(customerRole1);
 
-            _priceCalcService.GetFinalPrice(product, customer, 0, false, 1).ShouldEqual(12.34M);
+            _priceCalcService.GetFinalPrice(product, customer, 0, false, 1).ShouldEqual(21.1M);
             _priceCalcService.GetFinalPrice(product, customer, 0, false, 2).ShouldEqual(10);
             _priceCalcService.GetFinalPrice(product, customer, 0, false, 3).ShouldEqual(10);
             _priceCalcService.GetFinalPrice(product, customer, 0, false, 5).ShouldEqual(8);
@@ -194,70 +124,42 @@ namespace Nop.Services.Tests.Catalog
         [Test]
         public void Can_get_final_product_price_with_additionalFee()
         {
-            var product = new Product
-            {
-                Id = 1,
-                Name = "Product name 1",
-                Price = 12.34M,
-                CustomerEntersPrice = false,
-                Published = true,
-            };
+            var product = TestHelper.GetProduct();
 
             //customer
             var customer = new Customer();
 
-            _priceCalcService.GetFinalPrice(product, customer, 5, false, 1).ShouldEqual(17.34M);
+            _priceCalcService.GetFinalPrice(product, customer, 5, false, 1).ShouldEqual(26.1M);
         }
 
         [Test]
         public void Can_get_final_product_price_with_discount()
         {
-            var product = new Product
-            {
-                Id = 1,
-                Name = "Product name 1",
-                Price = 12.34M,
-                CustomerEntersPrice = false,
-                Published = true,
-            };
+            var product = TestHelper.GetProduct();
+            product.CustomerEntersPrice = false;
 
             //customer
             var customer = new Customer();
-
+            
             //discounts
-            var discount1 = new Discount
-            {
-                Id = 1,
-                Name = "Discount 1",
-                DiscountType = DiscountType.AssignedToSkus,
-                DiscountAmount = 3,
-                DiscountLimitation = DiscountLimitationType.Unlimited
-            };
+            var discount1 = TestHelper.GetDiscount(DiscountType.AssignedToSkus, false);
+            
             discount1.AppliedToProducts.Add(product);
             product.AppliedDiscounts.Add(discount1);
-            //set HasDiscountsApplied property
-            product.HasDiscountsApplied = true;
-            _discountService.Expect(ds => ds.ValidateDiscount(discount1, customer)).Return(new DiscountValidationResult() {IsValid = true});
+
+            _discountService.Expect(ds => ds.ValidateDiscount(discount1, customer)).Return(new DiscountValidationResult { IsValid = true });
             _discountService.Expect(ds => ds.GetAllDiscounts(DiscountType.AssignedToCategories)).Return(new List<Discount>());
             _discountService.Expect(ds => ds.GetAllDiscounts(DiscountType.AssignedToManufacturers)).Return(new List<Discount>());
 
-            _priceCalcService.GetFinalPrice(product, customer, 0, true, 1).ShouldEqual(9.34M);
+            _priceCalcService.GetFinalPrice(product, customer).ShouldEqual(19M);
         }
 
         [Test]
         public void Can_get_final_product_price_with_special_price()
         {
-            var product = new Product
-            {
-                Id = 1,
-                Name = "Product name 1",
-                Price = 12.34M,
-                SpecialPrice = 10.01M,
-                SpecialPriceStartDateTimeUtc = DateTime.UtcNow.AddDays(-1),
-                SpecialPriceEndDateTimeUtc= DateTime.UtcNow.AddDays(1),
-                CustomerEntersPrice = false,
-                Published = true,
-            };
+            var product = TestHelper.GetProduct();
+            product.SpecialPriceStartDateTimeUtc = DateTime.UtcNow.AddDays(-1);
+            product.SpecialPriceEndDateTimeUtc = DateTime.UtcNow.AddDays(1);
 
             _discountService.Expect(ds => ds.GetAllDiscounts(DiscountType.AssignedToCategories)).Return(new List<Discount>());
             _discountService.Expect(ds => ds.GetAllDiscounts(DiscountType.AssignedToManufacturers)).Return(new List<Discount>());
@@ -265,16 +167,16 @@ namespace Nop.Services.Tests.Catalog
             //customer
             var customer = new Customer();
             //valid dates
-            _priceCalcService.GetFinalPrice(product, customer, 0, true, 1).ShouldEqual(10.01M);
+            _priceCalcService.GetFinalPrice(product, customer, 0, true, 1).ShouldEqual(32.1M);
             
             //invalid date
             product.SpecialPriceStartDateTimeUtc = DateTime.UtcNow.AddDays(1);
-            _priceCalcService.GetFinalPrice(product, customer, 0, true, 1).ShouldEqual(12.34M);
+            _priceCalcService.GetFinalPrice(product, customer, 0, true, 1).ShouldEqual(21.1M);
 
             //no dates
             product.SpecialPriceStartDateTimeUtc = null;
             product.SpecialPriceEndDateTimeUtc = null;
-            _priceCalcService.GetFinalPrice(product, customer, 0, true, 1).ShouldEqual(10.01M);
+            _priceCalcService.GetFinalPrice(product, customer, 0, true, 1).ShouldEqual(32.1M);
         }
 
         [Test]
@@ -284,27 +186,13 @@ namespace Nop.Services.Tests.Catalog
             var customer = new Customer();
 
             //shopping cart
-            var product1 = new Product
-            {
-                Id = 1,
-                Name = "Product name 1",
-                Price = 12.34M,
-                CustomerEntersPrice = false,
-                Published = true,
-            };
-            var sci1 = new ShoppingCartItem
-            {
-                Customer = customer,
-                CustomerId = customer.Id,
-                Product= product1,
-                ProductId = product1.Id,
-                Quantity = 2,
-            };
+            var product = TestHelper.GetProduct(customerEntersPrice: false);
+            var sci = TestHelper.GetShoppingCartItem(product, customer);
 
             _discountService.Expect(ds => ds.GetAllDiscounts(DiscountType.AssignedToCategories)).Return(new List<Discount>());
             _discountService.Expect(ds => ds.GetAllDiscounts(DiscountType.AssignedToManufacturers)).Return(new List<Discount>());
 
-            _priceCalcService.GetUnitPrice(sci1).ShouldEqual(12.34);
+            _priceCalcService.GetUnitPrice(sci).ShouldEqual(21.1M);
 
         }
 
@@ -315,28 +203,14 @@ namespace Nop.Services.Tests.Catalog
             var customer = new Customer();
 
             //shopping cart
-            var product1 = new Product
-            {
-                Id = 1,
-                Name = "Product name 1",
-                Price = 12.34M,
-                CustomerEntersPrice = false,
-                Published = true,
-            };
-            var sci1 = new ShoppingCartItem
-            {
-                Customer = customer,
-                CustomerId = customer.Id,
-                Product= product1,
-                ProductId = product1.Id,
-                Quantity = 2,
-            };
+            var product = TestHelper.GetProduct(customerEntersPrice: false);
+
+            var sci = TestHelper.GetShoppingCartItem(product, customer);
 
             _discountService.Expect(ds => ds.GetAllDiscounts(DiscountType.AssignedToCategories)).Return(new List<Discount>());
             _discountService.Expect(ds => ds.GetAllDiscounts(DiscountType.AssignedToManufacturers)).Return(new List<Discount>());
 
-            _priceCalcService.GetSubTotal(sci1).ShouldEqual(24.68);
-
+            _priceCalcService.GetSubTotal(sci).ShouldEqual(42.2);
         }
 
         [Test]
@@ -347,7 +221,7 @@ namespace Nop.Services.Tests.Catalog
         public void Test_GetUnitPrice_WhenRoundPricesDuringCalculationIsTrue_PriceMustBeRounded(decimal inputPrice, decimal expectedPrice)
         {
             // arrange
-            ShoppingCartItem shoppingCartItem = CreateTestShopCartItem(inputPrice);
+            var shoppingCartItem = CreateTestShopCartItem(inputPrice);
 
             // act
             _shoppingCartSettings.RoundPricesDuringCalculation = true;
@@ -365,7 +239,7 @@ namespace Nop.Services.Tests.Catalog
         public void Test_GetUnitPrice_WhenNotRoundPricesDuringCalculationIsFalse_PriceMustNotBeRounded(decimal inputPrice, decimal expectedPrice)
         {
             // arrange            
-            ShoppingCartItem shoppingCartItem = CreateTestShopCartItem(inputPrice);
+            var shoppingCartItem = CreateTestShopCartItem(inputPrice);
 
             // act
             _shoppingCartSettings.RoundPricesDuringCalculation = false;
@@ -378,26 +252,12 @@ namespace Nop.Services.Tests.Catalog
         private ShoppingCartItem CreateTestShopCartItem(decimal productPrice, int quantity = 1)
         {
             //customer
-            Customer customer = new Customer();
+            var customer = new Customer();
 
-            //shopping cart
-            Product product = new Product
-            {
-                Id = 1,
-                Name = "Product name 1",
-                Price = productPrice,
-                CustomerEntersPrice = false,
-                Published = true,
-            };
+            var product = TestHelper.GetProduct(customerEntersPrice: false, price: productPrice);
 
-            ShoppingCartItem shoppingCartItem = new ShoppingCartItem
-            {
-                Customer = customer,
-                CustomerId = customer.Id,
-                Product = product,
-                ProductId = product.Id,
-                Quantity = quantity
-            };
+            var shoppingCartItem = TestHelper.GetShoppingCartItem(product, customer);
+            shoppingCartItem.Quantity = quantity;
 
             _discountService.Expect(ds => ds.GetAllDiscounts(DiscountType.AssignedToCategories)).Return(new List<Discount>());
             _discountService.Expect(ds => ds.GetAllDiscounts(DiscountType.AssignedToManufacturers)).Return(new List<Discount>());

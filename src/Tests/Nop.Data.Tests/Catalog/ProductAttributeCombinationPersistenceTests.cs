@@ -1,6 +1,4 @@
-﻿using System;
-using Nop.Core.Domain.Catalog;
-using Nop.Tests;
+﻿using Nop.Tests;
 using NUnit.Framework;
 
 namespace Nop.Data.Tests.Catalog
@@ -11,18 +9,7 @@ namespace Nop.Data.Tests.Catalog
         [Test]
         public void Can_save_and_load_productAttributeCombination()
         {
-            var combination = new ProductAttributeCombination
-                       {
-                           AttributesXml = "Some XML",
-                           StockQuantity = 2,
-                           AllowOutOfStockOrders = true,
-                           Sku = "Sku1",
-                           ManufacturerPartNumber = "ManufacturerPartNumber1",
-                           Gtin = "Gtin1",
-                           OverriddenPrice = 0.01M,
-                           NotifyAdminForQuantityBelow = 3,
-                           Product = GetTestProduct()
-                       };
+            var combination = TestHelper.GetProductAttributeCombination();
 
             var fromDb = SaveAndLoadEntity(combination);
             fromDb.ShouldNotBeNull();
@@ -34,16 +21,6 @@ namespace Nop.Data.Tests.Catalog
             fromDb.Gtin.ShouldEqual("Gtin1");
             fromDb.OverriddenPrice.ShouldEqual(0.01M);
             fromDb.NotifyAdminForQuantityBelow.ShouldEqual(3);
-        }
-
-        protected Product GetTestProduct()
-        {
-            return new Product
-            {
-                Name = "Product name 1",
-                CreatedOnUtc = new DateTime(2010, 01, 03),
-                UpdatedOnUtc = new DateTime(2010, 01, 04),
-            };
         }
     }
 }

@@ -3,7 +3,6 @@ using System.Linq;
 using Nop.Core;
 using Nop.Core.Caching;
 using Nop.Core.Data;
-using Nop.Core.Domain.Catalog;
 using Nop.Core.Domain.Orders;
 using Nop.Core.Domain.Shipping;
 using Nop.Core.Domain.Stores;
@@ -44,9 +43,13 @@ namespace Nop.Services.Tests.Shipping
         [SetUp]
         public new void SetUp()
         {
-            _shippingSettings = new ShippingSettings();
-            _shippingSettings.ActiveShippingRateComputationMethodSystemNames = new List<string>();
-            _shippingSettings.ActiveShippingRateComputationMethodSystemNames.Add("FixedRateTestShippingRateComputationMethod");
+            _shippingSettings = new ShippingSettings
+            {
+                ActiveShippingRateComputationMethodSystemNames = new List<string>
+                {
+                    "FixedRateTestShippingRateComputationMethod"
+                }
+            };
 
             _shippingMethodRepository = MockRepository.GenerateMock<IRepository<ShippingMethod>>();
             _deliveryDateRepository = MockRepository.GenerateMock<IRepository<DeliveryDate>>();
@@ -67,10 +70,10 @@ namespace Nop.Services.Tests.Shipping
             _addressService = MockRepository.GenerateMock<IAddressService>();
             _genericAttributeService = MockRepository.GenerateMock<IGenericAttributeService>();
 
-            _store = new Store { Id = 1 };
+            _store = TestHelper.GetStore();
             _storeContext = MockRepository.GenerateMock<IStoreContext>();
             _storeContext.Expect(x => x.CurrentStore).Return(_store);
-
+            
             _shoppingCartSettings = new ShoppingCartSettings();
             _shippingService = new ShippingService(_shippingMethodRepository,
                 _deliveryDateRepository,
@@ -95,7 +98,7 @@ namespace Nop.Services.Tests.Shipping
         {
             var srcm = _shippingService.LoadAllShippingRateComputationMethods();
             srcm.ShouldNotBeNull();
-            (srcm.Any()).ShouldBeTrue();
+            srcm.Any().ShouldBeTrue();
         }
 
         [Test]
@@ -110,9 +113,9 @@ namespace Nop.Services.Tests.Shipping
         {
             var srcm = _shippingService.LoadActiveShippingRateComputationMethods();
             srcm.ShouldNotBeNull();
-            (srcm.Any()).ShouldBeTrue();
+            srcm.Any().ShouldBeTrue();
         }
-        
+
         [Test]
         public void Can_get_shoppingCart_totalWeight_without_attributes()
         {
@@ -120,30 +123,10 @@ namespace Nop.Services.Tests.Shipping
             {
                 Items =
                 {
-                    new GetShippingOptionRequest.PackageItem(new ShoppingCartItem
-                    {
-                        AttributesXml = "",
-                        Quantity = 3,
-                        Product = new Product
-                        {
-                            Weight = 1.5M,
-                            Height = 2.5M,
-                            Length = 3.5M,
-                            Width = 4.5M
-                        }
-                    }),
-                    new GetShippingOptionRequest.PackageItem(new ShoppingCartItem
-                    {
-                        AttributesXml = "",
-                        Quantity = 4,
-                        Product = new Product
-                        {
-                            Weight = 11.5M,
-                            Height = 12.5M,
-                            Length = 13.5M,
-                            Width = 14.5M
-                        }
-                    })
+                    new GetShippingOptionRequest.PackageItem(
+                        TestHelper.GetShoppingCartItem(TestHelper.GetProduct(weight: 1.5M), quantity: 3, attributesXml: string.Empty)),
+                    new GetShippingOptionRequest.PackageItem(
+                        TestHelper.GetShoppingCartItem(TestHelper.GetProduct(weight: 11.5M), quantity: 4, attributesXml: string.Empty))
                 }
             };
             _shippingService.GetTotalWeight(request).ShouldEqual(50.5M);

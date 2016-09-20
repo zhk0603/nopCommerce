@@ -12,64 +12,30 @@ namespace Nop.Core.Tests.Domain.Customers
         [Test]
         public void Can_check_IsInCustomerRole()
         {
-            var customer = new Customer
-            {
-                /*CustomerRoles = new List<CustomerRole>()
-                {
-                    new CustomerRole()
-                    {
-                        Active = true,
-                        Name = "Test name 1",
-                        SystemName = "Test system name 1",
-                    },
-                    new CustomerRole()
-                    {
-                        Active = false,
-                        Name = "Test name 2",
-                        SystemName = "Test system name 2",
-                    },
-                }*/
-            };
-
-            customer.CustomerRoles.Add(new CustomerRole
-            {
-                Active = true,
-                Name = "Test name 1",
-                SystemName = "Test system name 1",
-            });
+            var customer = TestHelper.GetCustomer("Test system name 1");
+            
             customer.CustomerRoles.Add(new CustomerRole
             {
                 Active = false,
                 Name = "Test name 2",
-                SystemName = "Test system name 2",
+                SystemName = "Test system name 2"
             });
+
             customer.IsInCustomerRole("Test system name 1", false).ShouldBeTrue();
-            customer.IsInCustomerRole("Test system name 1", true).ShouldBeTrue();
+            customer.IsInCustomerRole("Test system name 1").ShouldBeTrue();
 
             customer.IsInCustomerRole("Test system name 2", false).ShouldBeTrue();
-            customer.IsInCustomerRole("Test system name 2", true).ShouldBeFalse();
+            customer.IsInCustomerRole("Test system name 2").ShouldBeFalse();
 
             customer.IsInCustomerRole("Test system name 3", false).ShouldBeFalse();
-            customer.IsInCustomerRole("Test system name 3", true).ShouldBeFalse();
+            customer.IsInCustomerRole("Test system name 3").ShouldBeFalse();
         }
+
         [Test]
         public void Can_check_whether_customer_is_admin()
         {
-            var customer = new Customer();
-
-            customer.CustomerRoles.Add(new CustomerRole
-            {
-                Active = true,
-                Name = "Registered",
-                SystemName = SystemCustomerRoleNames.Registered
-            });
-            customer.CustomerRoles.Add(new CustomerRole
-            {
-                Active = true,
-                Name = "Guests",
-                SystemName = SystemCustomerRoleNames.Guests
-            });
-
+            var customer = TestHelper.GetCustomer(SystemCustomerRoleNames.Registered, SystemCustomerRoleNames.Guests);
+                
             customer.IsAdmin().ShouldBeFalse();
 
             customer.CustomerRoles.Add(
@@ -81,23 +47,11 @@ namespace Nop.Core.Tests.Domain.Customers
                 });
             customer.IsAdmin().ShouldBeTrue();
         }
+
         [Test]
         public void Can_check_whether_customer_is_forum_moderator()
         {
-            var customer = new Customer();
-
-            customer.CustomerRoles.Add(new CustomerRole
-            {
-                Active = true,
-                Name = "Registered",
-                SystemName = SystemCustomerRoleNames.Registered
-            });
-            customer.CustomerRoles.Add(new CustomerRole
-            {
-                Active = true,
-                Name = "Guests",
-                SystemName = SystemCustomerRoleNames.Guests
-            });
+            var customer = TestHelper.GetCustomer(SystemCustomerRoleNames.Registered, SystemCustomerRoleNames.Guests);
 
             customer.IsForumModerator().ShouldBeFalse();
 
@@ -110,24 +64,11 @@ namespace Nop.Core.Tests.Domain.Customers
                 });
             customer.IsForumModerator().ShouldBeTrue();
         }
+
         [Test]
         public void Can_check_whether_customer_is_guest()
         {
-            var customer = new Customer();
-
-            customer.CustomerRoles.Add(new CustomerRole
-            {
-                Active = true,
-                Name = "Registered",
-                SystemName = SystemCustomerRoleNames.Registered
-            });
-
-            customer.CustomerRoles.Add(new CustomerRole
-            {
-                Active = true,
-                Name = "Administrators",
-                SystemName = SystemCustomerRoleNames.Administrators
-            });
+            var customer = TestHelper.GetCustomer(SystemCustomerRoleNames.Registered, SystemCustomerRoleNames.Administrators);
 
             customer.IsGuest().ShouldBeFalse();
 
@@ -137,28 +78,15 @@ namespace Nop.Core.Tests.Domain.Customers
                     Active = true,
                     Name = "Guests",
                     SystemName = SystemCustomerRoleNames.Guests
-
                 }
                 );
             customer.IsGuest().ShouldBeTrue();
         }
+
         [Test]
         public void Can_check_whether_customer_is_registered()
         {
-            var customer = new Customer();
-            customer.CustomerRoles.Add(new CustomerRole
-            {
-                Active = true,
-                Name = "Administrators",
-                SystemName = SystemCustomerRoleNames.Administrators
-            });
-
-            customer.CustomerRoles.Add(new CustomerRole
-            {
-                Active = true,
-                Name = "Guests",
-                SystemName = SystemCustomerRoleNames.Guests
-            });
+            var customer = TestHelper.GetCustomer(SystemCustomerRoleNames.Administrators, SystemCustomerRoleNames.Guests);
 
             customer.IsRegistered().ShouldBeFalse();
 
@@ -171,8 +99,6 @@ namespace Nop.Core.Tests.Domain.Customers
                 });
             customer.IsRegistered().ShouldBeTrue();
         }
-
-
 
         [Test]
         public void New_customer_has_clear_password_type()
@@ -200,7 +126,7 @@ namespace Nop.Core.Tests.Domain.Customers
             var address = new Address { Id = 1 };
 
             customer.Addresses.Add(address);
-            customer.BillingAddress  = address;
+            customer.BillingAddress = address;
 
             customer.BillingAddress.ShouldBeTheSameAs(customer.Addresses.First());
 

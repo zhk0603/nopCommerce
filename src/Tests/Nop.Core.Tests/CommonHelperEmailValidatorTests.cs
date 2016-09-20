@@ -47,7 +47,6 @@ namespace Nop.Core.Tests
             result.ShouldEqual(false);
         }
 
-
         [Test]
         public void This_should_not_hang()
         {

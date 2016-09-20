@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using Nop.Core.Domain.Catalog;
-using Nop.Core.Domain.Orders;
 using Nop.Tests;
 using NUnit.Framework;
 
@@ -12,24 +11,7 @@ namespace Nop.Data.Tests.Orders
         [Test]
         public void Can_save_and_load_checkoutAttribute()
         {
-            var ca = new CheckoutAttribute
-            {
-                Name = "Name 1",
-                TextPrompt = "TextPrompt 1",
-                IsRequired = true,
-                ShippableProductRequired  = true,
-                IsTaxExempt = true,
-                TaxCategoryId = 1,
-                AttributeControlType = AttributeControlType.Datepicker,
-                DisplayOrder = 2,
-                LimitedToStores = true,
-                ValidationMinLength = 3,
-                ValidationMaxLength = 4,
-                ValidationFileAllowedExtensions = "ValidationFileAllowedExtensions 1",
-                ValidationFileMaximumSize = 5,
-                DefaultValue = "DefaultValue 1",
-                ConditionAttributeXml = "ConditionAttributeXml 1"
-            };
+            var ca = TestHelper.GetCheckoutAttribute();
 
             var fromDb = SaveAndLoadEntity(ca);
             fromDb.ShouldNotBeNull();
@@ -53,28 +35,8 @@ namespace Nop.Data.Tests.Orders
         [Test]
         public void Can_save_and_load_checkoutAttribute_with_values()
         {
-            var ca = new CheckoutAttribute
-            {
-                Name = "Name 1",
-                TextPrompt = "TextPrompt 1",
-                IsRequired = true,
-                ShippableProductRequired = true,
-                IsTaxExempt = true,
-                TaxCategoryId = 1,
-                AttributeControlType = AttributeControlType.Datepicker,
-                DisplayOrder = 2
-            };
-            ca.CheckoutAttributeValues.Add
-                (
-                    new CheckoutAttributeValue
-                    {
-                        Name = "Name 2",
-                        PriceAdjustment = 1,
-                        WeightAdjustment = 2,
-                        IsPreSelected = true,
-                        DisplayOrder = 3,
-                    }
-                );
+            var ca = TestHelper.GetCheckoutAttribute();
+            ca.CheckoutAttributeValues.Add(TestHelper.GetCheckoutAttributeValue());
             var fromDb = SaveAndLoadEntity(ca);
             fromDb.ShouldNotBeNull();
             fromDb.Name.ShouldEqual("Name 1");

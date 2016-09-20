@@ -1,5 +1,4 @@
-﻿using Nop.Core.Domain.Tax;
-using Nop.Tests;
+﻿using Nop.Tests;
 using NUnit.Framework;
 
 namespace Nop.Data.Tests.Tax
@@ -10,11 +9,7 @@ namespace Nop.Data.Tests.Tax
         [Test]
         public void Can_save_and_load_taxCategory()
         {
-            var taxCategory = new TaxCategory
-                               {
-                                   Name = "Books",
-                                   DisplayOrder = 1
-                               };
+            var taxCategory = TestHelper.GeTaxCategory();
 
             var fromDb = SaveAndLoadEntity(taxCategory);
             fromDb.ShouldNotBeNull();

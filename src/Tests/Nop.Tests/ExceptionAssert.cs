@@ -53,7 +53,6 @@ namespace Nop.Tests
             catch (Exception ex)
             {
                 Assert.Fail("Expected exception '" + typeof(T).FullName + "' but got exception '" + ex.GetType() + "'.");
-                return null;
             }
             Assert.Fail("Expected exception '" + typeof(T).FullName + "' wasn't thrown.");
             return null;

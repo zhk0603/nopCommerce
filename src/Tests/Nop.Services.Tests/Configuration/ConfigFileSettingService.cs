@@ -15,11 +15,11 @@ namespace Nop.Services.Tests.Configuration
     {
         public ConfigFileSettingService(ICacheManager cacheManager, 
             IEventPublisher eventPublisher,
-            IRepository<Setting> settingRepository):
-            base (cacheManager, eventPublisher, settingRepository)
+            IRepository<Setting> settingRepository) :
+            base(cacheManager, eventPublisher, settingRepository)
         {
-            
         }
+
         public override Setting GetSettingById(int settingId)
         {
             throw new InvalidOperationException("Get setting by id is not supported");
@@ -28,7 +28,6 @@ namespace Nop.Services.Tests.Configuration
         public override T GetSettingByKey<T>(string key, T defaultValue = default(T),
             int storeId = 0, bool loadSharedValueIfNotFound = false)
         {
-
             if (String.IsNullOrEmpty(key))
                 return defaultValue;
 

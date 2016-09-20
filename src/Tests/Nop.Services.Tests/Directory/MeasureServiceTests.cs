@@ -20,100 +20,49 @@ namespace Nop.Services.Tests.Directory
         private IEventPublisher _eventPublisher;
         private IMeasureService _measureService;
 
-        private MeasureDimension measureDimension1, measureDimension2, measureDimension3, measureDimension4;
-        private MeasureWeight measureWeight1, measureWeight2, measureWeight3, measureWeight4;
+        private MeasureDimension inches, feet, meters, millimetres;
+        private MeasureWeight ounce, lb, kg, grams;
         
         [SetUp]
         public new void SetUp()
         {
-            measureDimension1 = new MeasureDimension
-            {
-                Id = 1,
-                Name = "inch(es)",
-                SystemKeyword = "inches",
-                Ratio = 1M,
-                DisplayOrder = 1,
-            };
-            measureDimension2 = new MeasureDimension
-            {
-                Id = 2,
-                Name = "feet",
-                SystemKeyword = "feet",
-                Ratio = 0.08333333M,
-                DisplayOrder = 2,
-            };
-            measureDimension3 = new MeasureDimension
-            {
-                Id = 3,
-                Name = "meter(s)",
-                SystemKeyword = "meters",
-                Ratio = 0.0254M,
-                DisplayOrder = 3,
-            };
-            measureDimension4 = new MeasureDimension
-            {
-                Id = 4,
-                Name = "millimetre(s)",
-                SystemKeyword = "millimetres",
-                Ratio = 25.4M,
-                DisplayOrder = 4,
-            };
+            var measureDimensions = TestHelper.GetMeasureDimensions(1, 0.08333333M, 0.0254M, 25.4M);
 
+            inches = measureDimensions[0];
+            feet = measureDimensions[1];
+            meters = measureDimensions[2];
+            millimetres = measureDimensions[3];
 
+            var measureWeights = TestHelper.GetMeasureWeights(16M, 1, 0.45359237M, 453.59237M);
 
-            measureWeight1 = new MeasureWeight
-            {
-                Id = 1,
-                Name = "ounce(s)",
-                SystemKeyword = "ounce",
-                Ratio = 16M,
-                DisplayOrder = 1,
-            };
-            measureWeight2 = new MeasureWeight
-            {
-                Id = 2,
-                Name = "lb(s)",
-                SystemKeyword = "lb",
-                Ratio = 1M,
-                DisplayOrder = 2,
-            };
-            measureWeight3 = new MeasureWeight
-            {
-                Id = 3,
-                Name = "kg(s)",
-                SystemKeyword = "kg",
-                Ratio = 0.45359237M,
-                DisplayOrder = 3,
-            };
-            measureWeight4 = new MeasureWeight
-            {
-                Id = 4,
-                Name = "gram(s)",
-                SystemKeyword = "grams",
-                Ratio = 453.59237M,
-                DisplayOrder = 4,
-            };
+            ounce = measureWeights[0];
+            lb = measureWeights[1];
+            kg = measureWeights[2];
+            grams = measureWeights[3];
 
             _measureDimensionRepository = MockRepository.GenerateMock<IRepository<MeasureDimension>>();
-            _measureDimensionRepository.Expect(x => x.Table).Return(new List<MeasureDimension> { measureDimension1, measureDimension2, measureDimension3, measureDimension4 }.AsQueryable());
-            _measureDimensionRepository.Expect(x => x.GetById(measureDimension1.Id)).Return(measureDimension1);
-            _measureDimensionRepository.Expect(x => x.GetById(measureDimension2.Id)).Return(measureDimension2);
-            _measureDimensionRepository.Expect(x => x.GetById(measureDimension3.Id)).Return(measureDimension3);
-            _measureDimensionRepository.Expect(x => x.GetById(measureDimension4.Id)).Return(measureDimension4);
+            _measureDimensionRepository.Expect(x => x.Table).Return(new List<MeasureDimension> { inches, feet, meters, millimetres }.AsQueryable());
+            _measureDimensionRepository.Expect(x => x.GetById(inches.Id)).Return(inches);
+            _measureDimensionRepository.Expect(x => x.GetById(feet.Id)).Return(feet);
+            _measureDimensionRepository.Expect(x => x.GetById(meters.Id)).Return(meters);
+            _measureDimensionRepository.Expect(x => x.GetById(millimetres.Id)).Return(millimetres);
 
             _measureWeightRepository = MockRepository.GenerateMock<IRepository<MeasureWeight>>();
-            _measureWeightRepository.Expect(x => x.Table).Return(new List<MeasureWeight> { measureWeight1, measureWeight2, measureWeight3, measureWeight4 }.AsQueryable());
-            _measureWeightRepository.Expect(x => x.GetById(measureWeight1.Id)).Return(measureWeight1);
-            _measureWeightRepository.Expect(x => x.GetById(measureWeight2.Id)).Return(measureWeight2);
-            _measureWeightRepository.Expect(x => x.GetById(measureWeight3.Id)).Return(measureWeight3);
-            _measureWeightRepository.Expect(x => x.GetById(measureWeight4.Id)).Return(measureWeight4);
-
+            _measureWeightRepository.Expect(x => x.Table).Return(new List<MeasureWeight> { ounce, lb, kg, grams }.AsQueryable());
+            _measureWeightRepository.Expect(x => x.GetById(ounce.Id)).Return(ounce);
+            _measureWeightRepository.Expect(x => x.GetById(lb.Id)).Return(lb);
+            _measureWeightRepository.Expect(x => x.GetById(kg.Id)).Return(kg);
+            _measureWeightRepository.Expect(x => x.GetById(grams.Id)).Return(grams);
 
             var cacheManager = new NopNullCache();
 
-            _measureSettings = new MeasureSettings();
-            _measureSettings.BaseDimensionId = measureDimension1.Id; //inch(es)
-            _measureSettings.BaseWeightId = measureWeight2.Id; //lb(s)
+            _measureSettings = new MeasureSettings
+            {
+                //inch(es)
+                BaseDimensionId = inches.Id,
+                //lb(s)
+                BaseWeightId = lb.Id
+            };
 
             _eventPublisher = MockRepository.GenerateMock<IEventPublisher>();
             _eventPublisher.Expect(x => x.Publish(Arg<object>.Is.Anything));
@@ -128,30 +77,30 @@ namespace Nop.Services.Tests.Directory
         public void Can_convert_dimension()
         {
             //from meter(s) to feet
-            _measureService.ConvertDimension(10, measureDimension3, measureDimension2, true).ShouldEqual(32.81);
+            _measureService.ConvertDimension(10, meters, feet).ShouldEqual(32.81);
             //from inch(es) to meter(s)
-            _measureService.ConvertDimension(10, measureDimension1, measureDimension3, true).ShouldEqual(0.25);
+            _measureService.ConvertDimension(10, inches, meters).ShouldEqual(0.25);
             //from meter(s) to meter(s)
-            _measureService.ConvertDimension(13.333M, measureDimension3, measureDimension3, true).ShouldEqual(13.33);
+            _measureService.ConvertDimension(13.333M, meters, meters).ShouldEqual(13.33);
             //from meter(s) to millimeter(s)
-            _measureService.ConvertDimension(10, measureDimension3, measureDimension4, true).ShouldEqual(10000);
+            _measureService.ConvertDimension(10, meters, millimetres).ShouldEqual(10000);
             //from millimeter(s) to meter(s)
-            _measureService.ConvertDimension(10000, measureDimension4, measureDimension3, true).ShouldEqual(10);
+            _measureService.ConvertDimension(10000, millimetres, meters).ShouldEqual(10);
         }
 
         [Test]
         public void Can_convert_weight()
         {
             //from ounce(s) to lb(s)
-            _measureService.ConvertWeight(11, measureWeight1, measureWeight2, true).ShouldEqual(0.69);
+            _measureService.ConvertWeight(11, ounce, lb).ShouldEqual(0.69);
             //from lb(s) to ounce(s)
-            _measureService.ConvertWeight(11, measureWeight2, measureWeight1, true).ShouldEqual(176);
+            _measureService.ConvertWeight(11, lb, ounce).ShouldEqual(176);
             //from ounce(s) to  ounce(s)
-            _measureService.ConvertWeight(13.333M, measureWeight1, measureWeight1, true).ShouldEqual(13.33);
+            _measureService.ConvertWeight(13.333M, ounce, ounce).ShouldEqual(13.33);
             //from kg(s) to ounce(s)
-            _measureService.ConvertWeight(11, measureWeight3, measureWeight1, true).ShouldEqual(388.01);
+            _measureService.ConvertWeight(11, kg, ounce).ShouldEqual(388.01);
             //from kg(s) to gram(s)
-            _measureService.ConvertWeight(10, measureWeight3, measureWeight4, true).ShouldEqual(10000);
+            _measureService.ConvertWeight(10, kg, grams).ShouldEqual(10000);
         }
     }
 }

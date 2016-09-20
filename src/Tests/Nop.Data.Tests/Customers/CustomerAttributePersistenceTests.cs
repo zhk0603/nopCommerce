@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using Nop.Core.Domain.Catalog;
-using Nop.Core.Domain.Customers;
 using Nop.Tests;
 using NUnit.Framework;
 
@@ -12,13 +11,7 @@ namespace Nop.Data.Tests.Customers
         [Test]
         public void Can_save_and_load_customerAttribute()
         {
-            var ca = new CustomerAttribute
-            {
-                Name = "Name 1",
-                IsRequired = true,
-                AttributeControlType = AttributeControlType.Datepicker,
-                DisplayOrder = 2
-            };
+            var ca = TestHelper.GetCustomerAttribute(false);
 
             var fromDb = SaveAndLoadEntity(ca);
             fromDb.ShouldNotBeNull();
@@ -31,22 +24,7 @@ namespace Nop.Data.Tests.Customers
         [Test]
         public void Can_save_and_load_customerAttribute_with_values()
         {
-            var ca = new CustomerAttribute
-            {
-                Name = "Name 1",
-                IsRequired = true,
-                AttributeControlType = AttributeControlType.Datepicker,
-                DisplayOrder = 2
-            };
-            ca.CustomerAttributeValues.Add
-                (
-                    new CustomerAttributeValue
-                    {
-                        Name = "Name 2",
-                        IsPreSelected = true,
-                        DisplayOrder = 1,
-                    }
-                );
+            var ca = TestHelper.GetCustomerAttribute();
             var fromDb = SaveAndLoadEntity(ca);
             fromDb.ShouldNotBeNull();
             fromDb.Name.ShouldEqual("Name 1");

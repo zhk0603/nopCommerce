@@ -30,9 +30,7 @@ namespace Nop.Core.Tests.Fakes
         {
             return Assemblies.ToList();
         }
-
-
-
+        
         public IEnumerable<Type> FindClassesOfType(Type assignTypeFrom, bool onlyConcreteClasses = true)
         {
             return (from t in Types

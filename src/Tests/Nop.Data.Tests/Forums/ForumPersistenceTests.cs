@@ -1,5 +1,4 @@
 ﻿using System;
-using Nop.Core.Domain.Forums;
 using Nop.Tests;
 using NUnit.Framework;
 
@@ -11,23 +10,8 @@ namespace Nop.Data.Tests.Forums
         [Test]
         public void Can_save_and_load_forum()
         {
-            var forum = new Forum
-            {
-                ForumGroup = new ForumGroup
-                {
-                    Name = "Forum Group 1",
-                    DisplayOrder = 1,
-                    CreatedOnUtc = DateTime.UtcNow,
-                    UpdatedOnUtc = DateTime.UtcNow,
-                },
-                Name = "Forum 1",
-                Description = "Forum 1 Description",
-                DisplayOrder = 10,
-                CreatedOnUtc = new DateTime(2010, 01, 01),
-                UpdatedOnUtc = new DateTime(2010, 01, 02),
-                NumPosts = 25,
-                NumTopics = 15,
-            };
+            var forum = TestHelper.GetForum();
+            forum.ForumGroup = TestHelper.GetForumGroup();
 
             var fromDb = SaveAndLoadEntity(forum);
             fromDb.ShouldNotBeNull();

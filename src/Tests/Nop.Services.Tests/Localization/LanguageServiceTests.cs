@@ -27,24 +27,8 @@ namespace Nop.Services.Tests.Localization
         public new void SetUp()
         {
             _languageRepo = MockRepository.GenerateMock<IRepository<Language>>();
-            var lang1 = new Language
-            {
-                Name = "English",
-                LanguageCulture = "en-Us",
-                FlagImageFileName = "us.png",
-                Published = true,
-                DisplayOrder = 1
-            };
-            var lang2 = new Language
-            {
-                Name = "Russian",
-                LanguageCulture = "ru-Ru",
-                FlagImageFileName = "ru.png",
-                Published = true,
-                DisplayOrder = 2
-            };
-
-            _languageRepo.Expect(x => x.Table).Return(new List<Language> { lang1, lang2 }.AsQueryable());
+           
+            _languageRepo.Expect(x => x.Table).Return(new List<Language> { TestHelper.GetLanguage(), TestHelper.GetLanguage() }.AsQueryable());
 
             _storeMappingService = MockRepository.GenerateMock<IStoreMappingService>();
 
@@ -65,7 +49,7 @@ namespace Nop.Services.Tests.Localization
         {
             var languages = _languageService.GetAllLanguages();
             languages.ShouldNotBeNull();
-            (languages.Any()).ShouldBeTrue();
+            languages.Any().ShouldBeTrue();
         }
     }
 }

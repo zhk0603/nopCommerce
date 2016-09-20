@@ -1,5 +1,4 @@
-﻿using Nop.Core.Domain.Topics;
-using Nop.Tests;
+﻿using Nop.Tests;
 using NUnit.Framework;
 
 namespace Nop.Data.Tests.Topics
@@ -10,28 +9,7 @@ namespace Nop.Data.Tests.Topics
         [Test]
         public void Can_save_and_load_topic()
         {
-            var topic = new Topic
-                               {
-                                   SystemName = "SystemName 1",
-                                   IncludeInSitemap = true,
-                                   IncludeInTopMenu = true,
-                                   IncludeInFooterColumn1 = true,
-                                   IncludeInFooterColumn2 = true,
-                                   IncludeInFooterColumn3 = true,
-                                   DisplayOrder = 1,
-                                   AccessibleWhenStoreClosed = true,
-                                   IsPasswordProtected = true,
-                                   Password = "password",
-                                   Title = "Title 1",
-                                   Body = "Body 1",
-                                   Published = true,
-                                   TopicTemplateId = 1,
-                                   MetaKeywords = "Meta keywords",
-                                   MetaDescription = "Meta description",
-                                   MetaTitle = "Meta title",
-                                   SubjectToAcl = true,
-                                   LimitedToStores = true
-                               };
+            var topic = TestHelper.GetTopic();
 
             var fromDb = SaveAndLoadEntity(topic);
             fromDb.ShouldNotBeNull();

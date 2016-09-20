@@ -1,5 +1,4 @@
-﻿using Nop.Core.Domain.Seo;
-using Nop.Tests;
+﻿using Nop.Tests;
 using NUnit.Framework;
 
 namespace Nop.Data.Tests.Seo
@@ -10,13 +9,7 @@ namespace Nop.Data.Tests.Seo
         [Test]
         public void Can_save_and_load_urlRecord()
         {
-            var urlRecord = new UrlRecord
-            {
-                EntityId = 1,
-                EntityName = "EntityName 1",
-                Slug = "Slug 1",
-                LanguageId = 2,
-            };
+            var urlRecord = TestHelper.GetUrlRecord();
 
             var fromDb = SaveAndLoadEntity(urlRecord);
             fromDb.ShouldNotBeNull();

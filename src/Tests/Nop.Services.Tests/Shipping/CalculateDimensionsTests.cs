@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Nop.Core;
 using Nop.Core.Caching;
 using Nop.Core.Data;
@@ -44,8 +45,7 @@ namespace Nop.Services.Tests.Shipping
         [SetUp]
         public new void SetUp()
         {
-            _shippingSettings = new ShippingSettings();
-            _shippingSettings.UseCubeRootMethod = true;
+            _shippingSettings = new ShippingSettings { UseCubeRootMethod = true };
 
             _shippingMethodRepository = MockRepository.GenerateMock<IRepository<ShippingMethod>>();
             _deliveryDateRepository = MockRepository.GenerateMock<IRepository<DeliveryDate>>();
@@ -89,178 +89,120 @@ namespace Nop.Services.Tests.Shipping
                 cacheManager);
         }
 
-        [Test]
-        public void should_return_zero_with_all_zero_dimensions()
+        private static IList<GetShippingOptionRequest.PackageItem> GetPackageItem(params PackageItemData[] packageItemDatas)
         {
-            var items = new List<GetShippingOptionRequest.PackageItem>
-            {
-                new GetShippingOptionRequest.PackageItem(new ShoppingCartItem
+            return packageItemDatas.Select(packageItemData => new GetShippingOptionRequest.PackageItem(new ShoppingCartItem
+                {
+                    Quantity = packageItemData.Quantity,
+                    Product = new Product
                     {
-                        Quantity = 1,
-                        Product = new Product
-                        {
-                            Length = 0,
-                            Width = 0,
-                            Height = 0
-                        }
-                    }),
-            };
+                        Length = packageItemData.Length,
+                        Width = packageItemData.Width,
+                        Height = packageItemData.Height
+                    }
+                })).ToList();
+        }
 
-            decimal length, width, height;
-            _shippingService.GetDimensions(items, out width, out length, out height);
-            length.ShouldEqual(0);
-            width.ShouldEqual(0);
-            height.ShouldEqual(0);
+        private static IList<GetShippingOptionRequest.PackageItem> GetPackageItem(PackageItemData packageItemData, int copyCount)
+        {
+            var items = new List<GetShippingOptionRequest.PackageItem>();
 
-            items = new List<GetShippingOptionRequest.PackageItem>
+            for (var i = 0; i < copyCount; i++)
             {
-                new GetShippingOptionRequest.PackageItem(new ShoppingCartItem
+                items.Add(new GetShippingOptionRequest.PackageItem(new ShoppingCartItem
+                {
+                    Quantity = packageItemData.Quantity,
+                    Product = new Product
                     {
-                        Quantity = 2,
-                        Product = new Product
-                        {
-                            Length = 0,
-                            Width = 0,
-                            Height = 0
-                        }
-                    }),
-            };
+                        Length = packageItemData.Length,
+                        Width = packageItemData.Width,
+                        Height = packageItemData.Height
+                    }
+                }));
+            }
 
-            _shippingService.GetDimensions(items, out width, out length, out height);
-            length.ShouldEqual(0);
-            width.ShouldEqual(0);
-            height.ShouldEqual(0);
+            return items;
+        }
+
+        private void CheckDimensions(IList<GetShippingOptionRequest.PackageItem> packageItems, decimal length, decimal width, decimal height)
+        {
+            decimal l, w, h;
+            _shippingService.GetDimensions(packageItems, out w, out l, out h);
+            Math.Round(l, 2).ShouldEqual(length);
+            Math.Round(w, 2).ShouldEqual(width);
+            Math.Round(h, 2).ShouldEqual(height);
+        }
+
+        private void CheckDimensions(IList<GetShippingOptionRequest.PackageItem> packageItems, decimal size)
+        {
+            CheckDimensions(packageItems, size, size, size);
+        }
+
+        [Test]
+        public void ShouldReturnZeroWithAllZeroDimensions()
+        {
+            CheckDimensions(GetPackageItem(new PackageItemData()), 0);
+            CheckDimensions(GetPackageItem(new PackageItemData(2)), 0);
         }
         
         [Test]
-        public void can_calculate_with_single_item_and_qty_1_should_ignore_cubic_method()
+        public void CanCalculateWithSingleItemAndQty1ShouldIgnoreCubicMethod()
         {
-            var items = new List<GetShippingOptionRequest.PackageItem>
-            {
-                new GetShippingOptionRequest.PackageItem(new ShoppingCartItem
-                {
-                    Quantity = 1,
-                    Product = new Product
-                    {
-                        Length = 2,
-                        Width = 3,
-                        Height = 4
-                    }
-                })
-            };
-
-            decimal length, width, height;
-            _shippingService.GetDimensions(items, out width, out length, out height);
-            length.ShouldEqual(2);
-            width.ShouldEqual(3);
-            height.ShouldEqual(4);
+            CheckDimensions(GetPackageItem(new PackageItemData(2, 3, 4)), 2, 3, 4);
         }
 
         [Test]
-        public void can_calculate_with_single_item_and_qty_2()
+        public void CanCalculateWithSingleItemAndQty2()
         {
-            var items = new List<GetShippingOptionRequest.PackageItem>
-            {
-                new GetShippingOptionRequest.PackageItem(new ShoppingCartItem
-                {
-                    Quantity = 2,
-                    Product = new Product
-                    {
-                        Length = 2,
-                        Width = 4,
-                        Height = 4
-                    }
-                })
-            };
-
-            decimal length, width, height;
-            _shippingService.GetDimensions(items, out width, out length, out height);
-            length.ShouldEqual(4);
-            width.ShouldEqual(4);
-            height.ShouldEqual(4);
+            CheckDimensions(GetPackageItem(new PackageItemData(2, 4, 4, 2)), 4);
         }
 
         [Test]
-        public void can_calculate_with_cubic_item_and_multiple_qty()
+        public void CanCalculateWithCubicItemAndMultipleQty()
         {
-            var items = new List<GetShippingOptionRequest.PackageItem>
-            {
-                new GetShippingOptionRequest.PackageItem(new ShoppingCartItem
-                {
-                    Quantity = 3,
-                    Product = new Product
-                    {
-                        Length = 2,
-                        Width = 2,
-                        Height = 2
-                    }
-                })
-            };
-
-
-            decimal length, width, height;
-            _shippingService.GetDimensions(items, out width, out length, out height);
-            Math.Round(length, 2).ShouldEqual(2.88);
-            Math.Round(width, 2).ShouldEqual(2.88);
-            Math.Round(height, 2).ShouldEqual(2.88);
+            CheckDimensions(GetPackageItem(new PackageItemData(3, 2)), 2.88M);
         }
 
         [Test]
-        public void can_calculate_with_multiple_items_1()
+        public void CanCalculateWithMultipleItems1()
         {
-            var items = new List<GetShippingOptionRequest.PackageItem>
-            {
-                new GetShippingOptionRequest.PackageItem(new ShoppingCartItem
-                                {
-                                    Quantity = 3,
-                                    Product = new Product
-                                    {
-                                        Length = 2,
-                                        Width = 2,
-                                        Height = 2
-                                    }
-                                }),
-                new GetShippingOptionRequest.PackageItem(new ShoppingCartItem
-                                {
-                                    Quantity = 1,
-                                    Product = new Product
-                                    {
-                                        Length = 3,
-                                        Width = 5,
-                                        Height = 2
-                                    }
-                                })
-            };
-
-            decimal length, width, height;
-            _shippingService.GetDimensions(items, out width, out length, out height);
-            Math.Round(length, 2).ShouldEqual(3.78);
-            Math.Round(width, 2).ShouldEqual(5);    //preserve max width
-            Math.Round(height, 2).ShouldEqual(3.78);
+            //preserve max width
+            CheckDimensions(GetPackageItem(new PackageItemData(3, 2), new PackageItemData(3, 5, 2)), 3.78M, 5, 3.78M);
         }
 
         [Test]
-        public void can_calculate_with_multiple_items_2()
+        public void CanCalculateWithMultipleItems2()
         {
             //take 8 cubes of 1x1x1 which is "packed" as 2x2x2 
-            var items = new List<GetShippingOptionRequest.PackageItem>();
-            for (int i = 0; i < 8; i++)
-                items.Add(new GetShippingOptionRequest.PackageItem(new ShoppingCartItem
-                        {
-                            Quantity = 1,
-                            Product = new Product
-                                {
-                                    Length = 1,
-                                    Width = 1,
-                                    Height = 1
-                                }
-                        }));
+           CheckDimensions(GetPackageItem(new PackageItemData(1M), 8), 2);
+        }
+    }
 
-            decimal length, width, height;
-            _shippingService.GetDimensions(items, out width, out length, out height);
-            Math.Round(length, 2).ShouldEqual(2);
-            Math.Round(width, 2).ShouldEqual(2);
-            Math.Round(height, 2).ShouldEqual(2);
+    internal class PackageItemData
+    {
+        public int Quantity { get; set; }
+        public decimal Length { get; set; }
+        public decimal Width { get; set; }
+        public decimal Height { get; set; }
+
+        public PackageItemData(decimal size = 0)
+        {
+            Quantity = 1;
+            Length = Width = Height = size;
+        }
+
+        public PackageItemData(int quantity, decimal size = 0)
+        {
+            Quantity = quantity;
+            Length = Width = Height = size;
+        }
+
+        public PackageItemData(decimal length, decimal width, decimal height, int quantity = 1)
+        {
+            Quantity = quantity;
+            Length = length;
+            Width = width;
+            Height = height;
         }
     }
 }

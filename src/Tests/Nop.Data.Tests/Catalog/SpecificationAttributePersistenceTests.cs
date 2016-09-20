@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using Nop.Core.Domain.Catalog;
 using Nop.Tests;
 using NUnit.Framework;
 
@@ -11,38 +10,22 @@ namespace Nop.Data.Tests.Catalog
         [Test]
         public void Can_save_and_load_specificationAttribute()
         {
-            var specificationAttribute = new SpecificationAttribute
-            {
-                Name = "Name 1",
-                DisplayOrder = 1,
-            };
+            var specificationAttribute = TestHelper.GetSpecificationAttribute();
 
             var fromDb = SaveAndLoadEntity(specificationAttribute);
             fromDb.ShouldNotBeNull();
-            fromDb.Name.ShouldEqual("Name 1");
-            fromDb.DisplayOrder.ShouldEqual(1);
+            fromDb.Name.ShouldEqual("SpecificationAttribute name 1");
+            fromDb.DisplayOrder.ShouldEqual(2);
         }
 
         [Test]
         public void Can_save_and_load_specificationAttribute_with_specificationAttributeOptions()
         {
-            var specificationAttribute = new SpecificationAttribute
-            {
-                Name = "Name 1",
-                DisplayOrder = 1
-            };
-            specificationAttribute.SpecificationAttributeOptions.Add
-                (
-                    new SpecificationAttributeOption
-                    {
-                        Name = "SpecificationAttributeOption name 1",
-                        DisplayOrder = 1,
-                    }
-                );
+            var specificationAttribute = TestHelper.GetSpecificationAttribute();
+            specificationAttribute.SpecificationAttributeOptions.Add(TestHelper.GetSpecificationAttributeOption(false));
             var fromDb = SaveAndLoadEntity(specificationAttribute);
             fromDb.ShouldNotBeNull();
-            fromDb.Name.ShouldEqual("Name 1");
-
+            fromDb.Name.ShouldEqual("SpecificationAttribute name 1");
 
             fromDb.SpecificationAttributeOptions.ShouldNotBeNull();
             (fromDb.SpecificationAttributeOptions.Count == 1).ShouldBeTrue();

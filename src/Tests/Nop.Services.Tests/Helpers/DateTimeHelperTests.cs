@@ -33,7 +33,7 @@ namespace Nop.Services.Tests.Helpers
 
             _workContext = MockRepository.GenerateMock<IWorkContext>();
 
-            _store = new Store { Id = 1 };
+            _store = TestHelper.GetStore();
             _storeContext = MockRepository.GenerateMock<IStoreContext>();
             _storeContext.Expect(x => x.CurrentStore).Return(_store);
 
@@ -60,7 +60,7 @@ namespace Nop.Services.Tests.Helpers
         {
             var systemTimeZones = _dateTimeHelper.GetSystemTimeZones();
             systemTimeZones.ShouldNotBeNull();
-            (systemTimeZones.Any()).ShouldBeTrue();
+            systemTimeZones.Any().ShouldBeTrue();
         }
 
         [Test]
@@ -69,23 +69,14 @@ namespace Nop.Services.Tests.Helpers
             _dateTimeSettings.AllowCustomersToSetTimeZone = true;
             _dateTimeSettings.DefaultStoreTimeZoneId = "E. Europe Standard Time"; //(GMT+02:00) Minsk;
 
-            var customer = new Customer
-            {
-                Id = 10,
-            };
+            var customer = TestHelper.GetCustomer();
 
             _genericAttributeService.Expect(x => x.GetAttributesForEntity(customer.Id, "Customer"))
                 .Return(new List<GenericAttribute>
-                            {
-                                new GenericAttribute
-                                    {
-                                        StoreId = 0,
-                                        EntityId = customer.Id,
-                                        Key = SystemCustomerAttributeNames.TimeZoneId,
-                                        KeyGroup = "Customer",
-                                        Value = "Russian Standard Time" //(GMT+03:00) Moscow, St. Petersburg, Volgograd
-                                    }
-                            });
+                {
+                    //(GMT+03:00) Moscow, St. Petersburg, Volgograd
+                    TestHelper.GetGenericAttribute(customer.Id, "Russian Standard Time", SystemCustomerAttributeNames.TimeZoneId, 0)
+                });
             var timeZone = _dateTimeHelper.GetCustomerTimeZone(customer);
             timeZone.ShouldNotBeNull();
             timeZone.Id.ShouldEqual("Russian Standard Time");
@@ -97,23 +88,14 @@ namespace Nop.Services.Tests.Helpers
             _dateTimeSettings.AllowCustomersToSetTimeZone = false;
             _dateTimeSettings.DefaultStoreTimeZoneId = "E. Europe Standard Time"; //(GMT+02:00) Minsk;
 
-            var customer = new Customer
-            {
-                Id = 10,
-            };
+            var customer = TestHelper.GetCustomer();
 
             _genericAttributeService.Expect(x => x.GetAttributesForEntity(customer.Id, "Customer"))
                 .Return(new List<GenericAttribute>
-                            {
-                                new GenericAttribute
-                                    {
-                                        StoreId = 0,
-                                        EntityId = customer.Id,
-                                        Key = SystemCustomerAttributeNames.TimeZoneId,
-                                        KeyGroup = "Customer",
-                                        Value = "Russian Standard Time" //(GMT+03:00) Moscow, St. Petersburg, Volgograd
-                                    }
-                            });
+                {
+                    //(GMT+03:00) Moscow, St. Petersburg, Volgograd
+                    TestHelper.GetGenericAttribute(customer.Id, "Russian Standard Time", SystemCustomerAttributeNames.TimeZoneId)
+                });
 
             var timeZone = _dateTimeHelper.GetCustomerTimeZone(customer);
             timeZone.ShouldNotBeNull();

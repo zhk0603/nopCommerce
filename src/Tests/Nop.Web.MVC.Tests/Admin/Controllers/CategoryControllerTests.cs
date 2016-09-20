@@ -7,8 +7,7 @@ namespace Nop.Web.MVC.Tests.Admin.Controllers
     {
         //TODO also test MVC views.
         //Find more info here: http://blog.davidebbo.com/2011/06/unit-test-your-mvc-views-using-razor.html
-
-
+        
         //TODO ASP.NET MVC Outbound Url tests with NSubstitute.
         //Find more info here: http://blogs.planetcloud.co.uk/mygreatdiscovery/post/ASPNET-MVC-Outbound-Url-tests-with-NSubstitute.aspx
         public override void SetUp()

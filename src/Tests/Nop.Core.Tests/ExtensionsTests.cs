@@ -20,6 +20,3 @@ namespace Nop.Core.Tests
         }
     }
 }
-
-
-

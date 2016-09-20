@@ -1,5 +1,4 @@
 ﻿using System;
-using Nop.Core.Domain.Tasks;
 using Nop.Tests;
 using NUnit.Framework;
 
@@ -11,19 +10,7 @@ namespace Nop.Data.Tests.Tasks
         [Test]
         public void Can_save_and_load_scheduleTask()
         {
-            var scheduleTask = new ScheduleTask
-            {
-                Name = "Task 1",
-                Seconds = 1,
-                Type = "some type 1",
-                Enabled = true,
-                StopOnError = true,
-                LeasedByMachineName = "LeasedByMachineName 1",
-                LeasedUntilUtc = new DateTime(2009, 01, 01), 
-                LastStartUtc = new DateTime(2010, 01, 01),
-                LastEndUtc = new DateTime(2010, 01, 02),
-                LastSuccessUtc= new DateTime(2010, 01, 03),
-            };
+            var scheduleTask = TestHelper.GetScheduleTask();
 
             var fromDb = SaveAndLoadEntity(scheduleTask);
             fromDb.ShouldNotBeNull();

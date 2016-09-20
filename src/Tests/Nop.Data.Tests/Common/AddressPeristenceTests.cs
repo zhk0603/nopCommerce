@@ -1,6 +1,4 @@
 ﻿using System;
-using Nop.Core.Domain.Common;
-using Nop.Core.Domain.Directory;
 using Nop.Tests;
 using NUnit.Framework;
 
@@ -12,22 +10,7 @@ namespace Nop.Data.Tests.Common
         [Test]
         public void Can_save_and_load_address()
         {
-            var address = new Address
-            {
-                FirstName = "FirstName 1",
-                LastName = "LastName 1",
-                Email = "Email 1",
-                Company = "Company 1",
-                City = "City 1",
-                Address1 = "Address1",
-                Address2 = "Address2",
-                ZipPostalCode = "ZipPostalCode 1",
-                PhoneNumber = "PhoneNumber 1",
-                FaxNumber = "FaxNumber 1",
-                CustomAttributes = "CustomAttributes 1",
-                CreatedOnUtc = new DateTime(2010, 01, 01),
-                Country = GetTestCountry()
-            };
+            var address = TestHelper.GetAddress();
 
             var fromDb = SaveAndLoadEntity(address);
             fromDb.ShouldNotBeNull();
@@ -53,55 +36,13 @@ namespace Nop.Data.Tests.Common
         [Test]
         public void Can_save_and_load_address_with_stateProvince()
         {
-            var address = new Address
-            {
-                FirstName = "FirstName 1",
-                LastName = "LastName 1",
-                Email = "Email 1",
-                Company = "Company 1",
-                City = "City 1",
-                Address1 = "Address1",
-                Address2 = "Address2",
-                ZipPostalCode = "ZipPostalCode 1",
-                PhoneNumber = "PhoneNumber 1",
-                FaxNumber = "FaxNumber 1",
-                CreatedOnUtc = new DateTime(2010, 01, 01),
-                Country = GetTestCountry(),
-                StateProvince = GetTestStateProvince(),
-            };
+            var address = TestHelper.GetAddress();
 
             var fromDb = SaveAndLoadEntity(address);
             fromDb.ShouldNotBeNull();
 
             fromDb.StateProvince.ShouldNotBeNull();
-            fromDb.StateProvince.Name.ShouldEqual("California");
-        }
-
-        protected Country GetTestCountry()
-        {
-            return new Country
-            {
-                Name = "United States",
-                AllowsBilling = true,
-                AllowsShipping = true,
-                TwoLetterIsoCode = "US",
-                ThreeLetterIsoCode = "USA",
-                NumericIsoCode = 1,
-                SubjectToVat = true,
-                Published = true,
-                DisplayOrder = 1
-            };
-        }
-
-        protected StateProvince GetTestStateProvince()
-        {
-            return new StateProvince
-            {
-                Name = "California",
-                Abbreviation = "CA",
-                DisplayOrder = 1,
-                Country = GetTestCountry()
-            };
+            fromDb.StateProvince.Name.ShouldEqual("Louisiana");
         }
     }
 }

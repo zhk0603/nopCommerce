@@ -1,5 +1,4 @@
 ﻿using Nop.Core;
-using Nop.Core.Domain.Media;
 using Nop.Tests;
 using NUnit.Framework;
 
@@ -11,15 +10,7 @@ namespace Nop.Data.Tests.Media
         [Test]
         public void Can_save_and_load_picture()
         {
-            var picture = new Picture
-            {
-                PictureBinary = new byte[] { 1, 2, 3 },
-                MimeType = MimeTypes.ImagePJpeg,
-                SeoFilename = "seo filename 1",
-                AltAttribute = "AltAttribute 1",
-                TitleAttribute = "TitleAttribute 1",
-                IsNew = true
-            };
+            var picture = TestHelper.GetPicture();
 
             var fromDb = SaveAndLoadEntity(picture);
             fromDb.ShouldNotBeNull();

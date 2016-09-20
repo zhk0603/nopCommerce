@@ -39,7 +39,7 @@ namespace Nop.Services.Tests.Payments
         {
             var srcm = _paymentService.LoadActivePaymentMethods();
             srcm.ShouldNotBeNull();
-            (srcm.Any()).ShouldBeTrue();
+            srcm.Any().ShouldBeTrue();
         }
 
         [Test]
@@ -54,7 +54,7 @@ namespace Nop.Services.Tests.Payments
         {
             var srcm = _paymentService.LoadActivePaymentMethods();
             srcm.ShouldNotBeNull();
-            (srcm.Any()).ShouldBeTrue();
+            srcm.Any().ShouldBeTrue();
         }
 
         [Test]

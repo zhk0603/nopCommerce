@@ -1,5 +1,4 @@
-﻿using Nop.Core.Domain.Shipping;
-using Nop.Tests;
+﻿using Nop.Tests;
 using NUnit.Framework;
 
 namespace Nop.Data.Tests.Shipping
@@ -10,11 +9,7 @@ namespace Nop.Data.Tests.Shipping
         [Test]
         public void Can_save_and_load_deliveryDate()
         {
-            var deliveryDate = new DeliveryDate
-                               {
-                                   Name = "Name 1",
-                                   DisplayOrder = 1
-                               };
+            var deliveryDate = TestHelper.GetDeliveryDate();
 
             var fromDb = SaveAndLoadEntity(deliveryDate);
             fromDb.ShouldNotBeNull();

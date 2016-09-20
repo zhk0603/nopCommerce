@@ -1,6 +1,4 @@
 ﻿using System.Linq;
-using Nop.Core.Domain.Customers;
-using Nop.Core.Domain.Security;
 using Nop.Tests;
 using NUnit.Framework;
 
@@ -12,7 +10,7 @@ namespace Nop.Data.Tests.Security
         [Test]
         public void Can_save_and_load_permissionRecord()
         {
-            var permissionRecord = GetTestPermissionRecord();
+            var permissionRecord = TestHelper.GetPermissionRecord();
 
             var fromDb = SaveAndLoadEntity(permissionRecord);
             fromDb.ShouldNotBeNull();
@@ -24,16 +22,8 @@ namespace Nop.Data.Tests.Security
         [Test]
         public void Can_save_and_load_permissionRecord_with_customerRoles()
         {
-            var permissionRecord = GetTestPermissionRecord();
-            permissionRecord.CustomerRoles.Add
-                (
-                    new CustomerRole
-                    {
-                        Name = "Administrators",
-                        SystemName = "Administrators"
-                    }
-                );
-
+            var permissionRecord = TestHelper.GetPermissionRecord();
+            permissionRecord.CustomerRoles.Add(TestHelper.GetCustomerRole("Administrators"));
 
             var fromDb = SaveAndLoadEntity(permissionRecord);
             fromDb.ShouldNotBeNull();
@@ -41,16 +31,6 @@ namespace Nop.Data.Tests.Security
             fromDb.CustomerRoles.ShouldNotBeNull();
             (fromDb.CustomerRoles.Count == 1).ShouldBeTrue();
             fromDb.CustomerRoles.First().Name.ShouldEqual("Administrators");
-        }
-
-        protected PermissionRecord GetTestPermissionRecord()
-        {
-            return new PermissionRecord
-            {
-                Name = "Name 1",
-                SystemName = "SystemName 2",
-                Category = "Category 4",
-            };
         }
     }
 }

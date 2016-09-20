@@ -1,5 +1,4 @@
-﻿using Nop.Core.Domain.Catalog;
-using Nop.Tests;
+﻿using Nop.Tests;
 using NUnit.Framework;
 
 namespace Nop.Data.Tests.Catalog
@@ -10,10 +9,7 @@ namespace Nop.Data.Tests.Catalog
         [Test]
         public void Can_save_and_load_productTag()
         {
-            var productTag = new ProductTag
-                               {
-                                   Name = "Name 1",
-                               };
+            var productTag = TestHelper.GetProductTag();
 
             var fromDb = SaveAndLoadEntity(productTag);
             fromDb.ShouldNotBeNull();

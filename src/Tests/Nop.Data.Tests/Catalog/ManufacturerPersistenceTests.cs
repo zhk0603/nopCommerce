@@ -1,5 +1,4 @@
 ﻿using System;
-using Nop.Core.Domain.Catalog;
 using Nop.Tests;
 using NUnit.Framework;
 
@@ -11,27 +10,7 @@ namespace Nop.Data.Tests.Catalog
         [Test]
         public void Can_save_and_load_manufacturer()
         {
-            var manufacturer = new Manufacturer
-            {
-                Name = "Name",
-                Description = "Description 1",
-                ManufacturerTemplateId = 1,
-                MetaKeywords = "Meta keywords",
-                MetaDescription = "Meta description",
-                MetaTitle = "Meta title",
-                PictureId = 3,
-                PageSize = 4,
-                AllowCustomersToSelectPageSize = true,
-                PageSizeOptions = "4, 2, 8, 12",
-                PriceRanges = "1-3;",
-                Published = true,
-                SubjectToAcl = true,
-                LimitedToStores = true, 
-                Deleted = false,
-                DisplayOrder = 5,
-                CreatedOnUtc = new DateTime(2010, 01, 01),
-                UpdatedOnUtc = new DateTime(2010, 01, 02),
-            };
+            var manufacturer = TestHelper.GetManufacturer();
 
             var fromDb = SaveAndLoadEntity(manufacturer);
             fromDb.ShouldNotBeNull();

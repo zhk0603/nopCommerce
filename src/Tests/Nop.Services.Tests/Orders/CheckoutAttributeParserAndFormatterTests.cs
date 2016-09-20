@@ -5,7 +5,6 @@ using Nop.Core.Caching;
 using Nop.Core.Data;
 using Nop.Core.Domain.Catalog;
 using Nop.Core.Domain.Customers;
-using Nop.Core.Domain.Localization;
 using Nop.Core.Domain.Orders;
 using Nop.Services.Catalog;
 using Nop.Services.Directory;
@@ -44,77 +43,34 @@ namespace Nop.Services.Tests.Orders
         public new void SetUp()
         {
             #region Test data
+            
+            ca1 = TestHelper.GetCheckoutAttribute();
+            ca1.AttributeControlType = AttributeControlType.DropdownList;
+            ca1.Name = "Color";
+            ca1.TextPrompt = "Select color:";
 
-            //color (dropdownlist)
-            ca1 = new CheckoutAttribute
-            {
-                Id = 1,
-                Name= "Color",
-                TextPrompt = "Select color:",
-                IsRequired = true,
-                AttributeControlType = AttributeControlType.DropdownList,
-                DisplayOrder = 1,
-            };
-            cav1_1 = new CheckoutAttributeValue
-            {
-                Id = 11,
-                Name = "Green",
-                DisplayOrder = 1,
-                CheckoutAttribute = ca1,
-                CheckoutAttributeId = ca1.Id,
-            };
-            cav1_2 = new CheckoutAttributeValue
-            {
-                Id = 12,
-                Name = "Red",
-                DisplayOrder = 2,
-                CheckoutAttribute = ca1,
-                CheckoutAttributeId = ca1.Id,
-            };
+            cav1_1 = TestHelper.GetCheckoutAttributeValue(11, "Green", ca1);
+            cav1_2 = TestHelper.GetCheckoutAttributeValue(12, "Red", ca1);
             ca1.CheckoutAttributeValues.Add(cav1_1);
             ca1.CheckoutAttributeValues.Add(cav1_2);
 
             //custom option (checkboxes)
-            ca2 = new CheckoutAttribute
-            {
-                Id = 2,
-                Name = "Custom option",
-                TextPrompt = "Select custom option:",
-                IsRequired = true,
-                AttributeControlType = AttributeControlType.Checkboxes,
-                DisplayOrder = 2,
-            };
-            cav2_1 = new CheckoutAttributeValue
-            {
-                Id = 21,
-                Name = "Option 1",
-                DisplayOrder = 1,
-                CheckoutAttribute = ca2,
-                CheckoutAttributeId = ca2.Id,
-            };
-            cav2_2 = new CheckoutAttributeValue
-            {
-                Id = 22,
-                Name = "Option 2",
-                DisplayOrder = 2,
-                CheckoutAttribute = ca2,
-                CheckoutAttributeId = ca2.Id,
-            };
+            ca2 = TestHelper.GetCheckoutAttribute(2);
+            ca2.AttributeControlType = AttributeControlType.Checkboxes;
+            ca2.Name = "Custom option";
+            ca2.TextPrompt = "Select custom option:";
+            
+            cav2_1 = TestHelper.GetCheckoutAttributeValue(21, "Option 1", ca2); 
+            cav2_2 = TestHelper.GetCheckoutAttributeValue(22, "Option 2", ca2);
             ca2.CheckoutAttributeValues.Add(cav2_1);
             ca2.CheckoutAttributeValues.Add(cav2_2);
-
+            
             //custom text
-            ca3 = new CheckoutAttribute
-            {
-                Id = 3,
-                Name = "Custom text",
-                TextPrompt = "Enter custom text:",
-                IsRequired = true,
-                AttributeControlType = AttributeControlType.MultilineTextbox,
-                DisplayOrder = 3,
-            };
-
-
+            ca3 = TestHelper.GetCheckoutAttribute(3);
+            ca3.AttributeControlType = AttributeControlType.MultilineTextbox;
+            ca3.Name = "Custom text";
+            ca3.TextPrompt = "Enter custom text:";
+            
             #endregion
             
             _checkoutAttributeRepo = MockRepository.GenerateMock<IRepository<CheckoutAttribute>>();
@@ -145,9 +101,8 @@ namespace Nop.Services.Tests.Orders
 
             _checkoutAttributeParser = new CheckoutAttributeParser(_checkoutAttributeService);
 
+            var workingLanguage = TestHelper.GetLanguage();
 
-
-            var workingLanguage = new Language();
             _workContext = MockRepository.GenerateMock<IWorkContext>();
             _workContext.Expect(x => x.WorkingLanguage).Return(workingLanguage);
             _currencyService = MockRepository.GenerateMock<ICurrencyService>();
@@ -202,7 +157,6 @@ namespace Nop.Services.Tests.Orders
             attributes = _checkoutAttributeParser.AddCheckoutAttribute(attributes, ca2, cav2_2.Id.ToString());
             //custom text
             attributes = _checkoutAttributeParser.AddCheckoutAttribute(attributes, ca3, "Some custom text goes here");
-
 
             var customer = new Customer();
             string formattedAttributes = _checkoutAttributeFormatter.FormatAttributes(attributes, customer, "<br />", false, false);

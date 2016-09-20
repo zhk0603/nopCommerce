@@ -51,96 +51,27 @@ namespace Nop.Services.Tests.Catalog
         {
             #region Test data
 
+            var product = TestHelper.GetProduct();
+
             //color (dropdownlist)
-            pa1 = new ProductAttribute
-            {
-                Id = 1,
-                Name = "Color",
-            };
-            pam1_1 = new ProductAttributeMapping
-            {
-                Id = 11,
-                ProductId = 1,
-                TextPrompt = "Select color:",
-                IsRequired = true,
-                AttributeControlType = AttributeControlType.DropdownList,
-                DisplayOrder = 1,
-                ProductAttribute = pa1,
-                ProductAttributeId = pa1.Id
-            };
-            pav1_1 = new ProductAttributeValue
-            {
-                Id = 11,
-                Name = "Green",
-                DisplayOrder = 1,
-                ProductAttributeMapping= pam1_1,
-                ProductAttributeMappingId = pam1_1.Id
-            };
-            pav1_2 = new ProductAttributeValue
-            {
-                Id = 12,
-                Name = "Red",
-                DisplayOrder = 2,
-                ProductAttributeMapping = pam1_1,
-                ProductAttributeMappingId = pam1_1.Id
-            };
+            pa1 = TestHelper.GetProductAttribute(name: "Color");
+            pam1_1 = TestHelper.GetProductAttributeMapping(product, 11, "Select color:", productAttribute: pa1);
+            pav1_1 = TestHelper.GetProductAttributeValue(11, "Green", pam1_1);
+            pav1_2 = TestHelper.GetProductAttributeValue(12, "Red", pam1_1);
             pam1_1.ProductAttributeValues.Add(pav1_1);
             pam1_1.ProductAttributeValues.Add(pav1_2);
 
             //custom option (checkboxes)
-            pa2 = new ProductAttribute
-            {
-                Id = 2,
-                Name = "Some custom option",
-            };
-            pam2_1 = new ProductAttributeMapping
-            {
-                Id = 21,
-                ProductId = 1,
-                TextPrompt = "Select at least one option:",
-                IsRequired = true,
-                AttributeControlType = AttributeControlType.Checkboxes,
-                DisplayOrder = 2,
-                ProductAttribute = pa2,
-                ProductAttributeId = pa2.Id
-            };
-            pav2_1 = new ProductAttributeValue
-            {
-                Id = 21,
-                Name = "Option 1",
-                DisplayOrder = 1,
-                ProductAttributeMapping = pam2_1,
-                ProductAttributeMappingId = pam2_1.Id
-            };
-            pav2_2 = new ProductAttributeValue
-            {
-                Id = 22,
-                Name = "Option 2",
-                DisplayOrder = 2,
-                ProductAttributeMapping = pam2_1,
-                ProductAttributeMappingId = pam2_1.Id
-            };
+            pa2 = TestHelper.GetProductAttribute(2, "Some custom option");
+            pam2_1 = TestHelper.GetProductAttributeMapping(product, 21, "Select at least one option: ", AttributeControlType.Checkboxes, pa2);
+            pav2_1 = TestHelper.GetProductAttributeValue(21, "Option 1", pam2_1);
+            pav2_2 = TestHelper.GetProductAttributeValue(22, "Option 2", pam2_1);
             pam2_1.ProductAttributeValues.Add(pav2_1);
             pam2_1.ProductAttributeValues.Add(pav2_2);
 
             //custom text
-            pa3 = new ProductAttribute
-            {
-                Id = 3,
-                Name = "Custom text",
-            };
-            pam3_1 = new ProductAttributeMapping
-            {
-                Id = 31,
-                ProductId = 1,
-                TextPrompt = "Enter custom text:",
-                IsRequired = true,
-                AttributeControlType = AttributeControlType.TextBox,
-                DisplayOrder = 1,
-                ProductAttribute = pa1,
-                ProductAttributeId = pa3.Id
-            };
-
+            pa3 = TestHelper.GetProductAttribute(3, "Custom text");
+            pam3_1 = TestHelper.GetProductAttributeMapping(product, 31, "Enter custom text: ", AttributeControlType.TextBox, pa3);
 
             #endregion
             
@@ -184,7 +115,6 @@ namespace Nop.Services.Tests.Catalog
             _productAttributeParser = new ProductAttributeParser(_productAttributeService);
 
             _priceCalculationService = MockRepository.GenerateMock<IPriceCalculationService>();
-
 
             var workingLanguage = new Language();
             _workContext = MockRepository.GenerateMock<IWorkContext>();
@@ -348,7 +278,7 @@ namespace Nop.Services.Tests.Catalog
             var customer = new Customer();
             string formattedAttributes = _productAttributeFormatter.FormatAttributes(product,
                 attributes, customer, "<br />", false, false, true, true);
-            formattedAttributes.ShouldEqual("Color: Green<br />Some custom option: Option 1<br />Some custom option: Option 2<br />Color: Some custom text goes here<br />From: senderName 1 <senderEmail@gmail.com><br />For: recipientName 1 <recipientEmail@gmail.com>");
+            formattedAttributes.ShouldEqual("Color: Green<br />Some custom option: Option 1<br />Some custom option: Option 2<br />Custom text: Some custom text goes here<br />From: senderName 1 <senderEmail@gmail.com><br />For: recipientName 1 <recipientEmail@gmail.com>");
         }
     }
 }

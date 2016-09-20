@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Nop.Core.Caching;
 using Nop.Core.Data;
@@ -24,51 +23,17 @@ namespace Nop.Services.Tests.Directory
         private ICurrencyService _currencyService;
 
         private Currency currencyUSD, currencyRUR, currencyEUR;
-        
+
         [SetUp]
         public new void SetUp()
         {
-            currencyUSD = new Currency
-            {
-                Id = 1,
-                Name = "US Dollar",
-                CurrencyCode = "USD",
-                Rate = 1.2M,
-                DisplayLocale = "en-US",
-                CustomFormatting = "",
-                Published = true,
-                DisplayOrder = 1,
-                CreatedOnUtc = DateTime.UtcNow,
-                UpdatedOnUtc = DateTime.UtcNow,
-            };
-            currencyEUR = new Currency
-            {
-                Id = 2,
-                Name = "Euro",
-                CurrencyCode = "EUR",
-                Rate = 1,
-                DisplayLocale = "",
-                CustomFormatting = "€0.00",
-                Published = true,
-                DisplayOrder = 2,
-                CreatedOnUtc = DateTime.UtcNow,
-                UpdatedOnUtc = DateTime.UtcNow,
-            };
-            currencyRUR = new Currency
-            {
-                Id = 3,
-                Name = "Russian Rouble",
-                CurrencyCode = "RUB",
-                Rate = 34.5M,
-                DisplayLocale = "ru-RU",
-                CustomFormatting = "",
-                Published = true,
-                DisplayOrder = 3,
-                CreatedOnUtc = DateTime.UtcNow,
-                UpdatedOnUtc = DateTime.UtcNow,
-            };
+            currencyUSD = TestHelper.GetCurrency(rate: 1.2M);
+            currencyEUR = TestHelper.GetCurrency(2, "Euro", "EUR", 1, "", "€0.00");
+            currencyRUR = TestHelper.GetCurrency(3, "Russian Rouble", "RUB", 34.5M, "ru-RU");
+
             _currencyRepository = MockRepository.GenerateMock<IRepository<Currency>>();
-            _currencyRepository.Expect(x => x.Table).Return(new List<Currency> { currencyUSD, currencyEUR, currencyRUR }.AsQueryable());
+            _currencyRepository.Expect(x => x.Table)
+                .Return(new List<Currency> { currencyUSD, currencyEUR, currencyRUR }.AsQueryable());
             _currencyRepository.Expect(x => x.GetById(currencyUSD.Id)).Return(currencyUSD);
             _currencyRepository.Expect(x => x.GetById(currencyEUR.Id)).Return(currencyEUR);
             _currencyRepository.Expect(x => x.GetById(currencyRUR.Id)).Return(currencyRUR);
@@ -76,26 +41,28 @@ namespace Nop.Services.Tests.Directory
             _storeMappingService = MockRepository.GenerateMock<IStoreMappingService>();
 
             var cacheManager = new NopNullCache();
-            
-            _currencySettings = new CurrencySettings();
-            _currencySettings.PrimaryStoreCurrencyId = currencyUSD.Id;
-            _currencySettings.PrimaryExchangeRateCurrencyId = currencyEUR.Id;
+
+            _currencySettings = new CurrencySettings
+            {
+                PrimaryStoreCurrencyId = currencyUSD.Id,
+                PrimaryExchangeRateCurrencyId = currencyEUR.Id
+            };
 
             _eventPublisher = MockRepository.GenerateMock<IEventPublisher>();
             _eventPublisher.Expect(x => x.Publish(Arg<object>.Is.Anything));
-            
+
             var pluginFinder = new PluginFinder();
             _currencyService = new CurrencyService(cacheManager,
-                _currencyRepository, _storeMappingService, 
+                _currencyRepository, _storeMappingService,
                 _currencySettings, pluginFinder, _eventPublisher);
         }
-        
+
         [Test]
         public void Can_load_exchangeRateProviders()
         {
             var providers = _currencyService.LoadAllExchangeRateProviders();
             providers.ShouldNotBeNull();
-            (providers.Any()).ShouldBeTrue();
+            providers.Any().ShouldBeTrue();
         }
 
         [Test]

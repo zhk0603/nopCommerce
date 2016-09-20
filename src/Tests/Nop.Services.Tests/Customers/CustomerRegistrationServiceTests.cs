@@ -58,58 +58,18 @@ namespace Nop.Services.Tests.Customers
 
             _encryptionService = new EncryptionService(_securitySettings);
             _customerRepo = MockRepository.GenerateMock<IRepository<Customer>>();
-            var customer1 = new Customer
-            {
-                Username = "a@b.com",
-                Email = "a@b.com",
-                PasswordFormat = PasswordFormat.Hashed,
-                Active = true
-            };
+            var customer1 = TestHelper.GetCustomer("Registered");
+            customer1.PasswordFormat = PasswordFormat.Hashed;
 
-            string saltKey = _encryptionService.CreateSaltKey(5);
-            string password = _encryptionService.CreatePasswordHash("password", saltKey);
+            var saltKey = _encryptionService.CreateSaltKey(5);
+            var password = _encryptionService.CreatePasswordHash("password", saltKey);
             customer1.PasswordSalt = saltKey;
             customer1.Password = password;
-            AddCustomerToRegisteredRole(customer1);
 
-            var customer2 = new Customer
-            {
-                Username = "test@test.com",
-                Email = "test@test.com",
-                PasswordFormat = PasswordFormat.Clear,
-                Password = "password",
-                Active = true
-            };
-            AddCustomerToRegisteredRole(customer2);
-
-            var customer3 = new Customer
-            {
-                Username = "user@test.com",
-                Email = "user@test.com",
-                PasswordFormat = PasswordFormat.Encrypted,
-                Password = _encryptionService.EncryptText("password"),
-                Active = true
-            };
-            AddCustomerToRegisteredRole(customer3);
-
-            var customer4 = new Customer
-            {
-                Username = "registered@test.com",
-                Email = "registered@test.com",
-                PasswordFormat = PasswordFormat.Clear,
-                Password = "password",
-                Active = true
-            };
-            AddCustomerToRegisteredRole(customer4);
-
-            var customer5 = new Customer
-            {
-                Username = "notregistered@test.com",
-                Email = "notregistered@test.com",
-                PasswordFormat = PasswordFormat.Clear,
-                Password = "password",
-                Active = true
-            };
+            var customer2 = TestHelper.GetCustomerByName("test", "Registered");
+            var customer3 = TestHelper.GetCustomerByName("user", "Registered", _encryptionService.EncryptText("password"), PasswordFormat.Encrypted);
+            var customer4 = TestHelper.GetCustomerByName("registered", "Registered");
+            var customer5 = TestHelper.GetCustomerByName("notregistered");
 
             _eventPublisher = MockRepository.GenerateMock<IEventPublisher>();
             _eventPublisher.Expect(x => x.Publish(Arg<object>.Is.Anything));
@@ -172,34 +132,24 @@ namespace Nop.Services.Tests.Customers
         }
 
         [Test]
-        public void Can_validate_a_hashed_password() 
+        public void Can_validate_a_hashed_password()
         {
             var result = _customerRegistrationService.ValidateCustomer("a@b.com", "password");
             result.ShouldEqual(CustomerLoginResults.Successful);
         }
 
         [Test]
-        public void Can_validate_a_clear_password() 
+        public void Can_validate_a_clear_password()
         {
             var result = _customerRegistrationService.ValidateCustomer("test@test.com", "password");
-            result.ShouldEqual(CustomerLoginResults.Successful); ;
-        }
-
-        [Test]
-        public void Can_validate_an_encrypted_password() 
-        {
-            var result = _customerRegistrationService.ValidateCustomer("user@test.com", "password");
             result.ShouldEqual(CustomerLoginResults.Successful);
         }
 
-        private void AddCustomerToRegisteredRole(Customer customer)
+        [Test]
+        public void Can_validate_an_encrypted_password()
         {
-            customer.CustomerRoles.Add(new CustomerRole
-            {
-                Active =  true,
-                IsSystemRole = true,
-                SystemName = SystemCustomerRoleNames.Registered
-            });
+            var result = _customerRegistrationService.ValidateCustomer("user@test.com", "password");
+            result.ShouldEqual(CustomerLoginResults.Successful);
         }
     }
 }

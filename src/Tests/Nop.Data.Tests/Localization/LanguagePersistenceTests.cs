@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using Nop.Core.Domain.Localization;
 using Nop.Tests;
 using NUnit.Framework;
 
@@ -11,18 +10,7 @@ namespace Nop.Data.Tests.Localization
         [Test]
         public void Can_save_and_load_language()
         {
-            var lang = new Language
-            {
-                Name = "English",
-                LanguageCulture = "en-Us",
-                UniqueSeoCode = "en",
-                FlagImageFileName = "us.png",
-                Rtl = true,
-                DefaultCurrencyId = 1,
-                Published = true,
-                LimitedToStores = true,
-                DisplayOrder = 1
-            };
+            var lang = TestHelper.GetLanguage();
 
             var fromDb = SaveAndLoadEntity(lang);
             fromDb.ShouldNotBeNull();
@@ -40,22 +28,9 @@ namespace Nop.Data.Tests.Localization
         [Test]
         public void Can_save_and_load_language_with_localeStringResources()
         {
-            var lang = new Language
-                           {
-                               Name = "English",
-                               LanguageCulture = "en-Us",
-                               FlagImageFileName = "us.png",
-                               Published = true,
-                               DisplayOrder = 1
-                           };
-            lang.LocaleStringResources.Add
-                (
-                    new LocaleStringResource
-                    {
-                        ResourceName = "ResourceName1",
-                        ResourceValue = "ResourceValue2"
-                    }
-                );
+            var lang = TestHelper.GetLanguage();
+            lang.LocaleStringResources.Add(TestHelper.GetLocaleStringResource());
+
             var fromDb = SaveAndLoadEntity(lang);
             fromDb.ShouldNotBeNull();
             fromDb.Name.ShouldEqual("English");

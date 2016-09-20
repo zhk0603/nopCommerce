@@ -12,35 +12,18 @@ namespace Nop.Data.Tests.Forums
         [Test]
         public void Can_save_and_load_forumtopic()
         {
-            var customer = GetTestCustomer();
+            var customer = TestHelper.GetCustomer();
             var customerFromDb = SaveAndLoadEntity(customer);
             customerFromDb.ShouldNotBeNull();
 
-            var forumGroup = new ForumGroup
-            {
-                Name = "Forum Group 1",
-                DisplayOrder = 1,
-                CreatedOnUtc = DateTime.UtcNow,
-                UpdatedOnUtc = DateTime.UtcNow
-            };
+            var forumGroup = TestHelper.GetForumGroup();
 
             var forumGroupFromDb = SaveAndLoadEntity(forumGroup);
             forumGroupFromDb.ShouldNotBeNull();
             forumGroupFromDb.Name.ShouldEqual("Forum Group 1");
             forumGroupFromDb.DisplayOrder.ShouldEqual(1);
 
-            var forum = new Forum
-            {
-                ForumGroup = forumGroupFromDb,
-                Name = "Forum 1",
-                Description = "Forum 1 Description",
-                ForumGroupId = forumGroupFromDb.Id,
-                DisplayOrder = 10,
-                CreatedOnUtc = DateTime.UtcNow,
-                UpdatedOnUtc = DateTime.UtcNow,
-                NumPosts = 25,
-                NumTopics = 15
-            };
+            var forum = TestHelper.GetForum(forumGroupFromDb);
 
             forumGroup.Forums.Add(forum);
             var forumFromDb = SaveAndLoadEntity(forum);
@@ -52,18 +35,7 @@ namespace Nop.Data.Tests.Forums
             forumFromDb.NumPosts.ShouldEqual(25);
             forumFromDb.ForumGroupId.ShouldEqual(forumGroupFromDb.Id);
 
-            var forumTopic = new ForumTopic
-            {
-                Subject = "Forum Topic 1",
-                Forum = forumFromDb,
-                ForumId = forumFromDb.Id,
-                TopicTypeId = (int)ForumTopicType.Sticky,
-                Views = 123,
-                CreatedOnUtc = DateTime.UtcNow,
-                UpdatedOnUtc = DateTime.UtcNow,
-                NumPosts = 100,
-                CustomerId = customerFromDb.Id,
-            };
+            var forumTopic = TestHelper.GetForumTopic(customerFromDb, forumFromDb);
 
             var forumTopicFromDb = SaveAndLoadEntity(forumTopic);
             forumTopicFromDb.ShouldNotBeNull();
@@ -72,19 +44,6 @@ namespace Nop.Data.Tests.Forums
             forumTopicFromDb.NumPosts.ShouldEqual(100);
             forumTopicFromDb.TopicTypeId.ShouldEqual((int)ForumTopicType.Sticky);
             forumTopicFromDb.ForumId.ShouldEqual(forumFromDb.Id);
-        }
-
-        protected Customer GetTestCustomer()
-        {
-            return new Customer
-            {
-                CustomerGuid = Guid.NewGuid(),
-                AdminComment = "some comment here",
-                Active = true,
-                Deleted = false,
-                CreatedOnUtc = new DateTime(2010, 01, 01),
-                LastActivityDateUtc = new DateTime(2010, 01, 02)
-            };
         }
     }
 }

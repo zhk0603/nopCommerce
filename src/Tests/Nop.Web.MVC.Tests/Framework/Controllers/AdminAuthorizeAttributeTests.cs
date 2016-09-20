@@ -47,7 +47,6 @@ namespace Nop.Web.MVC.Tests.Framework.Controllers
 
             Assert.That(authorizationContext.Result, Is.Null);
         }
-
         
         [Test]
         public void Normal_with_attribute_request_should_require_permission()

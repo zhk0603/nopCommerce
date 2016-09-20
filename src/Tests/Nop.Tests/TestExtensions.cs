@@ -35,13 +35,13 @@ namespace Nop.Tests
             return actual;
         }
 
-        ///<summary>
+        /// <summary>
         /// Asserts that two objects are equal.
-        ///</summary>
-        ///<param name="actual"></param>
-        ///<param name="expected"></param>
-        ///<param name="message"></param>
-        ///<exception cref="AssertionException"></exception>
+        /// </summary>
+        /// <param name="actual"></param>
+        /// <param name="expected"></param>
+        /// <param name="message"></param>
+        /// <exception cref="AssertionException"></exception>
         public static void ShouldEqual(this object actual, object expected, string message)
         {
             Assert.AreEqual(expected, actual);
@@ -94,11 +94,10 @@ namespace Nop.Tests
         /// <param name="expected"></param>
         public static void AssertSameStringAs(this string actual, string expected)
         {
-            if (!string.Equals(actual, expected, StringComparison.InvariantCultureIgnoreCase))
-            {
-                var message = string.Format("Expected {0} but was {1}", expected, actual);
-                throw new AssertionException(message);
-            }
+            if (string.Equals(actual, expected, StringComparison.InvariantCultureIgnoreCase)) return;
+
+            var message = string.Format("Expected {0} but was {1}", expected, actual);
+            throw new AssertionException(message);
         }
     }
 }

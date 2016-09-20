@@ -55,8 +55,8 @@ namespace Nop.Services.Tests.Tax
             _addressSettings = new AddressSettings();
 
             _taxService = new TaxService(_addressService, _workContext, _taxSettings,
-                pluginFinder, _geoLookupService, _countryService, _logger
-                , _customerSettings, _addressSettings);
+                pluginFinder, _geoLookupService, _countryService, _logger,
+                _customerSettings, _addressSettings);
         }
 
         [Test]
@@ -64,7 +64,7 @@ namespace Nop.Services.Tests.Tax
         {
             var providers = _taxService.LoadAllTaxProviders();
             providers.ShouldNotBeNull();
-            (providers.Any()).ShouldBeTrue();
+            providers.Any().ShouldBeTrue();
         }
 
         [Test]

@@ -7,7 +7,6 @@ namespace Nop.Web.MVC.Tests.Public.Validators
     {
         public TestValidator()
         {
-
         }
 
         public TestValidator(params Action<TestValidator>[] actions)

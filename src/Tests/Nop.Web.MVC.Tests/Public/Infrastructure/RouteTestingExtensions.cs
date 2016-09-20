@@ -280,7 +280,7 @@ namespace Nop.Web.MVC.Tests.Public.Infrastructure
                 }
                 else
                 {
-                    expectedValue = (expectedValue == null ? expectedValue : expectedValue.ToString());
+                    expectedValue = expectedValue == null ? expectedValue : expectedValue.ToString();
                 }
 
                 string errorMsgFmt = "Value for parameter '{0}' did not match: expected '{1}' but was '{2}'";

@@ -1,5 +1,4 @@
-﻿using Nop.Core.Domain.Discounts;
-using Nop.Services.Discounts;
+﻿using Nop.Services.Discounts;
 using Nop.Tests;
 using NUnit.Framework;
 
@@ -11,14 +10,9 @@ namespace Nop.Services.Tests.Discounts
         [Test]
         public void Can_calculate_discount_amount_percentage()
         {
-            var discount = new Discount
-            {
-                UsePercentage = true,
-                DiscountPercentage = 30
-            };
+            var discount = TestHelper.GetDiscount(discountPercentage: 30);
 
             discount.GetDiscountAmount(100).ShouldEqual(30);
-
             discount.DiscountPercentage = 60;
             discount.GetDiscountAmount(200).ShouldEqual(120);
         }
@@ -26,14 +20,9 @@ namespace Nop.Services.Tests.Discounts
         [Test]
         public void Can_calculate_discount_amount_fixed()
         {
-            var discount = new Discount
-            {
-                UsePercentage = false,
-                DiscountAmount = 10
-            };
+            var discount = TestHelper.GetDiscount(discountAmount: 10, usePercentage: false);
 
             discount.GetDiscountAmount(100).ShouldEqual(10);
-
             discount.DiscountAmount = 20;
             discount.GetDiscountAmount(200).ShouldEqual(20);
         }
@@ -41,19 +30,12 @@ namespace Nop.Services.Tests.Discounts
         [Test]
         public void Maximum_discount_amount_is_used()
         {
-            var discount = new Discount
-            {
-                UsePercentage = true,
-                DiscountPercentage = 30,
-                MaximumDiscountAmount = 3.4M
-            };
+            var discount = TestHelper.GetDiscount(discountPercentage: 30, maximumDiscountAmount: 3.4M);
 
             discount.GetDiscountAmount(100).ShouldEqual(3.4M);
-
             discount.DiscountPercentage = 60;
             discount.GetDiscountAmount(200).ShouldEqual(3.4M);
             discount.GetDiscountAmount(100).ShouldEqual(3.4M);
-
             discount.DiscountPercentage = 1;
             discount.GetDiscountAmount(200).ShouldEqual(2);
         }

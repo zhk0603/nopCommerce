@@ -28,48 +28,17 @@ namespace Nop.Services.Tests.Logging
         [SetUp]
         public new void SetUp()
         {
-            _activityType1 = new ActivityLogType
-            {
-                Id = 1,
-                SystemKeyword = "TestKeyword1",
-                Enabled = true,
-                Name = "Test name1"
-            };
-            _activityType2 = new ActivityLogType
-            {
-                Id = 2,
-                SystemKeyword = "TestKeyword2",
-                Enabled = true,
-                Name = "Test name2"
-            };
-            _customer1 = new Customer
-            {
-                Id = 1,
-                Email = "test1@teststore1.com",
-                Username = "TestUser1",
-                Deleted = false,
-            };
-           _customer2 = new Customer
-           {
-               Id = 2,
-               Email = "test2@teststore2.com",
-               Username = "TestUser2",
-               Deleted = false,
-           };
-            _activity1 = new ActivityLog
-            {
-                Id = 1,
-                ActivityLogType = _activityType1,
-                CustomerId = _customer1.Id,
-                Customer = _customer1
-            };
-            _activity2 = new ActivityLog
-            {
-                Id = 2,
-                ActivityLogType = _activityType1,
-                CustomerId = _customer2.Id,
-                Customer = _customer2
-            };
+            _activityType1 = TestHelper.GetActivityLogType();
+            _activityType1.Id = 1;
+            _activityType2 = TestHelper.GetActivityLogType();
+            _activityType2.Id = 2;
+            _customer1 = TestHelper.GetCustomer();
+            _customer1.Id = 1;
+           _customer2 = TestHelper.GetCustomer();
+            _customer2.Id = 2;
+            _activity1 = TestHelper.GetActivityLog(1, _customer1, _activityType1);
+            _activity2 = TestHelper.GetActivityLog(2, _customer2, _activityType1);
+
             _cacheManager = new NopNullCache();
             _workContext = MockRepository.GenerateMock<IWorkContext>();
             _webHelper = MockRepository.GenerateMock<IWebHelper>();
@@ -83,7 +52,7 @@ namespace Nop.Services.Tests.Logging
         [Test]
         public void Can_Find_Activities()
         {
-            var activities = _customerActivityService.GetAllActivities(null, null, 1, 0,0,10);
+            var activities = _customerActivityService.GetAllActivities(null, null, 1, 0, 0, 10);
             activities.Contains(_activity1).ShouldBeTrue();
             activities = _customerActivityService.GetAllActivities(null, null, 2, 0, 0, 10);
             activities.Contains(_activity1).ShouldBeFalse();
