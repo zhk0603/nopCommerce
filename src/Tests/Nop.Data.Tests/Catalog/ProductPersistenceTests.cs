@@ -69,6 +69,7 @@ namespace Nop.Data.Tests.Catalog
             fromDb.TaxCategoryId.ShouldEqual(11);
             fromDb.IsTelecommunicationsOrBroadcastingOrElectronicServices.ShouldEqual(true);
             fromDb.ManageInventoryMethodId.ShouldEqual(1);
+            fromDb.ProductAvailabilityRangeId.ShouldEqual(1);
             fromDb.UseMultipleWarehouses.ShouldEqual(true);
             fromDb.WarehouseId.ShouldEqual(6);
             fromDb.StockQuantity.ShouldEqual(13);

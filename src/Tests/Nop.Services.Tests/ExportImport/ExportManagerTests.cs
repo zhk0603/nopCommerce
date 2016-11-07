@@ -9,6 +9,7 @@ using Nop.Services.ExportImport;
 using Nop.Services.Media;
 using Nop.Services.Messages;
 using Nop.Services.Shipping;
+using Nop.Services.Shipping.Date;
 using Nop.Services.Stores;
 using Nop.Services.Tax;
 using Nop.Services.Vendors;
@@ -33,6 +34,7 @@ namespace Nop.Services.Tests.ExportImport
         private IVendorService _vendorService;
         private IProductTemplateService _productTemplateService;
         private IShippingService _shippingService;
+        private IDateRangeService _dateRangeService;
         private ITaxCategoryService _taxCategoryService;
         private IMeasureService _measureService;
         private CatalogSettings _catalogSettings;
@@ -51,6 +53,7 @@ namespace Nop.Services.Tests.ExportImport
             _vendorService = MockRepository.GenerateMock<IVendorService>();
             _productTemplateService = MockRepository.GenerateMock<IProductTemplateService>();
             _shippingService = MockRepository.GenerateMock<IShippingService>();
+            _dateRangeService = MockRepository.GenerateMock<IDateRangeService>();
             _taxCategoryService = MockRepository.GenerateMock<ITaxCategoryService>();
             _measureService = MockRepository.GenerateMock<IMeasureService>();
             _catalogSettings = new CatalogSettings();
@@ -60,7 +63,7 @@ namespace Nop.Services.Tests.ExportImport
                 _pictureService, _newsLetterSubscriptionService,
                 _storeService, _workContext, _productEditorSettings, 
                 _vendorService, _productTemplateService, _shippingService,
-                _taxCategoryService, _measureService, _catalogSettings);
+                _dateRangeService, _taxCategoryService, _measureService, _catalogSettings);
         }
 
         [Test]

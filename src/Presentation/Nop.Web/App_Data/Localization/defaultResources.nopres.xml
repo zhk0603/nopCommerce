@@ -636,26 +636,68 @@
   <LocaleResource Name="Account.YourPersonalDetails">
     <Value>Your Personal Details</Value>
   </LocaleResource>
+  <LocaleResource Name="ActivityLog.AddNewAddressAttribute">
+    <Value>Added a new address attribute (ID = {0})</Value>
+  </LocaleResource>
+  <LocaleResource Name="ActivityLog.AddNewAddressAttributeValue">
+    <Value>Added a new address attribute value (ID = {0})</Value>
+  </LocaleResource>
+  <LocaleResource Name="ActivityLog.AddNewAffiliate">
+    <Value>Added a new affiliate (ID = {0})</Value>
+  </LocaleResource>
+  <LocaleResource Name="ActivityLog.AddNewBlogPost">
+    <Value>Added a new blog post (ID = {0})</Value>
+  </LocaleResource>
+  <LocaleResource Name="ActivityLog.AddNewCampaign">
+    <Value>Added a new campaign (ID = {0})</Value>
+  </LocaleResource>
   <LocaleResource Name="ActivityLog.AddNewCategory">
     <Value>Added a new category ('{0}')</Value>
   </LocaleResource>
   <LocaleResource Name="ActivityLog.AddNewCheckoutAttribute">
     <Value>Added a new checkout attribute ('{0}')</Value>
   </LocaleResource>
+  <LocaleResource Name="ActivityLog.AddNewCountry">
+    <Value>Added a new country (ID = {0})</Value>
+  </LocaleResource>
+  <LocaleResource Name="ActivityLog.AddNewCurrency">
+    <Value>Added a new currency (ID = {0})</Value>
+  </LocaleResource>  
   <LocaleResource Name="ActivityLog.AddNewCustomer">
     <Value>Added a new customer (ID = {0})</Value>
   </LocaleResource>
+  <LocaleResource Name="ActivityLog.AddNewCustomerAttribute">
+    <Value>Added a new customer attribute (ID = {0})</Value>
+  </LocaleResource>
+  <LocaleResource Name="ActivityLog.AddNewCustomerAttributeValue">
+    <Value>Added a new customer attribute value (ID = {0})</Value>
+  </LocaleResource>  
   <LocaleResource Name="ActivityLog.AddNewCustomerRole">
     <Value>Added a new customer role ('{0}')</Value>
   </LocaleResource>
   <LocaleResource Name="ActivityLog.AddNewDiscount">
     <Value>Added a new discount ('{0}')</Value>
   </LocaleResource>
+  <LocaleResource Name="ActivityLog.AddNewEmailAccount">
+    <Value>Added a new email account (ID = {0})</Value>
+  </LocaleResource>  
   <LocaleResource Name="ActivityLog.AddNewGiftCard">
     <Value>Added a new gift card ('{0}')</Value>
   </LocaleResource>
+  <LocaleResource Name="ActivityLog.AddNewLanguage">
+    <Value>Added a new language (ID = {0})</Value>
+  </LocaleResource>  
   <LocaleResource Name="ActivityLog.AddNewManufacturer">
     <Value>Added a new manufacturer ('{0}')</Value>
+  </LocaleResource>
+  <LocaleResource Name="ActivityLog.AddNewMeasureDimension">
+    <Value>Added a new measure dimension (ID = {0})</Value>
+  </LocaleResource>
+  <LocaleResource Name="ActivityLog.AddNewMeasureWeight">
+    <Value>Added a new measure weight (ID = {0})</Value>
+  </LocaleResource>
+  <LocaleResource Name="ActivityLog.AddNewNews">
+    <Value>Added a new news (ID = {0})</Value>
   </LocaleResource>
   <LocaleResource Name="ActivityLog.AddNewProduct">
     <Value>Added a new product ('{0}')</Value>
@@ -669,8 +711,20 @@
   <LocaleResource Name="ActivityLog.AddNewSpecAttribute">
     <Value>Added a new specification attribute ('{0}')</Value>
   </LocaleResource>
+  <LocaleResource Name="ActivityLog.AddNewStateProvince">
+    <Value>Added a new state or province (ID = {0})</Value>
+  </LocaleResource>
+  <LocaleResource Name="ActivityLog.AddNewStore">
+    <Value>Added a new store (ID = {0})</Value>
+  </LocaleResource>  
   <LocaleResource Name="ActivityLog.AddNewTopic">
     <Value>Added a new topic ('{0}')</Value>
+  </LocaleResource>
+  <LocaleResource Name="ActivityLog.AddNewVendor">
+    <Value>Added a new vendor (ID = {0})</Value>
+  </LocaleResource>
+  <LocaleResource Name="ActivityLog.AddNewWarehouse">
+    <Value>Added a new warehouse (ID = {0})</Value>
   </LocaleResource>
   <LocaleResource Name="ActivityLog.AddNewWidget">
     <Value>Added a new widget (ID = {0})</Value>
@@ -678,27 +732,78 @@
   <LocaleResource Name="ActivityLog.DeleteActivityLog">
     <Value>Deleted activity log</Value>
   </LocaleResource>
+  <LocaleResource Name="ActivityLog.DeleteAddressAttribute">
+    <Value>Deleted an address attribute (ID = {0})</Value>
+  </LocaleResource>
+  <LocaleResource Name="ActivityLog.DeleteAddressAttributeValue">
+    <Value>Deleted an address attribute value (ID = {0})</Value>
+  </LocaleResource>
+  <LocaleResource Name="ActivityLog.DeleteAffiliate">
+    <Value>Deleted an affiliate (ID = {0})</Value>
+  </LocaleResource>
+  <LocaleResource Name="ActivityLog.DeleteBlogPost">
+    <Value>Deleted a blog post (ID = {0})</Value>
+  </LocaleResource>
+  <LocaleResource Name="ActivityLog.DeleteBlogPostComment">
+    <Value>Deleted a blog post comment (ID = {0})</Value>
+  </LocaleResource>
+  <LocaleResource Name="ActivityLog.DeleteCampaign">
+    <Value>Deleted a campaign (ID = {0})</Value>
+  </LocaleResource>
   <LocaleResource Name="ActivityLog.DeleteCategory">
     <Value>Deleted a category ('{0}')</Value>
   </LocaleResource>
   <LocaleResource Name="ActivityLog.DeleteCheckoutAttribute">
     <Value>Deleted a checkout attribute ('{0}')</Value>
   </LocaleResource>
+  <LocaleResource Name="ActivityLog.DeleteCountry">
+   <Value>Deleted a country (ID = {0})</Value>
+  </LocaleResource>
+  <LocaleResource Name="ActivityLog.DeleteCurrency">
+   <Value>Deleted a currency (ID = {0})</Value>
+  </LocaleResource>  
   <LocaleResource Name="ActivityLog.DeleteCustomer">
     <Value>Deleted a customer (ID = {0})</Value>
   </LocaleResource>
+  <LocaleResource Name="ActivityLog.DeleteCustomerAttribute">
+   <Value>Deleted a customer attribute (ID = {0})</Value>
+  </LocaleResource>
+  <LocaleResource Name="ActivityLog.DeleteCustomerAttributeValue">
+   <Value>Deleted a customer attribute value (ID = {0})</Value>
+  </LocaleResource>  
   <LocaleResource Name="ActivityLog.DeleteCustomerRole">
     <Value>Deleted a customer role ('{0}')</Value>
   </LocaleResource>
   <LocaleResource Name="ActivityLog.DeleteDiscount">
     <Value>Deleted a discount ('{0}')</Value>
   </LocaleResource>
+  <LocaleResource Name="ActivityLog.DeleteEmailAccount">
+   <Value>Deleted an email account (ID = {0})</Value>
+  </LocaleResource>  
   <LocaleResource Name="ActivityLog.DeleteGiftCard">
     <Value>Deleted a gift card ('{0}')</Value>
+  </LocaleResource>
+  <LocaleResource Name="ActivityLog.DeleteLanguage">
+   <Value>Deleted a language (ID = {0})</Value>
   </LocaleResource>
   <LocaleResource Name="ActivityLog.DeleteManufacturer">
     <Value>Deleted a manufacturer ('{0}')</Value>
   </LocaleResource>
+  <LocaleResource Name="ActivityLog.DeleteMeasureDimension">
+   <Value>Deleted a measure dimension (ID = {0})</Value>
+  </LocaleResource>
+  <LocaleResource Name="ActivityLog.DeleteMeasureWeight">
+   <Value>Deleted a measure weight (ID = {0})</Value>
+  </LocaleResource>
+  <LocaleResource Name="ActivityLog.DeleteMessageTemplate">
+   <Value>Deleted a message template (ID = {0})</Value>
+  </LocaleResource>
+  <LocaleResource Name="ActivityLog.DeleteNews">
+   <Value>Deleted a news (ID = {0})</Value>
+  </LocaleResource>
+  <LocaleResource Name="ActivityLog.DeleteNewsComment">
+    <Value>Deleted a news comment (ID = {0})</Value>
+  </LocaleResource>  
   <LocaleResource Name="ActivityLog.DeleteOrder">
     <Value>Deleted an order (ID = {0})</Value>
   </LocaleResource>
@@ -708,6 +813,9 @@
   <LocaleResource Name="ActivityLog.DeleteProductAttribute">
     <Value>Deleted a product attribute ('{0}')</Value>
   </LocaleResource>
+  <LocaleResource Name="ActivityLog.DeleteProductReview">
+   <Value>Deleted a product review (ID = {0})</Value>
+  </LocaleResource>  
   <LocaleResource Name="ActivityLog.DeleteReturnRequest">
     <Value>Deleted a return request (ID = {0})</Value>
   </LocaleResource>
@@ -717,45 +825,108 @@
   <LocaleResource Name="ActivityLog.DeleteSpecAttribute">
     <Value>Deleted a specification attribute ('{0}')</Value>
   </LocaleResource>
+  <LocaleResource Name="ActivityLog.DeleteStateProvince">
+   <Value>Deleted a state or province (ID = {0})</Value>
+  </LocaleResource>
+  <LocaleResource Name="ActivityLog.DeleteStore">
+   <Value>Deleted a store (ID = {0})</Value>
+  </LocaleResource>  
   <LocaleResource Name="ActivityLog.DeleteTopic">
     <Value>Deleted a topic ('{0}')</Value>
   </LocaleResource>
+  <LocaleResource Name="ActivityLog.DeleteVendor">
+   <Value>Deleted a vendor (ID = {0})</Value>
+  </LocaleResource>
+  <LocaleResource Name="ActivityLog.DeleteWarehouse">
+   <Value>Deleted a warehouse (ID = {0})</Value>
+  </LocaleResource>  
   <LocaleResource Name="ActivityLog.DeleteWidget">
     <Value>Deleted a widget (ID = {0})</Value>
   </LocaleResource>
   <LocaleResource Name="ActivityLog.EditActivityLogTypes">
     <Value>Edited activity log types</Value>
   </LocaleResource>
+  <LocaleResource Name="ActivityLog.EditAddressAttribute">
+   <Value>Edited an address attribute (ID = {0})</Value>
+  </LocaleResource>
+  <LocaleResource Name="ActivityLog.EditAddressAttributeValue">
+    <Value>Edited an address attribute value (ID = {0})</Value>
+  </LocaleResource>  
+  <LocaleResource Name="ActivityLog.EditAffiliate">
+   <Value>Edited an affiliate (ID = {0})</Value>
+  </LocaleResource>
+  <LocaleResource Name="ActivityLog.EditBlogPost">
+   <Value>Edited a blog post (ID = {0})</Value>
+  </LocaleResource>
+  <LocaleResource Name="ActivityLog.EditCampaign">
+   <Value>Edited a campaign (ID = {0})</Value>
+  </LocaleResource>  
   <LocaleResource Name="ActivityLog.EditCategory">
     <Value>Edited a category ('{0}')</Value>
   </LocaleResource>
   <LocaleResource Name="ActivityLog.EditCheckoutAttribute">
     <Value>Edited a checkout attribute ('{0}')</Value>
   </LocaleResource>
+  <LocaleResource Name="ActivityLog.EditCountry">
+   <Value>Edited a country (ID = {0})</Value>
+  </LocaleResource>
+  <LocaleResource Name="ActivityLog.EditCurrency">
+   <Value>Edited a currency (ID = {0})</Value>
+  </LocaleResource>  
   <LocaleResource Name="ActivityLog.EditCustomer">
     <Value>Edited a customer (ID = {0})</Value>
   </LocaleResource>
+  <LocaleResource Name="ActivityLog.EditCustomerAttribute">
+   <Value>Edited a customer attribute (ID = {0})</Value>
+  </LocaleResource>
+  <LocaleResource Name="ActivityLog.EditCustomerAttributeValue">
+   <Value>Edited a customer attribute value (ID = {0})</Value>
+  </LocaleResource>  
   <LocaleResource Name="ActivityLog.EditCustomerRole">
     <Value>Edited a customer role ('{0}')</Value>
   </LocaleResource>
   <LocaleResource Name="ActivityLog.EditDiscount">
     <Value>Edited a discount ('{0}')</Value>
   </LocaleResource>
+  <LocaleResource Name="ActivityLog.EditEmailAccount">
+   <Value>Edited an email account (ID = {0})</Value>
+  </LocaleResource>  
   <LocaleResource Name="ActivityLog.EditGiftCard">
     <Value>Edited a gift card ('{0}')</Value>
+  </LocaleResource>
+   <LocaleResource Name="ActivityLog.EditLanguage">
+   <Value>Edited a language (ID = {0})</Value>
   </LocaleResource>
   <LocaleResource Name="ActivityLog.EditManufacturer">
     <Value>Edited a manufacturer ('{0}')</Value>
   </LocaleResource>
+  <LocaleResource Name="ActivityLog.EditMeasureDimension">
+   <Value>Edited a measure dimension (ID = {0})</Value>
+  </LocaleResource>
+  <LocaleResource Name="ActivityLog.EditMeasureWeight">
+   <Value>Edited a measure weight (ID = {0})</Value>
+  </LocaleResource>
+  <LocaleResource Name="ActivityLog.EditMessageTemplate">
+   <Value>Edited a message template (ID = {0})</Value>
+  </LocaleResource>
+  <LocaleResource Name="ActivityLog.EditNews">
+   <Value>Edited a news (ID = {0})</Value>
+  </LocaleResource>  
   <LocaleResource Name="ActivityLog.EditOrder">
     <Value>Edited an order (ID = {0}). See order notes for details</Value>
   </LocaleResource>
+  <LocaleResource Name="ActivityLog.EditPlugin">
+   <Value>Edited a plugin (FriendlyName: '{0}')</Value>
+  </LocaleResource>  
   <LocaleResource Name="ActivityLog.EditProduct">
     <Value>Edited a product ('{0}')</Value>
   </LocaleResource>
   <LocaleResource Name="ActivityLog.EditProductAttribute">
     <Value>Edited a product attribute ('{0}')</Value>
   </LocaleResource>
+  <LocaleResource Name="ActivityLog.EditProductReview">
+   <Value>Edited a product review (ID = {0})</Value>
+  </LocaleResource>  
   <LocaleResource Name="ActivityLog.EditReturnRequest">
     <Value>Edited a return request (ID = {0})</Value>
   </LocaleResource>
@@ -765,9 +936,24 @@
   <LocaleResource Name="ActivityLog.EditSpecAttribute">
     <Value>Edited a specification attribute ('{0}')</Value>
   </LocaleResource>
+  <LocaleResource Name="ActivityLog.EditStateProvince">
+   <Value>Edited a state or province (ID = {0})</Value>
+  </LocaleResource>
+  <LocaleResource Name="ActivityLog.EditStore">
+   <Value>Edited a store (ID = {0})</Value>
+  </LocaleResource>
+  <LocaleResource Name="ActivityLog.EditTask">
+   <Value>Edited a task (ID = {0})</Value>
+  </LocaleResource>  
   <LocaleResource Name="ActivityLog.EditTopic">
     <Value>Edited a topic ('{0}')</Value>
   </LocaleResource>
+  <LocaleResource Name="ActivityLog.EditVendor">
+   <Value>Edited a vendor (ID = {0})</Value>
+  </LocaleResource>
+  <LocaleResource Name="ActivityLog.EditWarehouse">
+   <Value>Edited a warehouse (ID = {0})</Value>
+  </LocaleResource>  
   <LocaleResource Name="ActivityLog.EditWidget">
     <Value>Edited a widget (ID = {0})</Value>
   </LocaleResource>
@@ -782,6 +968,12 @@
   </LocaleResource>
   <LocaleResource Name="ActivityLog.Impersonation.Finished.Customer">
     <Value>Impersonation by store owner was finished (Email: {0}, ID = {1})</Value>
+  </LocaleResource>
+  <LocaleResource Name="ActivityLog.InstallNewPlugin">
+    <Value>Installed a new plugin (FriendlyName: '{0}')</Value>
+  </LocaleResource>
+  <LocaleResource Name="ActivityLog.UninstallPlugin">
+    <Value>Uninstalled a plugin (FriendlyName: '{0}')</Value>
   </LocaleResource>
   <LocaleResource Name="ActivityLog.PublicStore.AddBlogComment">
     <Value>Added a blog comment</Value>
@@ -1803,6 +1995,9 @@
   <LocaleResource Name="Admin.Catalog.Categories.Fields.PageSize.Hint">
     <Value>Set the page size for products in this category e.g. '4' products per page.</Value>
   </LocaleResource>
+  <LocaleResource Name="Admin.Catalog.Categories.Fields.PageSize.Positive">
+    <Value>Page size should be positive.</Value>
+  </LocaleResource>
   <LocaleResource Name="Admin.Catalog.Categories.Fields.PageSizeOptions">
     <Value>Page Size options (comma separated)</Value>
   </LocaleResource>
@@ -1818,7 +2013,7 @@
   <LocaleResource Name="Admin.Catalog.Categories.Fields.Parent.Hint">
     <Value>Select a parent category for this category. Leave this field empty to make this the root level category.</Value>
   </LocaleResource>
-  <LocaleResource Name=" Admin.Catalog.Categories.Fields.Parent.None">
+  <LocaleResource Name="Admin.Catalog.Categories.Fields.Parent.None">
     <Value>[None]</Value>
   </LocaleResource>
   <LocaleResource Name="Admin.Catalog.Categories.Fields.Picture">
@@ -2003,6 +2198,9 @@
   </LocaleResource>
   <LocaleResource Name="Admin.Catalog.Manufacturers.Fields.PageSize.Hint">
     <Value>Set the page size for products in this manufacturer e.g. '4' products per page.</Value>
+  </LocaleResource>
+  <LocaleResource Name="Admin.Catalog.Manufacturers.Fields.PageSize.Positive">
+    <Value>Page size should be positive.</Value>
   </LocaleResource>
   <LocaleResource Name="Admin.Catalog.Manufacturers.Fields.PageSizeOptions">
     <Value>Page Size options (comma separated)</Value>
@@ -2232,6 +2430,9 @@
   <LocaleResource Name="Admin.Catalog.Products.CommonInfo">
     <Value>General information</Value>
   </LocaleResource>
+  <LocaleResource Name="Admin.Catalog.Products.Copied">
+    <Value>The product has been copied successfully</Value>
+  </LocaleResource>  
   <LocaleResource Name="Admin.Catalog.Products.Copy">
     <Value>Copy product</Value>
   </LocaleResource>
@@ -2410,7 +2611,7 @@
     <Value>Delivery date</Value>
   </LocaleResource>
   <LocaleResource Name="Admin.Catalog.Products.Fields.DeliveryDate.Hint">
-    <Value>Choose a delivery date which will be displayed in the public store. You can manage delivery dates by selecting Configuration > Shipping > Delivery dates.</Value>
+    <Value>Choose a delivery date which will be displayed in the public store. You can manage delivery dates by selecting Configuration > Shipping > Dates and ranges.</Value>
   </LocaleResource>
   <LocaleResource Name="Admin.Catalog.Products.Fields.DeliveryDate.None">
     <Value>None</Value>
@@ -2654,6 +2855,15 @@
   </LocaleResource>
   <LocaleResource Name="Admin.Catalog.Products.Fields.MinStockQuantity.Hint">
     <Value>If you have enabled 'Manage Stock' you can perform a number of different actions when the current stock quantity falls below (reaches) your minimum stock quantity.</Value>
+  </LocaleResource>
+  <LocaleResource Name="Admin.Catalog.Products.Fields.ProductAvailabilityRange">
+    <Value>Product availability range</Value>
+  </LocaleResource>
+  <LocaleResource Name="Admin.Catalog.Products.Fields.ProductAvailabilityRange.Hint">
+    <Value>Choose the product availability range that indicates when the product is expected to be available when out of stock (e.g. Available in 10-14 days). You can manage availability ranges by selecting Configuration > Shipping > Dates and ranges.</Value>
+  </LocaleResource>
+  <LocaleResource Name="Admin.Catalog.Products.Fields.ProductAvailabilityRange.None">
+    <Value>None</Value>
   </LocaleResource>
   <LocaleResource Name="Admin.Catalog.Products.Fields.UseMultipleWarehouses">
     <Value>Multiple warehouses</Value>
@@ -3300,6 +3510,12 @@
   <LocaleResource Name="Admin.Catalog.Products.ProductAttributes.Attributes.Values.Fields.Quantity.Hint">
     <Value>Specify quantity of the associated product which will be added. Minimum allowed value is 1.</Value>
   </LocaleResource>
+  <LocaleResource Name="Admin.Catalog.Products.ProductAttributes.Attributes.Values.Fields.CustomerEntersQty">
+    <Value>Customer enters quantity</Value>
+  </LocaleResource>
+  <LocaleResource Name="Admin.Catalog.Products.ProductAttributes.Attributes.Values.Fields.CustomerEntersQty.Hint">
+    <Value>Allow customers enter the quantity of associated product.</Value>
+  </LocaleResource>
   <LocaleResource Name="Admin.Catalog.Products.ProductAttributes.Attributes.Values.Fields.WeightAdjustment">
     <Value>Weight adjustment</Value>
   </LocaleResource>
@@ -3501,7 +3717,7 @@
   <LocaleResource Name="Admin.Catalog.ProductTags.Fields.ProductCount">
     <Value>Tagged products</Value>
   </LocaleResource>
-   <LocaleResource Name="Admin.Common.ActionConfirmation">
+  <LocaleResource Name="Admin.Common.ActionConfirmation">
     <Value>Are you sure you want to perform this action?</Value>
   </LocaleResource>
   <LocaleResource Name="Admin.Common.AddNew">
@@ -4008,6 +4224,9 @@
   <LocaleResource Name="Admin.Configuration.Currencies.Localization">
     <Value>Localization</Value>
   </LocaleResource>
+  <LocaleResource Name="Admin.Configuration.Currencies.PublishedCurrencyRequired">
+    <Value>At least one published currency is required</Value>
+  </LocaleResource>
   <LocaleResource Name="Admin.Configuration.Currencies.Select">
     <Value>Select a currency</Value>
   </LocaleResource>
@@ -4236,6 +4455,9 @@
   <LocaleResource Name="Admin.Configuration.Languages.Info">
     <Value>Info</Value>
   </LocaleResource>
+  <LocaleResource Name="Admin.Configuration.Languages.PublishedLanguageRequired">
+    <Value>At least one published language is required</Value>
+  </LocaleResource>  
   <LocaleResource Name="Admin.Configuration.Languages.Resources">
     <Value>String resources</Value>
   </LocaleResource>
@@ -4430,6 +4652,12 @@
   </LocaleResource>
   <LocaleResource Name="Admin.Configuration.Plugins.EditDetails">
     <Value>Edit plugin details</Value>
+  </LocaleResource>
+  <LocaleResource Name="Admin.Configuration.Plugins.Fields.AclCustomerRoles">
+    <Value>Limited to customer roles</Value>
+  </LocaleResource>
+  <LocaleResource Name="Admin.Configuration.Plugins.Fields.AclCustomerRoles.Hint">
+    <Value>Choose one or several customer roles i.e. administrators, vendors, guests, who will be able to use this plugin. If you don't need this option just leave this field empty.</Value>
   </LocaleResource>
   <LocaleResource Name="Admin.Configuration.Plugins.Fields.Author">
     <Value>Author</Value>
@@ -4827,6 +5055,12 @@
   <LocaleResource Name="Admin.Configuration.Settings.Catalog.PageShareCode.Hint">
     <Value>A page share button code. By default, we're using AddThis service.</Value>
   </LocaleResource>
+  <LocaleResource Name="Admin.Configuration.Settings.Catalog.ProductReviewPossibleOnlyAfterPurchasing">
+    <Value>Product review possible only after product purchasing</Value>
+  </LocaleResource>
+  <LocaleResource Name="Admin.Configuration.Settings.Catalog.ProductReviewPossibleOnlyAfterPurchasing.Hint">
+    <Value>Check if product can be reviewed only by customer who have already ordered it.</Value>
+  </LocaleResource>
   <LocaleResource Name="Admin.Configuration.Settings.Catalog.ProductReviewsMustBeApproved">
     <Value>Product reviews must be approved</Value>
   </LocaleResource>
@@ -4959,11 +5193,17 @@
   <LocaleResource Name="Admin.Configuration.Settings.Catalog.ShowProductsFromSubcategories.Hint">
     <Value>Check if you want a category details page to include products from subcategories.</Value>
   </LocaleResource>
-  <LocaleResource Name="Admin.Configuration.Settings.Catalog.ShowProductSku">
-    <Value>Show SKU</Value>
+  <LocaleResource Name="Admin.Configuration.Settings.Catalog.ShowSkuOnCatalogPages">
+    <Value>Show SKU on catalog pages</Value>
   </LocaleResource>
-  <LocaleResource Name="Admin.Configuration.Settings.Catalog.ShowProductSku.Hint">
-    <Value>Check to show product SKU in public store.</Value>
+  <LocaleResource Name="Admin.Configuration.Settings.Catalog.ShowSkuOnCatalogPages.Hint">
+    <Value>Check to show product SKU on catalog pages in public store.</Value>
+  </LocaleResource>
+  <LocaleResource Name="Admin.Configuration.Settings.Catalog.ShowSkuOnProductDetailsPage">
+    <Value>Show SKU on product details page</Value>
+  </LocaleResource>
+  <LocaleResource Name="Admin.Configuration.Settings.Catalog.ShowSkuOnProductDetailsPage.Hint">
+    <Value>Check to show product SKU on the product details page in public store.</Value>
   </LocaleResource>
   <LocaleResource Name="Admin.Configuration.Settings.Catalog.ShowProductReviewsPerStore">
     <Value>Reviews per store</Value>
@@ -5574,6 +5814,9 @@
   <LocaleResource Name="Admin.Configuration.Settings.GeneralCommon.CanonicalUrlsEnabled.Hint">
     <Value>The goal of the canonicalization process is to transform a URL into a canonical URL so it is possible to determine if two syntactically different URLs may be equivalent.</Value>
   </LocaleResource>
+  <LocaleResource Name="Admin.Configuration.Settings.GeneralCommon.CaptchaAppropriateKeysNotEnteredError">
+    <Value>Captcha is enabled but the appropriate keys are not entered</Value>
+  </LocaleResource>  
   <LocaleResource Name="Admin.Configuration.Settings.GeneralCommon.CaptchaEnabled">
     <Value>CAPTCHA enabled</Value>
   </LocaleResource>
@@ -6516,6 +6759,9 @@
   <LocaleResource Name="Admin.Configuration.Settings.ProductEditor.ProductAttributes">
     <Value>Product attributes</Value>
   </LocaleResource>
+  <LocaleResource Name="Admin.Configuration.Settings.ProductEditor.ProductAvailabilityRange">
+    <Value>Product availability range</Value>
+  </LocaleResource>
   <LocaleResource Name="Admin.Configuration.Settings.ProductEditor.ProductCost">
     <Value>Product cost</Value>
   </LocaleResource>
@@ -6662,6 +6908,18 @@
   </LocaleResource>
   <LocaleResource Name="Admin.Configuration.Settings.RewardPoints.PointsForPurchases_Awarded.Pending">
     <Value>Order status could not be set to Pending</Value>
+  </LocaleResource>
+  <LocaleResource Name="Admin.Configuration.Settings.RewardPoints.ActivatePointsImmediately">
+    <Value>Activate points immediately</Value>
+  </LocaleResource>
+  <LocaleResource Name="Admin.Configuration.Settings.RewardPoints.ActivatePointsImmediately.Hint">
+    <Value>Activates bonus points immediately after their calculation</Value>
+  </LocaleResource>
+  <LocaleResource Name="Admin.Configuration.Settings.RewardPoints.ActivationDelay">
+    <Value>Reward points activation</Value>
+  </LocaleResource>
+  <LocaleResource Name="Admin.Configuration.Settings.RewardPoints.ActivationDelay.Hint">
+    <Value>Specify how many days (hours) must elapse before earned points become active. Points earned by purchase cannot be redeemed until activated. For example, you may set the days before the points become available to 7. In this case, the points earned will be available for spending 7 days after the order gets chosen awarded status.</Value>
   </LocaleResource>
   <LocaleResource Name="Admin.Configuration.Settings.RewardPoints.PointsForPurchases_Canceled">
     <Value>Canceled order status</Value>
@@ -6897,6 +7155,12 @@
   <LocaleResource Name="Admin.Configuration.Settings.Tax.DefaultTaxAddress">
     <Value>Default tax address (used for tax calculation)</Value>
   </LocaleResource>
+  <LocaleResource Name="Admin.Configuration.Settings.Tax.DefaultTaxCategory">
+    <Value>Default tax category</Value>
+  </LocaleResource>
+  <LocaleResource Name="Admin.Configuration.Settings.Tax.DefaultTaxCategory.Hint">
+    <Value>Select default tax category for products.</Value>
+  </LocaleResource>
   <LocaleResource Name="Admin.Configuration.Settings.Tax.DisplayTaxRates">
     <Value>Display all applied tax rates</Value>
   </LocaleResource>
@@ -7011,6 +7275,9 @@
   <LocaleResource Name="Admin.Configuration.Settings.Tax.TaxBasedOn.Hint">
     <Value>Tax based on.</Value>
   </LocaleResource>
+  <LocaleResource Name="Admin.Configuration.Settings.Tax.TaxCategories.None">
+    <Value>[None]</Value>
+  </LocaleResource>
   <LocaleResource Name="Admin.Configuration.Settings.Tax.TaxDisplayType">
     <Value>Tax display type</Value>
   </LocaleResource>
@@ -7071,6 +7338,9 @@
   <LocaleResource Name="Admin.Configuration.Shipping">
     <Value>Shipping</Value>
   </LocaleResource>
+  <LocaleResource Name="Admin.Configuration.Shipping.DatesAndRanges">
+    <Value>Dates and ranges</Value>
+  </LocaleResource>
   <LocaleResource Name="Admin.Configuration.Shipping.DeliveryDates">
     <Value>Delivery dates</Value>
   </LocaleResource>
@@ -7103,6 +7373,9 @@
   </LocaleResource>
   <LocaleResource Name="Admin.Configuration.Shipping.DeliveryDates.Fields.Name.Required">
     <Value>Please provide a name.</Value>
+  </LocaleResource>
+  <LocaleResource Name="Admin.Configuration.Shipping.DeliveryDates.Hint">
+    <Value>List of delivery dates which will be available for choice in product details.</Value>
   </LocaleResource>
   <LocaleResource Name="Admin.Configuration.Shipping.DeliveryDates.Updated">
     <Value>The delivery date has been updated successfully.</Value>
@@ -7181,6 +7454,45 @@
   </LocaleResource>
   <LocaleResource Name="Admin.Configuration.Shipping.PickupPoints">
     <Value>Pickup points</Value>
+  </LocaleResource>
+  <LocaleResource Name="Admin.Configuration.Shipping.ProductAvailabilityRanges">
+    <Value>Product availability ranges</Value>
+  </LocaleResource>
+  <LocaleResource Name="Admin.Configuration.Shipping.ProductAvailabilityRanges.Added">
+    <Value>The new product availability range has been added successfully.</Value>
+  </LocaleResource>
+  <LocaleResource Name="Admin.Configuration.Shipping.ProductAvailabilityRanges.AddNew">
+    <Value>Add a new product availability range</Value>
+  </LocaleResource>
+  <LocaleResource Name="Admin.Configuration.Shipping.ProductAvailabilityRanges.BackToList">
+    <Value>back to product availability range list</Value>
+  </LocaleResource>
+  <LocaleResource Name="Admin.Configuration.Shipping.ProductAvailabilityRanges.Deleted">
+    <Value>The product availability range has been deleted successfully.</Value>
+  </LocaleResource>
+  <LocaleResource Name="Admin.Configuration.Shipping.ProductAvailabilityRanges.EditProductAvailabilityRangeDetails">
+    <Value>Edit product availability range details</Value>
+  </LocaleResource>
+  <LocaleResource Name="Admin.Configuration.Shipping.ProductAvailabilityRanges.Fields.DisplayOrder">
+    <Value>Display order</Value>
+  </LocaleResource>
+  <LocaleResource Name="Admin.Configuration.Shipping.ProductAvailabilityRanges.Fields.DisplayOrder.Hint">
+    <Value>The display order of this product availability range. 1 represents the top of the list.</Value>
+  </LocaleResource>
+  <LocaleResource Name="Admin.Configuration.Shipping.ProductAvailabilityRanges.Fields.Name">
+    <Value>Name</Value>
+  </LocaleResource>
+  <LocaleResource Name="Admin.Configuration.Shipping.ProductAvailabilityRanges.Fields.Name.Hint">
+    <Value>Enter product availability range name.</Value>
+  </LocaleResource>
+  <LocaleResource Name="Admin.Configuration.Shipping.ProductAvailabilityRanges.Fields.Name.Required">
+    <Value>Please provide a name.</Value>
+  </LocaleResource>
+  <LocaleResource Name="Admin.Configuration.Shipping.ProductAvailabilityRanges.Hint">
+    <Value>List of availability ranges which will be available for choice in product details.</Value>
+  </LocaleResource>
+  <LocaleResource Name="Admin.Configuration.Shipping.ProductAvailabilityRanges.Updated">
+    <Value>The product availability range has been updated successfully.</Value>
   </LocaleResource>
   <LocaleResource Name="Admin.Configuration.Shipping.Providers">
     <Value>Shipping providers</Value>
@@ -7524,6 +7836,9 @@
   <LocaleResource Name="Admin.ContentManagement.Blog.BlogPosts.Fields.Tags.NoDots">
     <Value>Dots are not supported by tags.</Value>
   </LocaleResource>
+  <LocaleResource Name="Admin.ContentManagement.Blog.BlogPosts.Fields.Tags.Placeholder">
+    <Value>Enter tags ...</Value>
+  </LocaleResource>
   <LocaleResource Name="Admin.ContentManagement.Blog.BlogPosts.Fields.Title">
     <Value>Title</Value>
   </LocaleResource>
@@ -7662,6 +7977,9 @@
   <LocaleResource Name="Admin.ContentManagement.MessageTemplates.BackToList">
     <Value>back to return message template list</Value>
   </LocaleResource>
+  <LocaleResource Name="Admin.ContentManagement.MessageTemplates.Copied">
+    <Value>The message template has been copied successfully</Value>
+  </LocaleResource>  
   <LocaleResource Name="Admin.ContentManagement.MessageTemplates.Copy">
     <Value>Copy template</Value>
   </LocaleResource>
@@ -8451,6 +8769,9 @@
   <LocaleResource Name="Admin.Customers.Customers.ActivityLog.IpAddress.Hint">
     <Value>The IP address for the search.</Value>
   </LocaleResource>
+  <LocaleResource Name="Admin.Customers.Customers.AddCustomerToGuestsOrRegisteredRoleError">
+    <Value>Add the customer to 'Guests' or 'Registered' customer role</Value>
+  </LocaleResource>  
   <LocaleResource Name="Admin.Customers.Customers.Added">
     <Value>The new customer has been added successfully.</Value>
   </LocaleResource>
@@ -8784,6 +9105,9 @@
   <LocaleResource Name="Admin.Customers.Customers.Fields.ZipPostalCode.Required">
     <Value>Zip / postal code is required</Value>
   </LocaleResource>
+  <LocaleResource Name="Admin.Customers.Customers.GuestsAndRegisteredRolesError">
+    <Value>The customer cannot be in both 'Guests' and 'Registered' customer roles</Value>
+  </LocaleResource>  
   <LocaleResource Name="Admin.Customers.Customers.Impersonate">
     <Value>Place order (impersonate)</Value>
   </LocaleResource>
@@ -8865,6 +9189,9 @@
   <LocaleResource Name="Admin.Customers.Customers.List.SearchIpAddress.Hint">
     <Value>Search by IP address.</Value>
   </LocaleResource>
+  <LocaleResource Name="Admin.Customers.Customers.NonAdminNotImpersonateAsAdminError">
+    <Value>A non-admin user cannot impersonate as an administrator</Value>
+  </LocaleResource>  
   <LocaleResource Name="Admin.Customers.Customers.Orders">
     <Value>Orders</Value>
   </LocaleResource>
@@ -8900,6 +9227,9 @@
   </LocaleResource>
   <LocaleResource Name="Admin.Customers.Customers.RewardPoints">
     <Value>Reward points</Value>
+  </LocaleResource>
+  <LocaleResource Name="Admin.Customers.Customers.RewardPoints.ActivatedLater">
+    <Value>The points will be activated on {0}</Value>
   </LocaleResource>
   <LocaleResource Name="Admin.Customers.Customers.RewardPoints.AddButton">
     <Value>Add (reduce) reward points</Value>
@@ -8997,6 +9327,9 @@
   <LocaleResource Name="Admin.Customers.Customers.Updated">
     <Value>The customer has been updated successfully.</Value>
   </LocaleResource>
+  <LocaleResource Name="Admin.Customers.Customers.ValidEmailRequiredRegisteredRole">
+    <Value>Valid Email is required for customer to be in 'Registered' role</Value>
+  </LocaleResource>  
   <LocaleResource Name="Admin.Customers.Customers.VendorShouldBeInVendorsRole">
     <Value>Note: if you have a vendor associated with this customer, then also ensure it is in "Vendors" customer role.</Value>
   </LocaleResource>
@@ -9416,12 +9749,6 @@
   </LocaleResource>
   <LocaleResource Name="Admin.Orders.Fields.BillingAddress.Hint">
     <Value>Billing address info.</Value>
-  </LocaleResource>
-  <LocaleResource Name="Admin.Orders.Fields.CancelCC">
-    <Value>Cancel editing</Value>
-  </LocaleResource>
-  <LocaleResource Name="Admin.Orders.Fields.CancelOrderTotals">
-    <Value>Cancel order totals</Value>
   </LocaleResource>
   <LocaleResource Name="Admin.Orders.Fields.Capture">
     <Value>Capture</Value>
@@ -9882,6 +10209,9 @@
   <LocaleResource Name="Admin.Orders.List.Warehouse.Hint">
     <Value>Load orders with products from a specified warehouse.</Value>
   </LocaleResource>
+  <LocaleResource Name="Admin.Orders.OrderItem.DeleteAssociatedGiftCardRecordError">
+    <Value>This order item has an associated gift card record. Please delete it first</Value>
+  </LocaleResource>  
   <LocaleResource Name="Admin.Orders.OrderNotes">
     <Value>Order notes</Value>
   </LocaleResource>
@@ -10361,6 +10691,12 @@
   </LocaleResource>
   <LocaleResource Name="Admin.Promotions.Campaigns.Fields.DontSendBeforeDate.Hint">
     <Value>Enter a specific date and time to send the campaign. Leave empty to send it immediately.</Value>
+  </LocaleResource>
+  <LocaleResource Name="Admin.Promotions.Campaigns.Fields.EmailAccount">
+    <Value>Email account</Value>
+  </LocaleResource>
+  <LocaleResource Name="Admin.Promotions.Campaigns.Fields.EmailAccount.Hint">
+    <Value>The email account that will be used to send this campaign.</Value>
   </LocaleResource>
   <LocaleResource Name="Admin.Promotions.Campaigns.Fields.Name">
     <Value>Name</Value>
@@ -10917,6 +11253,9 @@
   <LocaleResource Name="Admin.ReturnRequests.NotifyCustomer">
     <Value>Notify customer about status change</Value>
   </LocaleResource>
+  <LocaleResource Name="Admin.ReturnRequests.OrderItemDeleted">
+    <Value>Order item is deleted</Value>
+  </LocaleResource>  
   <LocaleResource Name="Admin.ReturnRequests.Updated">
     <Value>The return request has been updated successfully.</Value>
   </LocaleResource>
@@ -11330,6 +11669,12 @@
   </LocaleResource>
   <LocaleResource Name="Admin.System.QueuedEmails.EditQueuedEmailDetails">
     <Value>Edit message queue item</Value>
+  </LocaleResource>
+  <LocaleResource Name="Admin.System.QueuedEmails.Fields.AttachedDownload">
+    <Value>Attached static file</Value>
+  </LocaleResource>
+  <LocaleResource Name="Admin.System.QueuedEmails.Fields.AttachedDownload.Hint">
+    <Value>The attached static file that will be sent in this email.</Value>
   </LocaleResource>
   <LocaleResource Name="Admin.System.QueuedEmails.Fields.AttachmentFilePath">
     <Value>Attached file path</Value>
@@ -11817,6 +12162,9 @@
   <LocaleResource Name="Admin.System.Warnings.URL.NoMatch">
     <Value>Specified store URL ({0}) doesn't match this store URL ({1})</Value>
   </LocaleResource>
+  <LocaleResource Name="Admin.System.Warnings.URL.Reserved">
+    <Value>Entered page name already exists, so it will be replaced by '{0}'</Value>
+  </LocaleResource>
   <LocaleResource Name="Admin.Vendors">
     <Value>Vendors</Value>
   </LocaleResource>
@@ -11915,6 +12263,9 @@
   </LocaleResource>
   <LocaleResource Name="Admin.Vendors.Fields.PageSize.Hint">
     <Value>Set the page size for products in this vendor e.g. '4' products per page.</Value>
+  </LocaleResource>
+  <LocaleResource Name="Admin.Vendors.Fields.PageSize.Positive">
+    <Value>Page size should be positive.</Value>
   </LocaleResource>
   <LocaleResource Name="Admin.Vendors.Fields.PageSizeOptions">
     <Value>Page Size options (comma separated)</Value>
@@ -12680,6 +13031,12 @@
   </LocaleResource>
   <LocaleResource Name="Enums.Nop.Core.Domain.Customers.PasswordFormat.Hashed">
     <Value>Hashed</Value>
+  </LocaleResource>
+  <LocaleResource Name="Enums.Nop.Core.Domain.Customers.RewardPointsActivatingDelayPeriod.Days">
+    <Value>Days</Value>
+  </LocaleResource>
+  <LocaleResource Name="Enums.Nop.Core.Domain.Customers.RewardPointsActivatingDelayPeriod.Hours">
+    <Value>Hours</Value>
   </LocaleResource>
   <LocaleResource Name="Enums.Nop.Core.Domain.Discounts.DiscountLimitationType.NTimesOnly">
     <Value>N times only</Value>
@@ -14301,14 +14658,23 @@
   <LocaleResource Name="PrivateMessages.YouHaveUnreadPM">
     <Value>You have {0} unread message(s) in your Inbox</Value>
   </LocaleResource>
+  <LocaleResource Name="ProductAttributes.Quantity">
+    <Value> - quantity {0}</Value>
+  </LocaleResource>
   <LocaleResource Name="Products.AlsoPurchased">
     <Value>Customers who bought this item also bought</Value>
   </LocaleResource>
   <LocaleResource Name="Products.Availability">
     <Value>Availability</Value>
   </LocaleResource>
+  <LocaleResource Name="Products.Availability.AvailabilityRange">
+    <Value>Available in {0}</Value>
+  </LocaleResource>
   <LocaleResource Name="Products.Availability.Backordering">
     <Value>Out of Stock - on backorder and will be dispatched once in stock.</Value>
+  </LocaleResource>
+  <LocaleResource Name="Products.Availability.BackorderingWithDate">
+    <Value>Out of stock - on backorder and will be dispatched once in stock ({0}).</Value>
   </LocaleResource>
   <LocaleResource Name="Products.Availability.InStock">
     <Value>In stock</Value>
@@ -14503,7 +14869,13 @@
     <Value>From {0}</Value>
   </LocaleResource>
   <LocaleResource Name="Products.ProductAttributes.PriceAdjustment">
-    <Value>{0} [{1}]</Value>
+    <Value>{0} [{1}{2}]</Value>
+  </LocaleResource>
+  <LocaleResource Name="Products.ProductAttributes.PriceAdjustment.PerItem">
+    <Value> per item</Value>
+  </LocaleResource>
+  <LocaleResource Name="Products.ProductAttributes.PriceAdjustment.Quantity">
+    <Value>Enter quantity</Value>
   </LocaleResource>
   <LocaleResource Name="Products.ProductHasBeenAddedToCompareList">
     <Value>The product has been added to your product comparison</Value>
@@ -14706,6 +15078,9 @@
   <LocaleResource Name="Reviews.Overview.Reviews">
     <Value>review(s)</Value>
   </LocaleResource>
+  <LocaleResource Name="Reviews.ProductReviewPossibleOnlyAfterPurchasing">
+    <Value>Product can be reviewed only after purchasing it</Value>
+  </LocaleResource>
   <LocaleResource Name="Reviews.ProductReviewsFor">
     <Value>Product reviews for</Value>
   </LocaleResource>
@@ -14723,6 +15098,9 @@
   </LocaleResource>
   <LocaleResource Name="Reviews.Write">
     <Value>Write your own review</Value>
+  </LocaleResource>
+  <LocaleResource Name="RewardPoints.ActivatedLater">
+    <Value>The points will be activated on {0}</Value>
   </LocaleResource>
   <LocaleResource Name="RewardPoints.CurrentBalance">
     <Value>Your current balance is {0} reward points ({1}).</Value>
@@ -14834,6 +15212,9 @@
   </LocaleResource>
   <LocaleResource Name="ShoppingCart.AssociatedAttributeWarning">
     <Value>{0}. {1}. {2}</Value>
+  </LocaleResource>
+  <LocaleResource Name="ShoppingCart.AvailabilityRange">
+    <Value>Available in {0}</Value>
   </LocaleResource>
   <LocaleResource Name="ShoppingCart.BuyingDisabled">
     <Value>Buying is disabled for this product</Value>

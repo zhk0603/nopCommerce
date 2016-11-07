@@ -147,9 +147,9 @@ namespace Nop.Services.Tests.Catalog
             discount1.AppliedToProducts.Add(product);
             product.AppliedDiscounts.Add(discount1);
 
-            _discountService.Expect(ds => ds.ValidateDiscount(discount1, customer)).Return(new DiscountValidationResult { IsValid = true });
-            _discountService.Expect(ds => ds.GetAllDiscounts(DiscountType.AssignedToCategories)).Return(new List<Discount>());
-            _discountService.Expect(ds => ds.GetAllDiscounts(DiscountType.AssignedToManufacturers)).Return(new List<Discount>());
+            _discountService.Expect(ds => ds.ValidateDiscount(discount1, customer)).Return(new DiscountValidationResult() {IsValid = true});
+            _discountService.Expect(ds => ds.GetAllDiscountsForCaching(DiscountType.AssignedToCategories)).Return(new List<DiscountForCaching>());
+            _discountService.Expect(ds => ds.GetAllDiscountsForCaching(DiscountType.AssignedToManufacturers)).Return(new List<DiscountForCaching>());
 
             _priceCalcService.GetFinalPrice(product, customer).ShouldEqual(19M);
         }
@@ -161,8 +161,8 @@ namespace Nop.Services.Tests.Catalog
             product.SpecialPriceStartDateTimeUtc = DateTime.UtcNow.AddDays(-1);
             product.SpecialPriceEndDateTimeUtc = DateTime.UtcNow.AddDays(1);
 
-            _discountService.Expect(ds => ds.GetAllDiscounts(DiscountType.AssignedToCategories)).Return(new List<Discount>());
-            _discountService.Expect(ds => ds.GetAllDiscounts(DiscountType.AssignedToManufacturers)).Return(new List<Discount>());
+            _discountService.Expect(ds => ds.GetAllDiscountsForCaching(DiscountType.AssignedToCategories)).Return(new List<DiscountForCaching>());
+            _discountService.Expect(ds => ds.GetAllDiscountsForCaching(DiscountType.AssignedToManufacturers)).Return(new List<DiscountForCaching>());
 
             //customer
             var customer = new Customer();
@@ -189,8 +189,8 @@ namespace Nop.Services.Tests.Catalog
             var product = TestHelper.GetProduct(customerEntersPrice: false);
             var sci = TestHelper.GetShoppingCartItem(product, customer);
 
-            _discountService.Expect(ds => ds.GetAllDiscounts(DiscountType.AssignedToCategories)).Return(new List<Discount>());
-            _discountService.Expect(ds => ds.GetAllDiscounts(DiscountType.AssignedToManufacturers)).Return(new List<Discount>());
+            _discountService.Expect(ds => ds.GetAllDiscountsForCaching(DiscountType.AssignedToCategories)).Return(new List<DiscountForCaching>());
+            _discountService.Expect(ds => ds.GetAllDiscountsForCaching(DiscountType.AssignedToManufacturers)).Return(new List<DiscountForCaching>());
 
             _priceCalcService.GetUnitPrice(sci).ShouldEqual(21.1M);
 
@@ -207,8 +207,8 @@ namespace Nop.Services.Tests.Catalog
 
             var sci = TestHelper.GetShoppingCartItem(product, customer);
 
-            _discountService.Expect(ds => ds.GetAllDiscounts(DiscountType.AssignedToCategories)).Return(new List<Discount>());
-            _discountService.Expect(ds => ds.GetAllDiscounts(DiscountType.AssignedToManufacturers)).Return(new List<Discount>());
+            _discountService.Expect(ds => ds.GetAllDiscountsForCaching(DiscountType.AssignedToCategories)).Return(new List<DiscountForCaching>());
+            _discountService.Expect(ds => ds.GetAllDiscountsForCaching(DiscountType.AssignedToManufacturers)).Return(new List<DiscountForCaching>());
 
             _priceCalcService.GetSubTotal(sci).ShouldEqual(42.2);
         }
@@ -259,8 +259,8 @@ namespace Nop.Services.Tests.Catalog
             var shoppingCartItem = TestHelper.GetShoppingCartItem(product, customer);
             shoppingCartItem.Quantity = quantity;
 
-            _discountService.Expect(ds => ds.GetAllDiscounts(DiscountType.AssignedToCategories)).Return(new List<Discount>());
-            _discountService.Expect(ds => ds.GetAllDiscounts(DiscountType.AssignedToManufacturers)).Return(new List<Discount>());
+            _discountService.Expect(ds => ds.GetAllDiscountsForCaching(DiscountType.AssignedToCategories)).Return(new List<DiscountForCaching>());
+            _discountService.Expect(ds => ds.GetAllDiscountsForCaching(DiscountType.AssignedToManufacturers)).Return(new List<DiscountForCaching>());
 
             return shoppingCartItem;
         }

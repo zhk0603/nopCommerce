@@ -428,8 +428,7 @@ namespace Nop.Web.Controllers
 
             //external authentication
             model.NumberOfExternalAuthenticationProviders = _openAuthenticationService
-                .LoadActiveExternalAuthenticationMethods(_storeContext.CurrentStore.Id)
-                .Count;
+                .LoadActiveExternalAuthenticationMethods(_workContext.CurrentCustomer, _storeContext.CurrentStore.Id).Count;
             foreach (var ear in _openAuthenticationService.GetExternalIdentifiersFor(customer))
             {
                 var authMethod = _openAuthenticationService.LoadExternalAuthenticationMethodBySystemName(ear.ProviderSystemName);
@@ -1548,7 +1547,7 @@ namespace Nop.Web.Controllers
                 });
             }
 
-            _openAuthenticationService.DeletExternalAuthenticationRecord(ear);
+            _openAuthenticationService.DeleteExternalAuthenticationRecord(ear);
 
             return Json(new
             {

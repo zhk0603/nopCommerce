@@ -28,6 +28,7 @@ using Nop.Core.Domain.Tasks;
 using Nop.Core.Domain.Tax;
 using Nop.Core.Domain.Topics;
 using Nop.Core.Domain.Vendors;
+using Nop.Services.Discounts;
 using Nop.Services.Messages;
 
 namespace Nop.Tests
@@ -239,7 +240,7 @@ namespace Nop.Tests
                 ProductType = ProductType.GroupedProduct,
                 ParentGroupedProductId = 2,
                 VisibleIndividually = true,
-
+                ProductAvailabilityRangeId = 1,
                 ManageInventoryMethod = ManageInventoryMethod.ManageStock,
                 ShortDescription = "ShortDescription 1",
                 FullDescription = "FullDescription 1",
@@ -934,6 +935,18 @@ namespace Nop.Tests
                 LimitationTimes = 3,
                 MaximumDiscountedQuantity = 4,
                 AppliedToSubCategories = true
+            };
+        }
+
+        public static DiscountForCaching GetDiscountForCaching()
+        {
+            return new DiscountForCaching
+            {
+                Id = 1,
+                Name = "Discount 1",
+                DiscountType = DiscountType.AssignedToShipping,
+                DiscountAmount = 3,
+                DiscountLimitation = DiscountLimitationType.Unlimited,
             };
         }
 

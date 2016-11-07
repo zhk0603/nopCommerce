@@ -7,6 +7,7 @@ using Nop.Core.Domain.Catalog;
 using Nop.Core.Domain.Customers;
 using Nop.Core.Domain.Localization;
 using Nop.Core.Domain.Orders;
+using Nop.Data;
 using Nop.Services.Catalog;
 using Nop.Services.Directory;
 using Nop.Services.Events;
@@ -29,6 +30,7 @@ namespace Nop.Services.Tests.Catalog
         private IRepository<PredefinedProductAttributeValue> _predefinedProductAttributeValueRepo;
         private IProductAttributeService _productAttributeService;
         private IProductAttributeParser _productAttributeParser;
+        private IDbContext _context;
         private IEventPublisher _eventPublisher;
 
         private IWorkContext _workContext;
@@ -42,10 +44,10 @@ namespace Nop.Services.Tests.Catalog
         private ShoppingCartSettings _shoppingCartSettings;
         private IProductAttributeFormatter _productAttributeFormatter;
 
-        private ProductAttribute pa1, pa2, pa3;
-        private ProductAttributeMapping pam1_1, pam2_1, pam3_1;
-        private ProductAttributeValue pav1_1, pav1_2, pav2_1, pav2_2;
-        
+        private ProductAttribute pa1, pa2, pa3, pa4;
+        private ProductAttributeMapping pam1_1, pam2_1, pam3_1, pam4_1;
+        private ProductAttributeValue pav1_1, pav1_2, pav2_1, pav2_2, pav4_1;
+
         [SetUp]
         public new void SetUp()
         {
@@ -73,29 +75,37 @@ namespace Nop.Services.Tests.Catalog
             pa3 = TestHelper.GetProductAttribute(3, "Custom text");
             pam3_1 = TestHelper.GetProductAttributeMapping(product, 31, "Enter custom text: ", AttributeControlType.TextBox, pa3);
 
+            //option radio
+            pa4 = TestHelper.GetProductAttribute(4, "Radio list");            
+            pam4_1 = TestHelper.GetProductAttributeMapping(product, 41, "Select option and enter the quantity:", AttributeControlType.RadioList, pa4);            
+            pav4_1 = TestHelper.GetProductAttributeValue(41, "Option with quantity", pam4_1);
+           
             #endregion
-            
+
             _productAttributeRepo = MockRepository.GenerateMock<IRepository<ProductAttribute>>();
-            _productAttributeRepo.Expect(x => x.Table).Return(new List<ProductAttribute> { pa1, pa2, pa3 }.AsQueryable());
+            _productAttributeRepo.Expect(x => x.Table).Return(new List<ProductAttribute> { pa1, pa2, pa3, pa4 }.AsQueryable());
             _productAttributeRepo.Expect(x => x.GetById(pa1.Id)).Return(pa1);
             _productAttributeRepo.Expect(x => x.GetById(pa2.Id)).Return(pa2);
             _productAttributeRepo.Expect(x => x.GetById(pa3.Id)).Return(pa3);
+            _productAttributeRepo.Expect(x => x.GetById(pa4.Id)).Return(pa4);
 
             _productAttributeMappingRepo = MockRepository.GenerateMock<IRepository<ProductAttributeMapping>>();
-            _productAttributeMappingRepo.Expect(x => x.Table).Return(new List<ProductAttributeMapping> { pam1_1, pam2_1, pam3_1 }.AsQueryable());
+            _productAttributeMappingRepo.Expect(x => x.Table).Return(new List<ProductAttributeMapping> { pam1_1, pam2_1, pam3_1, pam4_1 }.AsQueryable());
             _productAttributeMappingRepo.Expect(x => x.GetById(pam1_1.Id)).Return(pam1_1);
             _productAttributeMappingRepo.Expect(x => x.GetById(pam2_1.Id)).Return(pam2_1);
             _productAttributeMappingRepo.Expect(x => x.GetById(pam3_1.Id)).Return(pam3_1);
+            _productAttributeMappingRepo.Expect(x => x.GetById(pam4_1.Id)).Return(pam4_1);
 
             _productAttributeCombinationRepo = MockRepository.GenerateMock<IRepository<ProductAttributeCombination>>();
             _productAttributeCombinationRepo.Expect(x => x.Table).Return(new List<ProductAttributeCombination>().AsQueryable());
 
             _productAttributeValueRepo = MockRepository.GenerateMock<IRepository<ProductAttributeValue>>();
-            _productAttributeValueRepo.Expect(x => x.Table).Return(new List<ProductAttributeValue> { pav1_1, pav1_2, pav2_1, pav2_2 }.AsQueryable());
+            _productAttributeValueRepo.Expect(x => x.Table).Return(new List<ProductAttributeValue> { pav1_1, pav1_2, pav2_1, pav2_2, pav4_1 }.AsQueryable());
             _productAttributeValueRepo.Expect(x => x.GetById(pav1_1.Id)).Return(pav1_1);
             _productAttributeValueRepo.Expect(x => x.GetById(pav1_2.Id)).Return(pav1_2);
             _productAttributeValueRepo.Expect(x => x.GetById(pav2_1.Id)).Return(pav2_1);
             _productAttributeValueRepo.Expect(x => x.GetById(pav2_2.Id)).Return(pav2_2);
+            _productAttributeValueRepo.Expect(x => x.GetById(pav4_1.Id)).Return(pav4_1);
 
             _predefinedProductAttributeValueRepo = MockRepository.GenerateMock<IRepository<PredefinedProductAttributeValue>>();
 
@@ -104,7 +114,7 @@ namespace Nop.Services.Tests.Catalog
 
             var cacheManager = new NopNullCache();
 
-            _productAttributeService = new ProductAttributeService(cacheManager, 
+            _productAttributeService = new ProductAttributeService(cacheManager,
                 _productAttributeRepo,
                 _productAttributeMappingRepo,
                 _productAttributeCombinationRepo,
@@ -112,7 +122,9 @@ namespace Nop.Services.Tests.Catalog
                 _predefinedProductAttributeValueRepo,
                 _eventPublisher);
 
-            _productAttributeParser = new ProductAttributeParser(_productAttributeService);
+            _context = MockRepository.GenerateMock<IDbContext>();
+
+            _productAttributeParser = new ProductAttributeParser(_context, _productAttributeService);
 
             _priceCalculationService = MockRepository.GenerateMock<IPriceCalculationService>();
 
@@ -143,7 +155,7 @@ namespace Nop.Services.Tests.Catalog
                 _priceCalculationService,
                 _shoppingCartSettings);
         }
-        
+
         [Test]
         public void Can_add_and_parse_productAttributes()
         {
@@ -167,6 +179,20 @@ namespace Nop.Services.Tests.Catalog
             parsedValues.Count.ShouldEqual(1);
             parsedValues.Contains("Some custom text goes here").ShouldEqual(true);
             parsedValues.Contains("Some other custom text").ShouldEqual(false);
+        }
+
+        [Test]
+        [Ignore("Ignoring until a solution to the IDbContext methods are found. -SRS")]
+        public void Can_add_and_parse_productAttributeValues_with_quantity()
+        {
+            var attributes = string.Empty;
+
+            //value with customer's entered quantity
+            attributes = _productAttributeParser.AddProductAttribute(attributes, pam4_1, pav4_1.Id.ToString(), 2);
+
+            var parsedValueWithQuantity = _productAttributeParser.ParseProductAttributeValues(attributes, pam4_1.Id).FirstOrDefault();
+            parsedValueWithQuantity.ShouldNotBeNull();
+            parsedValueWithQuantity.Quantity.ShouldEqual(2);
         }
 
         [Test]
@@ -200,11 +226,11 @@ namespace Nop.Services.Tests.Catalog
         {
             string attributes = "";
             attributes = _productAttributeParser.AddGiftCardAttribute(attributes,
-                "recipientName 1", "recipientEmail@gmail.com", 
+                "recipientName 1", "recipientEmail@gmail.com",
                 "senderName 1", "senderEmail@gmail.com", "custom message");
 
             string recipientName, recipientEmail, senderName, senderEmail, giftCardMessage;
-            _productAttributeParser.GetGiftCardAttribute(attributes, 
+            _productAttributeParser.GetGiftCardAttribute(attributes,
                 out recipientName,
                 out recipientEmail,
                 out senderName,
