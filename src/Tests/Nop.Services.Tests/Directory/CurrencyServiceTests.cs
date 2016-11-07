@@ -27,9 +27,23 @@ namespace Nop.Services.Tests.Directory
         [SetUp]
         public new void SetUp()
         {
-            currencyUSD = TestHelper.GetCurrency(rate: 1.2M);
-            currencyEUR = TestHelper.GetCurrency(2, "Euro", "EUR", 1, "", "€0.00");
-            currencyRUR = TestHelper.GetCurrency(3, "Russian Rouble", "RUB", 34.5M, "ru-RU");
+            currencyUSD = TestHelper.GetCurrency();
+            currencyUSD.Rate = 1.2M;
+
+            currencyEUR = TestHelper.GetCurrency();
+            currencyEUR.Id = 2;
+            currencyEUR.Name = "Euro";
+            currencyEUR.CurrencyCode = "EUR";
+            currencyEUR.Rate = 1;
+            currencyEUR.DisplayLocale = "";
+            currencyEUR.CustomFormatting = "€0.00";
+
+            currencyRUR = TestHelper.GetCurrency();
+            currencyRUR.Id = 3;
+            currencyRUR.Name = "Russian Rouble";
+            currencyRUR.CurrencyCode = "RUB";
+            currencyRUR.Rate = 34.5M;
+            currencyRUR.DisplayLocale = "ru-RU";
 
             _currencyRepository = MockRepository.GenerateMock<IRepository<Currency>>();
             _currencyRepository.Expect(x => x.Table)

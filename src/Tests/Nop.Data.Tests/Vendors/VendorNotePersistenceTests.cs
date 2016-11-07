@@ -10,7 +10,8 @@ namespace Nop.Data.Tests.Vendors
         [Test]
         public void Can_save_and_load_vendorNote()
         {
-            var vendorNote = TestHelper.GetVendorNote(TestHelper.GetVendor());
+            var vendorNote = TestHelper.GetVendorNote();
+            vendorNote.Vendor = TestHelper.GetVendor();
 
             var fromDb = SaveAndLoadEntity(vendorNote);
             fromDb.ShouldNotBeNull();

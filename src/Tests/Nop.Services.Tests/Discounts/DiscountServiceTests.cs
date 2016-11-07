@@ -5,6 +5,7 @@ using Nop.Core;
 using Nop.Core.Caching;
 using Nop.Core.Data;
 using Nop.Core.Domain.Common;
+using Nop.Core.Domain.Customers;
 using Nop.Core.Domain.Discounts;
 using Nop.Core.Plugins;
 using Nop.Services.Catalog;
@@ -36,8 +37,10 @@ namespace Nop.Services.Tests.Discounts
         public new void SetUp()
         {
             _discountRepo = MockRepository.GenerateMock<IRepository<Discount>>();
-            var discount1 = TestHelper.GetDiscount(setEndDateUtc: false);
-            var discount2 = TestHelper.GetDiscount(setEndDateUtc: false);
+            var discount1 = TestHelper.GetDiscount();
+            discount1.EndDateUtc = null;
+            var discount2 = TestHelper.GetDiscount();
+            discount2.EndDateUtc = null;
 
             _discountRepo.Expect(x => x.Table).Return(new List<Discount> { discount1, discount2 }.AsQueryable());
 
@@ -87,11 +90,19 @@ namespace Nop.Services.Tests.Discounts
         [Test]
         public void Should_accept_valid_discount_code()
         {
-            var discount = TestHelper.GetDiscount(setEndDateUtc: false, couponCode: "CouponCode 1");
+            var discount = TestHelper.GetDiscount();
+            discount.EndDateUtc = null;
+            discount.CouponCode = "CouponCode 1";
             var customer = TestHelper.GetCustomer();
 
+            var genericAttribute = TestHelper.GetGenericAttribute();
+            genericAttribute.EntityId = customer.Id;
+            genericAttribute.Value = "CouponCode 1";
+            genericAttribute.Key = SystemCustomerAttributeNames.DiscountCouponCode;
+            genericAttribute.StoreId = 0;
+
             _genericAttributeService.Expect(x => x.GetAttributesForEntity(customer.Id, "Customer"))
-                .Return(new List<GenericAttribute> { TestHelper.GetGenericAttribute(customer.Id, "CouponCode 1", null, 0) });
+                .Return(new List<GenericAttribute> { genericAttribute });
 
             //UNDONE: little workaround here
             //we have to register "nop_cache_static" cache manager (null manager) from DependencyRegistrar.cs
@@ -105,11 +116,17 @@ namespace Nop.Services.Tests.Discounts
         [Test]
         public void Should_not_accept_wrong_discount_code()
         {
-            var discount = TestHelper.GetDiscount(setEndDateUtc: false, couponCode: "CouponCode 1");
+            var discount = TestHelper.GetDiscount();
+            discount.CouponCode = "CouponCode 1";
+            discount.EndDateUtc = null;
             var customer = TestHelper.GetCustomer();
 
+            var genericAttribute = TestHelper.GetGenericAttribute();
+            genericAttribute.EntityId = customer.Id;
+            genericAttribute.Value = "CouponCode 2";
+
             _genericAttributeService.Expect(x => x.GetAttributesForEntity(customer.Id, "Customer"))
-                .Return(new List<GenericAttribute> { TestHelper.GetGenericAttribute(customer.Id, "CouponCode 2") });
+                .Return(new List<GenericAttribute> { genericAttribute });
                 
             _discountService.ValidateDiscount(discount, customer, new[] { "CouponCode 2" }).IsValid.ShouldEqual(false);
         }
@@ -118,7 +135,8 @@ namespace Nop.Services.Tests.Discounts
         public void Can_validate_discount_dateRange()
         {
 
-            var discount = TestHelper.GetDiscount(requiresCouponCode: false);
+            var discount = TestHelper.GetDiscount();
+            discount.RequiresCouponCode = false;
             discount.StartDateUtc = DateTime.UtcNow.AddDays(-1);
             discount.EndDateUtc = DateTime.UtcNow.AddDays(1);
 

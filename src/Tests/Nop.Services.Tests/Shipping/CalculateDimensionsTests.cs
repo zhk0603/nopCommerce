@@ -136,39 +136,39 @@ namespace Nop.Services.Tests.Shipping
         }
 
         [Test]
-        public void ShouldReturnZeroWithAllZeroDimensions()
+        public void should_return_zero_with_all_zero_dimensions()
         {
             CheckDimensions(GetPackageItem(new PackageItemData()), 0);
             CheckDimensions(GetPackageItem(new PackageItemData(2)), 0);
         }
         
         [Test]
-        public void CanCalculateWithSingleItemAndQty1ShouldIgnoreCubicMethod()
+        public void can_calculate_with_single_item_and_qty_1_should_ignore_cubic_method()
         {
             CheckDimensions(GetPackageItem(new PackageItemData(2, 3, 4)), 2, 3, 4);
         }
 
         [Test]
-        public void CanCalculateWithSingleItemAndQty2()
+        public void can_calculate_with_single_item_and_qty_2()
         {
             CheckDimensions(GetPackageItem(new PackageItemData(2, 4, 4, 2)), 4);
         }
 
         [Test]
-        public void CanCalculateWithCubicItemAndMultipleQty()
+        public void can_calculate_with_cubic_item_and_multiple_qty()
         {
             CheckDimensions(GetPackageItem(new PackageItemData(3, 2)), 2.88M);
         }
 
         [Test]
-        public void CanCalculateWithMultipleItems1()
+        public void can_calculate_with_multiple_items_1()
         {
             //preserve max width
             CheckDimensions(GetPackageItem(new PackageItemData(3, 2), new PackageItemData(3, 5, 2)), 3.78M, 5, 3.78M);
         }
 
         [Test]
-        public void CanCalculateWithMultipleItems2()
+        public void can_calculate_with_multiple_items_2()
         {
             //take 8 cubes of 1x1x1 which is "packed" as 2x2x2 
            CheckDimensions(GetPackageItem(new PackageItemData(1M), 8), 2);

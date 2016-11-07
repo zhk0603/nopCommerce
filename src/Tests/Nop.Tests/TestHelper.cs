@@ -39,6 +39,10 @@ namespace Nop.Tests
 
         #region Nop.Core.Caching
 
+        /// <summary>
+        /// Get memory cache manager
+        /// </summary>
+        /// <returns></returns>
         public static MemoryCacheManager GetMemoryCacheManager()
         {
             var cacheManager = new MemoryCacheManager();
@@ -54,6 +58,10 @@ namespace Nop.Tests
 
         #region Nop.Core.Domain.Affiliates
 
+        /// <summary>
+        /// Get affiliate
+        /// </summary>
+        /// <returns></returns>
         public static Affiliate GetAffiliate()
         {
             return new Affiliate
@@ -70,6 +78,10 @@ namespace Nop.Tests
 
         #region Nop.Core.Domain.Blogs
 
+        /// <summary>
+        /// Get blog comment
+        /// </summary>
+        /// <returns></returns>
         public static BlogComment GetBlogComment()
         {
             return new BlogComment
@@ -79,6 +91,10 @@ namespace Nop.Tests
             };
         }
 
+        /// <summary>
+        /// Get blog post
+        /// </summary>
+        /// <returns></returns>
         public static BlogPost GetBlogPost()
         {
             var blogPost = new BlogPost
@@ -108,13 +124,30 @@ namespace Nop.Tests
 
         #region Nop.Core.Domain.Catalog
 
+        /// <summary>
+        /// Add tier prices to this product
+        /// </summary>
+        /// <param name="product">Product</param>
+        /// <param name="price">Price</param>
+        /// <param name="quantity">Quantity</param>
+        /// <param name="customerRole">Customer role; can by null</param>
+        /// <returns></returns>
         public static Product AddTierPrices(this Product product, decimal price, int quantity,
             CustomerRole customerRole = null)
         {
-            product.TierPrices.Add(GetTierPrice(product, customerRole, price, quantity));
+            var tierPrice = GetTierPrice();
+            tierPrice.Product = product;
+            tierPrice.CustomerRole = customerRole;
+            tierPrice.Price = price;
+            tierPrice.Quantity = quantity;
+            product.TierPrices.Add(tierPrice);
             return product;
         }
 
+        /// <summary>
+        /// Get back in stock subscription
+        /// </summary>
+        /// <returns></returns>
         public static BackInStockSubscription GetBackInStockSubscription()
         {
             return new BackInStockSubscription
@@ -125,6 +158,10 @@ namespace Nop.Tests
             };
         }
 
+        /// <summary>
+        /// Get category
+        /// </summary>
+        /// <returns></returns>
         public static Category GetCategory()
         {
             return new Category
@@ -153,6 +190,10 @@ namespace Nop.Tests
             };
         }
 
+        /// <summary>
+        /// Get category template
+        /// </summary>
+        /// <returns></returns>
         public static CategoryTemplate GetCategoryTemplate()
         {
             return new CategoryTemplate
@@ -163,6 +204,10 @@ namespace Nop.Tests
             };
         }
 
+        /// <summary>
+        /// Get manufacturer
+        /// </summary>
+        /// <returns></returns>
         public static Manufacturer GetManufacturer()
         {
             return new Manufacturer
@@ -188,6 +233,10 @@ namespace Nop.Tests
             };
         }
 
+        /// <summary>
+        /// Get manufacturer template
+        /// </summary>
+        /// <returns></returns>
         public static ManufacturerTemplate GetManufacturerTemplate()
         {
             return new ManufacturerTemplate
@@ -198,6 +247,10 @@ namespace Nop.Tests
             };
         }
 
+        /// <summary>
+        /// Get predefined product attribute value
+        /// </summary>
+        /// <returns></returns>
         public static PredefinedProductAttributeValue GetPredefinedProductAttributeValue()
         {
             return new PredefinedProductAttributeValue
@@ -212,29 +265,19 @@ namespace Nop.Tests
             };
         }
 
-        public static Product GetProduct(bool setAvailableStartDateTimeUtc = true,
-            bool setAvailableEndDateTimeUtc = true,
-            bool customerEntersPrice = true,
-            decimal price = 21.1M,
-            bool useMultipleWarehouses = true,
-            RentalPricePeriod rentalPricePeriod = 0,
-            decimal weight = 26.1M,
-            decimal length = 27.1M,
-            decimal width = 28.1M,
-            decimal height = 29.1M)
+        /// <summary>
+        /// Get product
+        /// </summary>
+        /// <returns></returns>
+        public static Product GetProduct()
         {
-            var availableStartDateTimeUtc = setAvailableStartDateTimeUtc
-                ? new DateTime(2010, 01, 01) as DateTime?
-                : null;
-            var availableEndDateTimeUtc = setAvailableEndDateTimeUtc ? new DateTime(2010, 01, 03) as DateTime? : null;
-
             return new Product
             {
                 Id = 1,
                 Name = "Product name 1",
-                AvailableStartDateTimeUtc = availableStartDateTimeUtc,
+                AvailableStartDateTimeUtc = new DateTime(2010, 01, 01),
                 RequiredProductIds = "1, 4,7 ,a,",
-                AvailableEndDateTimeUtc = availableEndDateTimeUtc,
+                AvailableEndDateTimeUtc = new DateTime(2010, 01, 03),
                 CreatedOnUtc = new DateTime(2010, 01, 03),
                 UpdatedOnUtc = new DateTime(2010, 01, 04),
                 ProductType = ProductType.GroupedProduct,
@@ -280,8 +323,8 @@ namespace Nop.Tests
                 RecurringTotalCycles = 9,
                 IsRental = true,
                 RentalPriceLength = 9,
-                RentalPricePeriodId = (int) rentalPricePeriod,
-                RentalPricePeriod = rentalPricePeriod,
+                RentalPricePeriodId = 0,
+                RentalPricePeriod = 0,
                 IsShipEnabled = true,
                 IsFreeShipping = true,
                 ShipSeparately = true,
@@ -291,7 +334,7 @@ namespace Nop.Tests
                 TaxCategoryId = 11,
                 IsTelecommunicationsOrBroadcastingOrElectronicServices = true,
                 ManageInventoryMethodId = 1,
-                UseMultipleWarehouses = useMultipleWarehouses,
+                UseMultipleWarehouses = true,
                 WarehouseId = 6,
                 StockQuantity = 13,
                 DisplayStockAvailability = true,
@@ -311,13 +354,13 @@ namespace Nop.Tests
                 AvailableForPreOrder = true,
                 PreOrderAvailabilityStartDateTimeUtc = new DateTime(2010, 01, 01),
                 CallForPrice = true,
-                Price = price,
+                Price = 21.1M,
                 OldPrice = 22.1M,
                 ProductCost = 23.1M,
                 SpecialPrice = 32.1M,
                 SpecialPriceStartDateTimeUtc = new DateTime(2010, 01, 05),
                 SpecialPriceEndDateTimeUtc = new DateTime(2010, 01, 06),
-                CustomerEntersPrice = customerEntersPrice,
+                CustomerEntersPrice = true,
                 MinimumCustomerEnteredPrice = 24.1M,
                 MaximumCustomerEnteredPrice = 25.1M,
                 BasepriceEnabled = true,
@@ -330,10 +373,10 @@ namespace Nop.Tests
                 MarkAsNewEndDateTimeUtc = new DateTime(2010, 01, 08),
                 HasTierPrices = true,
                 HasDiscountsApplied = true,
-                Weight = weight,
-                Length = length,
-                Width = width,
-                Height = height,
+                Weight = 26.1M,
+                Length = 27.1M,
+                Width = 28.1M,
+                Height = 29.1M,
                 RequireOtherProducts = true,
                 AutomaticallyAddRequiredProducts = true,
                 DisplayOrder = 30,
@@ -342,16 +385,24 @@ namespace Nop.Tests
             };
         }
 
-        public static ProductAttribute GetProductAttribute(int id = 1, string name = "Name 1")
+        /// <summary>
+        /// Get product attribute
+        /// </summary>
+        /// <returns></returns>
+        public static ProductAttribute GetProductAttribute()
         {
             return new ProductAttribute
             {
-                Id = id,
-                Name = name,
+                Id = 1,
+                Name = "Name 1",
                 Description = "Description 1"
             };
         }
 
+        /// <summary>
+        /// Get product attribute combination
+        /// </summary>
+        /// <returns></returns>
         public static ProductAttributeCombination GetProductAttributeCombination()
         {
             return new ProductAttributeCombination
@@ -368,21 +419,21 @@ namespace Nop.Tests
             };
         }
 
-        public static ProductAttributeMapping GetProductAttributeMapping(Product product = null, 
-            int id = 1,
-            string textPrompt = "TextPrompt 1", 
-            AttributeControlType controlType = AttributeControlType.DropdownList,
-            ProductAttribute productAttribute = null)
+        /// <summary>
+        /// Get product attribute mapping
+        /// </summary>
+        /// <returns></returns>
+        public static ProductAttributeMapping GetProductAttributeMapping()
         {
-            product = product ?? GetProduct();
-            productAttribute = productAttribute ?? GetProductAttribute();
+            var product = GetProduct();
+            var productAttribute = GetProductAttribute();
 
             return new ProductAttributeMapping
             {
-                Id = id,
-                TextPrompt = textPrompt,
+                Id = 1,
+                TextPrompt = "TextPrompt 1",
                 IsRequired = true,
-                AttributeControlType = controlType,
+                AttributeControlType = AttributeControlType.DropdownList,
                 DisplayOrder = 1,
                 ValidationMinLength = 2,
                 ValidationMaxLength = 3,
@@ -397,16 +448,19 @@ namespace Nop.Tests
             };
         }
 
-        public static ProductAttributeValue GetProductAttributeValue(int id = 1, string name = "Name 1",
-            ProductAttributeMapping productAttributeMapping = null)
+        /// <summary>
+        /// Get product attribute value
+        /// </summary>
+        /// <returns></returns>
+        public static ProductAttributeValue GetProductAttributeValue()
         {
-            productAttributeMapping = productAttributeMapping ?? GetProductAttributeMapping();
+            var productAttributeMapping = GetProductAttributeMapping();
             return new ProductAttributeValue
             {
-                Id = id,
+                Id = 1,
                 AttributeValueType = AttributeValueType.AssociatedToProduct,
                 AssociatedProductId = 10,
-                Name = name,
+                Name = "Name 1",
                 ColorSquaresRgb = "12FF33",
                 ImageSquaresPictureId = 1,
                 PriceAdjustment = 1.1M,
@@ -420,38 +474,54 @@ namespace Nop.Tests
             };
         }
 
-        public static ProductCategory GetProductCategory(Product product = null)
+        /// <summary>
+        /// Get product category
+        /// </summary>
+        /// <returns></returns>
+        public static ProductCategory GetProductCategory()
         {
             return new ProductCategory
             {
                 IsFeaturedProduct = true,
                 DisplayOrder = 1,
-                Product = product ?? GetProduct(),
+                Product = GetProduct(),
                 Category = GetCategory()
             };
         }
 
-        public static ProductManufacturer GetProductManufacturer(Product product = null)
+        /// <summary>
+        /// Get product manufacturer
+        /// </summary>
+        /// <returns></returns>
+        public static ProductManufacturer GetProductManufacturer()
         {
             return new ProductManufacturer
             {
                 IsFeaturedProduct = true,
                 DisplayOrder = 1,
-                Product = product ?? GetProduct(),
+                Product = GetProduct(),
                 Manufacturer = GetManufacturer()
             };
         }
 
-        public static ProductPicture GetProductPicture(Product product = null)
+        /// <summary>
+        /// Get product picture
+        /// </summary>
+        /// <returns></returns>
+        public static ProductPicture GetProductPicture()
         {
             return new ProductPicture
             {
                 DisplayOrder = 1,
-                Product = product ?? GetProduct(),
+                Product = GetProduct(),
                 Picture = GetPicture()
             };
         }
 
+        /// <summary>
+        /// Get product specification attribute
+        /// </summary>
+        /// <returns></returns>
         public static ProductSpecificationAttribute GetProductSpecificationAttribute()
         {
             return new ProductSpecificationAttribute
@@ -465,6 +535,10 @@ namespace Nop.Tests
             };
         }
 
+        /// <summary>
+        /// Get product tag
+        /// </summary>
+        /// <returns></returns>
         public static ProductTag GetProductTag()
         {
             return new ProductTag
@@ -473,6 +547,10 @@ namespace Nop.Tests
             };
         }
 
+        /// <summary>
+        /// Get product template
+        /// </summary>
+        /// <returns></returns>
         public static ProductTemplate GetProductTemplate()
         {
             return new ProductTemplate
@@ -483,37 +561,31 @@ namespace Nop.Tests
             };
         }
 
-        public static ProductWarehouseInventory GetProductWarehouseInventory(Product product = null,
-            Warehouse warehouse = null, 
-            int warehouseId = 0, 
-            int stockQuantity = 3)
+        /// <summary>
+        /// Get product warehouse inventory
+        /// </summary>
+        /// <returns></returns>
+        public static ProductWarehouseInventory GetProductWarehouseInventory()
         {
-            product = product ?? GetProduct();
+            var warehouse = GetWarehouse();
 
             var productWarehouseInventory = new ProductWarehouseInventory
             {
-                Product = product,
+                Product = GetProduct(),
 
-                StockQuantity = stockQuantity,
-                ReservedQuantity = 4
+                StockQuantity = 3,
+                ReservedQuantity = 4,
+                Warehouse = warehouse,
+                WarehouseId = warehouse.Id
             };
-
-            if (warehouseId == 0)
-            {
-                warehouse = warehouse ?? GetWarehouse();
-                productWarehouseInventory.Warehouse = warehouse;
-                productWarehouseInventory.WarehouseId = warehouse.Id;
-            }
-            else
-            {
-                productWarehouseInventory.WarehouseId = warehouseId;
-                if (warehouse != null)
-                    productWarehouseInventory.Warehouse = warehouse;
-            }
 
             return productWarehouseInventory;
         }
 
+        /// <summary>
+        /// Get specification attribute
+        /// </summary>
+        /// <returns></returns>
         public static SpecificationAttribute GetSpecificationAttribute()
         {
             return new SpecificationAttribute
@@ -523,42 +595,38 @@ namespace Nop.Tests
             };
         }
 
-        public static SpecificationAttributeOption GetSpecificationAttributeOption(bool setSpecificationAttribute = true)
+        /// <summary>
+        /// Get specification attribute option
+        /// </summary>
+        /// <returns></returns>
+        public static SpecificationAttributeOption GetSpecificationAttributeOption()
         {
             var specificationAttributeOption = new SpecificationAttributeOption
             {
                 Name = "SpecificationAttributeOption name 1",
                 DisplayOrder = 1,
                 ColorSquaresRgb = "ColorSquaresRgb 2",
+                SpecificationAttribute = GetSpecificationAttribute()
 
             };
-
-            if (setSpecificationAttribute)
-                specificationAttributeOption.SpecificationAttribute = GetSpecificationAttribute();
 
             return specificationAttributeOption;
         }
-        
-        public static TierPrice GetTierPrice(Product product = null, 
-            CustomerRole customerRole = null,
-            decimal price = 2.1M, 
-            int quantity = 1, 
-            int id = 1)
+
+        /// <summary>
+        /// Get tier price
+        /// </summary>
+        /// <returns></returns>
+        public static TierPrice GetTierPrice()
         {
             var tierPrice = new TierPrice
             {
-                Id = id,
+                Id = 1,
                 StoreId = 1,
-                Quantity = quantity,
-                Price = price
+                Quantity = 1,
+                Price = 2.1M
             };
-
-            if (product != null)
-                tierPrice.Product = product;
-
-            if (customerRole != null)
-                tierPrice.CustomerRole = customerRole;
-
+            
             return tierPrice;
         }
 
@@ -566,10 +634,15 @@ namespace Nop.Tests
 
         #region Nop.Core.Domain.Common
 
-        public static Address GetAddress(int? stateProvinceId = null, int? countryId = null)
+        /// <summary>
+        /// Get address
+        /// </summary>
+        /// <returns></returns>
+        public static Address GetAddress()
         {
-            var country = GetCountry(countryId);
-            var state = GetStateProvince(stateProvinceId, country);
+            var country = GetCountry();
+            var state = GetStateProvince();
+            state.Country = country;
 
             return new Address
             {
@@ -578,9 +651,9 @@ namespace Nop.Tests
                 Email = "Email 1",
                 Company = "Company 1",
                 Country = country,
-                CountryId = countryId ?? 0,
+                CountryId = country.Id,
                 StateProvince = state,
-                StateProvinceId = stateProvinceId ?? 0,
+                StateProvinceId = state.Id,
                 City = "City 1",
                 Address1 = "Address1",
                 Address2 = "Address2",
@@ -591,8 +664,12 @@ namespace Nop.Tests
                 CustomAttributes = "CustomAttributes 1"
             };
         }
-        
-        public static AddressAttribute GetAddressAttribute(bool addAddressAttributeValues = true)
+
+        /// <summary>
+        /// Get address attribute
+        /// </summary>
+        /// <returns></returns>
+        public static AddressAttribute GetAddressAttribute()
         {
             var addressAttribute = new AddressAttribute
             {
@@ -602,40 +679,46 @@ namespace Nop.Tests
                 DisplayOrder = 2
             };
 
-            if (addAddressAttributeValues)
-                addressAttribute.AddressAttributeValues.Add(GetAddressAttributeValue());
-
             return addressAttribute;
         }
 
-        public static AddressAttributeValue GetAddressAttributeValue(bool setAddressAttribute = false)
+        /// <summary>
+        /// Get address attribute value
+        /// </summary>
+        /// <returns></returns>
+        public static AddressAttributeValue GetAddressAttributeValue()
         {
             var addess = new AddressAttributeValue
             {
                 Name = "Name 2",
                 IsPreSelected = true,
-                DisplayOrder = 1
+                DisplayOrder = 1,
+                AddressAttribute = GetAddressAttribute()
             };
-
-            if (setAddressAttribute)
-                addess.AddressAttribute = GetAddressAttribute(false);
-
+            
             return addess;
         }
 
-        public static GenericAttribute GetGenericAttribute(int entityId = 1, string value = "Value 1", string key = "Key 1", int storeId = 2)
+        /// <summary>
+        /// Get generic attribute
+        /// </summary>
+        /// <returns></returns>
+        public static GenericAttribute GetGenericAttribute()
         {
-            key = key ?? SystemCustomerAttributeNames.DiscountCouponCode;
             return new GenericAttribute
             {
-                EntityId = entityId,
-                Key = key,
+                EntityId = 1,
+                Key = "Key 1",
                 KeyGroup = "Customer",
-                Value = value,
-                StoreId = storeId
+                Value = "Value 1",
+                StoreId = 2
             };
         }
 
+        /// <summary>
+        /// Get aearch term
+        /// </summary>
+        /// <returns></returns>
         public static SearchTerm GetSearchTerm()
         {
             return new SearchTerm
@@ -650,6 +733,10 @@ namespace Nop.Tests
 
         #region Nop.Core.Domain.Configuration
 
+        /// <summary>
+        /// Get setting
+        /// </summary>
+        /// <returns></returns>
         public static Setting GetSetting()
         {
             return new Setting
@@ -664,6 +751,11 @@ namespace Nop.Tests
 
         #region Nop.Core.Domain.Customers
 
+        /// <summary>
+        /// Get customer
+        /// </summary>
+        /// <param name="systemNames">Customer role's system names</param>
+        /// <returns></returns>
         public static Customer GetCustomer(params string[] systemNames)
         {
             var customer = new Customer
@@ -698,8 +790,12 @@ namespace Nop.Tests
             customer.ShoppingCartItems.Add(GetShoppingCartItem());
             return customer;
         }
-        
-        public static CustomerAttribute GetCustomerAttribute(bool addCustomerAttribute = true)
+
+        /// <summary>
+        /// Get customer attribute
+        /// </summary>
+        /// <returns></returns>
+        public static CustomerAttribute GetCustomerAttribute()
         {
             var customerAttribute = new CustomerAttribute
             {
@@ -709,42 +805,33 @@ namespace Nop.Tests
                 DisplayOrder = 2
             };
 
-            if (addCustomerAttribute)
-                customerAttribute.CustomerAttributeValues.Add(GetCustomerAttributeValue());
-
             return customerAttribute;
         }
 
-        public static CustomerAttributeValue GetCustomerAttributeValue(bool setCustomerAttribute = false)
+        /// <summary>
+        /// Get customer attribute value
+        /// </summary>
+        /// <returns></returns>
+        public static CustomerAttributeValue GetCustomerAttributeValue()
         {
             var customerAttributeValue = new CustomerAttributeValue
             {
                 Name = "Name 2",
                 IsPreSelected = true,
                 DisplayOrder = 1,
+                CustomerAttribute = GetCustomerAttribute()
             };
 
-            if (setCustomerAttribute)
-                customerAttributeValue.CustomerAttribute = GetCustomerAttribute(false);
+            customerAttributeValue.CustomerAttribute.CustomerAttributeValues.Clear();
 
             return customerAttributeValue;
         }
-
-        public static Customer GetCustomerByName(string name, 
-            string systemNames = "", 
-            string password = "password",
-            PasswordFormat passwordFormat = PasswordFormat.Clear)
-        {
-            var customer = systemNames.Any() ? GetCustomer(systemNames) : GetCustomer();
-
-            customer.PasswordFormat = passwordFormat;
-            customer.Password = password;
-            customer.Username = name + "@test.com";
-            customer.Email = customer.Username;
-
-            return customer;
-        }
         
+        /// <summary>
+        /// Get customer role
+        /// </summary>
+        /// <param name="systemName">System name</param>
+        /// <returns></returns>
         public static CustomerRole GetCustomerRole(string systemName)
         {
             return new CustomerRole
@@ -759,7 +846,11 @@ namespace Nop.Tests
             };
         }
 
-        public static ExternalAuthenticationRecord GetExternalAuthenticationRecord(Customer customer = null)
+        /// <summary>
+        /// Get external authentication record
+        /// </summary>
+        /// <returns></returns>
+        public static ExternalAuthenticationRecord GetExternalAuthenticationRecord()
         {
             return new ExternalAuthenticationRecord
             {
@@ -768,11 +859,14 @@ namespace Nop.Tests
                 OAuthToken = "OAuthToken 1",
                 OAuthAccessToken = "OAuthAccessToken 1",
                 ProviderSystemName = "ProviderSystemName 1",
-                Email = "Email 1",
-                Customer = customer
+                Email = "Email 1"
             };
         }
 
+        /// <summary>
+        /// Get reward points history
+        /// </summary>
+        /// <returns></returns>
         public static RewardPointsHistory GetRewardPointsHistory()
         {
             return new RewardPointsHistory
@@ -791,11 +885,15 @@ namespace Nop.Tests
 
         #region Nop.Core.Domain.Directory
 
-        public static Country GetCountry(int? id = null)
+        /// <summary>
+        /// Get country
+        /// </summary>
+        /// <returns></returns>
+        public static Country GetCountry()
         {
             return new Country
             {
-                Id = id ?? _id++,
+                Id = _id++,
                 Name = "United States",
                 AllowsBilling = true,
                 AllowsShipping = true,
@@ -809,21 +907,20 @@ namespace Nop.Tests
             };
         }
 
-        public static Currency GetCurrency(int id = 1, 
-            string name = "US Dollar", 
-            string currencyCode = "USD",
-            decimal rate = 1.1M, 
-            string displayLocale = "en-US", 
-            string customFormatting = "")
+        /// <summary>
+        /// Get currency
+        /// </summary>
+        /// <returns></returns>
+        public static Currency GetCurrency()
         {
             return new Currency
             {
-                Id = id,
-                Name = name,
-                CurrencyCode = currencyCode,
-                Rate = rate,
-                DisplayLocale = displayLocale,
-                CustomFormatting = customFormatting,
+                Id = 1,
+                Name = "US Dollar",
+                CurrencyCode = "USD",
+                Rate = 1.1M,
+                DisplayLocale = "en-US",
+                CustomFormatting = "",
                 LimitedToStores = true,
                 Published = true,
                 DisplayOrder = 2,
@@ -832,6 +929,10 @@ namespace Nop.Tests
             };
         }
 
+        /// <summary>
+        /// Get measure dimension
+        /// </summary>
+        /// <returns></returns>
         public static MeasureDimension GetMeasureDimension()
         {
             return new MeasureDimension
@@ -843,6 +944,11 @@ namespace Nop.Tests
             };
         }
 
+        /// <summary>
+        /// Get measure dimensions
+        /// </summary>
+        /// <param name="ratios">Ratios</param>
+        /// <returns></returns>
         public static IList<MeasureDimension> GetMeasureDimensions(params decimal[] ratios)
         {
             var measureDimensions = new List<MeasureDimension>();
@@ -859,6 +965,10 @@ namespace Nop.Tests
             return measureDimensions;
         }
 
+        /// <summary>
+        /// Get measure weight
+        /// </summary>
+        /// <returns></returns>
         public static MeasureWeight GetMeasureWeight()
         {
             return new MeasureWeight
@@ -869,7 +979,12 @@ namespace Nop.Tests
                 DisplayOrder = 2,
             };
         }
-        
+
+        /// <summary>
+        /// Get measure weights
+        /// </summary>
+        /// <param name="ratios">Ratios</param>
+        /// <returns></returns>
         public static IList<MeasureWeight> GetMeasureWeights(params decimal[] ratios)
         {
             var measureWeights = new List<MeasureWeight>();
@@ -885,51 +1000,47 @@ namespace Nop.Tests
 
             return measureWeights;
         }
-        
-        public static StateProvince GetStateProvince(int? id = null, Country country = null)
+
+        /// <summary>
+        /// Get state province
+        /// </summary>
+        /// <returns></returns>
+        public static StateProvince GetStateProvince()
         {
             var stateProvince = new StateProvince
             {
-                Id = id ?? 0,
+                Id = 0,
                 Name = "Louisiana",
                 Abbreviation = "LA",
                 DisplayOrder = 1,
-                Published = true,
-                Country = country
+                Published = true
             };
-
-            if (country != null)
-                stateProvince.CountryId = country.Id;
 
             return stateProvince;
         }
 
         #endregion
-        
+
         #region Nop.Core.Domain.Discounts
 
-        public static Discount GetDiscount(DiscountType discountType = DiscountType.AssignedToCategories,
-            bool usePercentage = true,
-            bool setEndDateUtc = true,
-            bool requiresCouponCode = true,
-            string couponCode = "SecretCode",
-            decimal discountAmount = 2.1M,
-            decimal discountPercentage = 1.1M,
-            decimal maximumDiscountAmount = 208.1M)
+        /// <summary>
+        /// Get discount
+        /// </summary>
+        /// <returns></returns>
+        public static Discount GetDiscount()
         {
-            var endDateUtc = setEndDateUtc ? new DateTime(2010, 01, 02) as DateTime? : null;
             return new Discount
             {
-                DiscountType = discountType,
+                DiscountType = DiscountType.AssignedToCategories,
                 Name = "Discount 1",
-                UsePercentage = usePercentage,
-                DiscountPercentage = discountPercentage,
-                DiscountAmount = discountAmount,
-                MaximumDiscountAmount = maximumDiscountAmount,
+                UsePercentage = true,
+                DiscountPercentage = 1.1M,
+                DiscountAmount = 2.1M,
+                MaximumDiscountAmount = 208.1M,
                 StartDateUtc = new DateTime(2010, 01, 01),
-                EndDateUtc = endDateUtc,
-                RequiresCouponCode = requiresCouponCode,
-                CouponCode = couponCode,
+                EndDateUtc = new DateTime(2010, 01, 02),
+                RequiresCouponCode = true,
+                CouponCode = "SecretCode",
                 IsCumulative = true,
                 DiscountLimitation = DiscountLimitationType.Unlimited,
                 LimitationTimes = 3,
@@ -938,34 +1049,28 @@ namespace Nop.Tests
             };
         }
 
-        public static DiscountForCaching GetDiscountForCaching()
-        {
-            return new DiscountForCaching
-            {
-                Id = 1,
-                Name = "Discount 1",
-                DiscountType = DiscountType.AssignedToShipping,
-                DiscountAmount = 3,
-                DiscountLimitation = DiscountLimitationType.Unlimited,
-            };
-        }
-
-        public static DiscountRequirement GetDiscountRequirement(Discount discount = null)
+        /// <summary>
+        /// Get discount requirement
+        /// </summary>
+        /// <returns></returns>
+        public static DiscountRequirement GetDiscountRequirement()
         {
             return new DiscountRequirement
             {
-                DiscountRequirementRuleSystemName = "BillingCountryIs",
-                Discount = discount
+                DiscountRequirementRuleSystemName = "BillingCountryIs"
             };
         }
 
-        public static DiscountUsageHistory GetDiscountUsageHistory(Order order = null)
+        /// <summary>
+        /// Get discount usage history
+        /// </summary>
+        /// <returns></returns>
+        public static DiscountUsageHistory GetDiscountUsageHistory()
         {
             return new DiscountUsageHistory
             {
                 Discount = GetDiscount(),
-                CreatedOnUtc = new DateTime(2010, 01, 01),
-                Order = order
+                CreatedOnUtc = new DateTime(2010, 01, 01)
             };
         }
 
@@ -973,7 +1078,11 @@ namespace Nop.Tests
 
         #region Nop.Core.Domain.Forums
 
-        public static Forum GetForum(ForumGroup forumGroup = null)
+        /// <summary>
+        /// Get forum
+        /// </summary>
+        /// <returns></returns>
+        public static Forum GetForum()
         {
             var forum = new Forum
             {
@@ -986,15 +1095,13 @@ namespace Nop.Tests
                 NumTopics = 15
             };
 
-            if (forumGroup != null)
-            {
-                forum.ForumGroup = forumGroup;
-                forum.ForumGroupId = forumGroup.Id;
-            }
-
             return forum;
         }
 
+        /// <summary>
+        /// Get forum group
+        /// </summary>
+        /// <returns></returns>
         public static ForumGroup GetForumGroup()
         {
             return new ForumGroup
@@ -1006,7 +1113,11 @@ namespace Nop.Tests
             };
         }
 
-        public static ForumPost GetForumPost(ForumTopic forumTopic, Customer customer)
+        /// <summary>
+        /// Get forum post
+        /// </summary>
+        /// <returns></returns>
+        public static ForumPost GetForumPost()
         {
             var forumPost = new ForumPost
             {
@@ -1015,36 +1126,30 @@ namespace Nop.Tests
                 CreatedOnUtc = new DateTime(2010, 01, 01),
                 UpdatedOnUtc = new DateTime(2010, 01, 02),
             };
-
-            if (forumTopic != null)
-            {
-                forumPost.ForumTopic = forumTopic;
-                forumPost.TopicId = forumTopic.Id;
-            }
-
-            if (customer != null)
-                forumPost.CustomerId = customer.Id;
-
+            
             return forumPost;
         }
 
-        public static ForumSubscription GetForumSubscription(Customer customer, Forum forum = null)
+        /// <summary>
+        /// Get forum subscription
+        /// </summary>
+        /// <returns></returns>
+        public static ForumSubscription GetForumSubscription()
         {
             var forumSubscription = new ForumSubscription
             {
                 CreatedOnUtc = DateTime.UtcNow,
                 SubscriptionGuid = new Guid("11111111-2222-3333-4444-555555555555")
             };
-
-            if (customer != null)
-                forumSubscription.CustomerId = customer.Id;
-            if (forum != null)
-                forumSubscription.ForumId = forum.Id;
-
+            
             return forumSubscription;
         }
 
-        public static ForumTopic GetForumTopic(Customer customer, Forum forum)
+        /// <summary>
+        /// Get forum topic
+        /// </summary>
+        /// <returns></returns>
+        public static ForumTopic GetForumTopic()
         {
             var forumTopic = new ForumTopic
             {
@@ -1055,16 +1160,15 @@ namespace Nop.Tests
                 UpdatedOnUtc = new DateTime(2010, 01, 02),
                 NumPosts = 100
             };
-
-            if (customer != null)
-                forumTopic.CustomerId = customer.Id;
-            if (forum != null)
-                forumTopic.ForumId = forum.Id;
-
+            
             return forumTopic;
         }
-        
-        public static PrivateMessage GetPrivateMessage(Customer fromCustomer, Customer toCustomer, Store store)
+
+        /// <summary>
+        /// Get private message
+        /// </summary>
+        /// <returns></returns>
+        public static PrivateMessage GetPrivateMessage()
         {
             var privateMessage = new PrivateMessage
             {
@@ -1075,14 +1179,7 @@ namespace Nop.Tests
                 IsRead = false,
                 CreatedOnUtc = DateTime.UtcNow
             };
-
-            if (fromCustomer != null)
-                privateMessage.FromCustomerId = fromCustomer.Id;
-            if (toCustomer != null)
-                privateMessage.ToCustomerId = toCustomer.Id;
-            if (store != null)
-                privateMessage.StoreId = store.Id;
-
+            
             return privateMessage;
         }
 
@@ -1090,6 +1187,10 @@ namespace Nop.Tests
 
         #region Nop.Core.Domain.Localization
 
+        /// <summary>
+        /// Get language
+        /// </summary>
+        /// <returns></returns>
         public static Language GetLanguage()
         {
             return new Language
@@ -1106,25 +1207,31 @@ namespace Nop.Tests
             };
         }
 
-        public static LocaleStringResource GetLocaleStringResource(Language language = null)
+        /// <summary>
+        /// Get locale string resource
+        /// </summary>
+        /// <returns></returns>
+        public static LocaleStringResource GetLocaleStringResource()
         {
             return new LocaleStringResource
             {
                 ResourceName = "ResourceName1",
-                ResourceValue = "ResourceValue2",
-                Language = language
+                ResourceValue = "ResourceValue2"
             };
         }
 
-        public static LocalizedProperty GetLocalizedProperty(Language language = null)
+        /// <summary>
+        /// Get localized property
+        /// </summary>
+        /// <returns></returns>
+        public static LocalizedProperty GetLocalizedProperty()
         {
             return new LocalizedProperty
             {
                 EntityId = 1,
                 LocaleKeyGroup = "LocaleKeyGroup 1",
                 LocaleKey = "LocaleKey 1",
-                LocaleValue = "LocaleValue 1",
-                Language = language
+                LocaleValue = "LocaleValue 1"
             };
         }
 
@@ -1132,22 +1239,24 @@ namespace Nop.Tests
 
         #region Nop.Core.Domain.Logging
 
-        public static ActivityLog GetActivityLog(int id = 1, 
-            Customer customer = null,
-            ActivityLogType activityLogType = null)
+        /// <summary>
+        /// Get activity log
+        /// </summary>
+        /// <returns></returns>
+        public static ActivityLog GetActivityLog()
         {
-            customer = customer ?? GetCustomer();
-            activityLogType = activityLogType ?? GetActivityLogType();
-
             return new ActivityLog
             {
-                Id = id,
-                ActivityLogType = activityLogType,
-                CustomerId = customer.Id,
-                Customer = customer
+                Id = 1,
+                ActivityLogType = GetActivityLogType(),
+                Customer = GetCustomer()
             };
         }
 
+        /// <summary>
+        /// Get activity log type
+        /// </summary>
+        /// <returns></returns>
         public static ActivityLogType GetActivityLogType()
         {
             return new ActivityLogType
@@ -1157,8 +1266,12 @@ namespace Nop.Tests
                 Enabled = true
             };
         }
-        
-        public static Log GetLog(Customer customer = null)
+
+        /// <summary>
+        /// Get log
+        /// </summary>
+        /// <returns></returns>
+        public static Log GetLog()
         {
             return new Log
             {
@@ -1168,16 +1281,19 @@ namespace Nop.Tests
                 IpAddress = "127.0.0.1",
                 PageUrl = "http://www.someUrl1.com",
                 ReferrerUrl = "http://www.someUrl2.com",
-                CreatedOnUtc = new DateTime(2010, 01, 01),
-                Customer = customer
+                CreatedOnUtc = new DateTime(2010, 01, 01)
             };
         }
 
         #endregion
-        
+
         #region Nop.Core.Domain.Media
 
-        public static Download GetGeDownload()
+        /// <summary>
+        /// Get download
+        /// </summary>
+        /// <returns></returns>
+        public static Download GetDownload()
         {
             return new Download
             {
@@ -1192,6 +1308,10 @@ namespace Nop.Tests
             };
         }
 
+        /// <summary>
+        /// Get picture
+        /// </summary>
+        /// <returns></returns>
         public static Picture GetPicture()
         {
             return new Picture
@@ -1209,6 +1329,10 @@ namespace Nop.Tests
 
         #region Nop.Core.Domain.Messages
 
+        /// <summary>
+        /// Get campaign
+        /// </summary>
+        /// <returns></returns>
         public static Campaign GetCampaign()
         {
             return new Campaign
@@ -1223,6 +1347,10 @@ namespace Nop.Tests
             };
         }
 
+        /// <summary>
+        /// Get email account
+        /// </summary>
+        /// <returns></returns>
         public static EmailAccount GetEmailAccount()
         {
             return new EmailAccount
@@ -1238,6 +1366,10 @@ namespace Nop.Tests
             };
         }
 
+        /// <summary>
+        /// Get message template
+        /// </summary>
+        /// <returns></returns>
         public static MessageTemplate GetMessageTemplate()
         {
             return new MessageTemplate
@@ -1255,6 +1387,10 @@ namespace Nop.Tests
             };
         }
 
+        /// <summary>
+        /// Get news letter subscription
+        /// </summary>
+        /// <returns></returns>
         public static NewsLetterSubscription GetNewsLetterSubscription()
         {
             return new NewsLetterSubscription
@@ -1267,6 +1403,10 @@ namespace Nop.Tests
             };
         }
 
+        /// <summary>
+        /// Get queued email
+        /// </summary>
+        /// <returns></returns>
         public static QueuedEmail GetQueuedEmail()
         {
             return new QueuedEmail
@@ -1296,6 +1436,10 @@ namespace Nop.Tests
 
         #region Nop.Core.Domain.News
 
+        /// <summary>
+        /// Get news comment
+        /// </summary>
+        /// <returns></returns>
         public static NewsComment GetNewsComment()
         {
             return new NewsComment
@@ -1306,6 +1450,10 @@ namespace Nop.Tests
             };
         }
 
+        /// <summary>
+        /// Get news item
+        /// </summary>
+        /// <returns></returns>
         public static NewsItem GetNewsItem()
         {
             return new NewsItem
@@ -1331,15 +1479,19 @@ namespace Nop.Tests
 
         #region Nop.Core.Domain.Orders
 
-        public static CheckoutAttribute GetCheckoutAttribute(int id = 1, bool shippableProductRequired = true)
+        /// <summary>
+        /// Get checkout attribute
+        /// </summary>
+        /// <returns></returns>
+        public static CheckoutAttribute GetCheckoutAttribute()
         {
             return new CheckoutAttribute
             {
-                Id = id,
+                Id = 1,
                 Name = "Name 1",
                 TextPrompt = "TextPrompt 1",
                 IsRequired = true,
-                ShippableProductRequired = shippableProductRequired,
+                ShippableProductRequired = true,
                 IsTaxExempt = true,
                 TaxCategoryId = 1,
                 AttributeControlType = AttributeControlType.Datepicker,
@@ -1354,31 +1506,29 @@ namespace Nop.Tests
             };
         }
 
-        public static CheckoutAttributeValue GetCheckoutAttributeValue(int id = 1, 
-            string name = "Name 2",
-            CheckoutAttribute checkoutAttribute = null)
+        /// <summary>
+        /// Get checkout attribute value
+        /// </summary>
+        /// <returns></returns>
+        public static CheckoutAttributeValue GetCheckoutAttributeValue()
         {
-            var checkoutAttributeValue = new CheckoutAttributeValue
+            return  new CheckoutAttributeValue
             {
-                Id = id,
-                Name = name,
+                Id = 1,
+                Name = "Name 2",
                 PriceAdjustment = 1,
                 WeightAdjustment = 2,
                 IsPreSelected = true,
                 DisplayOrder = 3,
                 ColorSquaresRgb = "#112233"
             };
-
-            if (checkoutAttribute != null)
-            {
-                checkoutAttributeValue.CheckoutAttribute = checkoutAttribute;
-                checkoutAttributeValue.CheckoutAttributeId = checkoutAttribute.Id;
-            }
-
-            return checkoutAttributeValue;
         }
 
-        public static GiftCard GetGiftCard(bool isGiftCardActivated, bool addGiftCardUsageHistory = true)
+        /// <summary>
+        /// Get gift card
+        /// </summary>
+        /// <returns></returns>
+        public static GiftCard GetGiftCard()
         {
             var giftCard = new GiftCard
             {
@@ -1392,34 +1542,30 @@ namespace Nop.Tests
                 Message = "Message 1",
                 IsRecipientNotified = true,
                 CreatedOnUtc = new DateTime(2010, 01, 01),
+                IsGiftCardActivated = true
             };
-
-            if (isGiftCardActivated)
-                giftCard.IsGiftCardActivated = true;
-
-            if (addGiftCardUsageHistory)
-            {
-                giftCard.GiftCardUsageHistory.Add(GetGiftCardUsageHistory(usedValue: 30));
-                giftCard.GiftCardUsageHistory.Add(GetGiftCardUsageHistory(usedValue: 20));
-                giftCard.GiftCardUsageHistory.Add(GetGiftCardUsageHistory(usedValue: 5));
-            }
 
             return giftCard;
         }
 
-        public static GiftCardUsageHistory GetGiftCardUsageHistory(Order usedWithOrder = null, GiftCard giftCard = null, decimal usedValue = 1.1M)
+        /// <summary>
+        /// Get gift card usage history
+        /// </summary>
+        /// <returns></returns>
+        public static GiftCardUsageHistory GetGiftCardUsageHistory()
         {
             return new GiftCardUsageHistory
             {
-                UsedValue = usedValue,
-                CreatedOnUtc = new DateTime(2010, 01, 01),
-                UsedWithOrder = usedWithOrder,
-                GiftCard = giftCard
+                UsedValue = 1.1M,
+                CreatedOnUtc = new DateTime(2010, 01, 01)
             };
         }
-        
-        public static Order GetOrder(Address shippingAddress = null,
-            RewardPointsHistory redeemedRewardPointsEntry = null)
+
+        /// <summary>
+        /// Get order
+        /// </summary>
+        /// <returns></returns>
+        public static Order GetOrder()
         {
             return new Order
             {
@@ -1470,17 +1616,19 @@ namespace Nop.Tests
                 CaptureTransactionResult = "CaptureTransactionResult1",
                 SubscriptionTransactionId = "SubscriptionTransactionId1",
                 PaidDateUtc = new DateTime(2010, 01, 01),
-                ShippingAddress = shippingAddress,
                 PickupAddress = GetAddress(),
                 ShippingMethod = "ShippingMethod1",
                 ShippingRateComputationMethodSystemName = "ShippingRateComputationMethodSystemName1",
                 PickUpInStore = true,
-                CustomValuesXml = "CustomValuesXml1",
-                RedeemedRewardPointsEntry = redeemedRewardPointsEntry
+                CustomValuesXml = "CustomValuesXml1"
             };
         }
 
-        public static OrderItem GetOrderItem(Order order = null)
+        /// <summary>
+        /// Get order item
+        /// </summary>
+        /// <returns></returns>
+        public static OrderItem GetOrderItem()
         {
             return new OrderItem
             {
@@ -1500,51 +1648,59 @@ namespace Nop.Tests
                 LicenseDownloadId = 8,
                 ItemWeight = 9.87M,
                 RentalStartDateUtc = new DateTime(2010, 01, 01),
-                RentalEndDateUtc = new DateTime(2010, 01, 02),
-                Order = order
+                RentalEndDateUtc = new DateTime(2010, 01, 02)
             };
         }
 
-        public static OrderNote GetOrderNote(Order order = null)
+        /// <summary>
+        /// Get order note
+        /// </summary>
+        /// <returns></returns>
+        public static OrderNote GetOrderNote()
         {
             return new OrderNote
             {
                 Note = "Note1",
                 DownloadId = 1,
                 DisplayToCustomer = true,
-                CreatedOnUtc = new DateTime(2010, 01, 01),
-                Order = order
+                CreatedOnUtc = new DateTime(2010, 01, 01)
             };
         }
 
-        public static RecurringPayment GetRecurringPayment(RecurringProductCyclePeriod recurringProductCyclePeriod,
-           int cycleLength = 2, 
-           bool isActive = true, 
-           Order initialOrder = null, 
-           bool deleted = false)
+        /// <summary>
+        /// Get recurring payment
+        /// </summary>
+        /// <returns></returns>
+        public static RecurringPayment GetRecurringPayment()
         {
             return new RecurringPayment
             {
-                CycleLength = cycleLength,
-                CyclePeriod = recurringProductCyclePeriod,
+                CycleLength = 2,
+                CyclePeriod = RecurringProductCyclePeriod.Days,
                 TotalCycles = 3,
                 StartDateUtc = new DateTime(2010, 3, 1),
                 CreatedOnUtc = new DateTime(2010, 1, 1),
-                IsActive = isActive,
-                InitialOrder = initialOrder,
-                Deleted = deleted
+                IsActive = true,
+                Deleted = false
             };
         }
 
-        public static RecurringPaymentHistory GetRecurringPaymentHistory(RecurringPayment recurringPayment = null)
+        /// <summary>
+        /// Get recurring payment history
+        /// </summary>
+        /// <returns></returns>
+        public static RecurringPaymentHistory GetRecurringPaymentHistory()
         {
             return new RecurringPaymentHistory
             {
-                CreatedOnUtc = new DateTime(2010, 01, 03),
-                RecurringPayment = recurringPayment
+                CreatedOnUtc = new DateTime(2010, 01, 03)
             };
         }
 
+        /// <summary>
+        /// Get return request
+        /// </summary>
+        /// <returns></returns>
         public static ReturnRequest GetReturnRequest()
         {
             return new ReturnRequest
@@ -1563,6 +1719,10 @@ namespace Nop.Tests
             };
         }
 
+        /// <summary>
+        /// Get return request action
+        /// </summary>
+        /// <returns></returns>
         public static ReturnRequestAction GetReturnRequestAction()
         {
             return new ReturnRequestAction
@@ -1572,6 +1732,10 @@ namespace Nop.Tests
             };
         }
 
+        /// <summary>
+        /// Get return request reason
+        /// </summary>
+        /// <returns></returns>
         public static ReturnRequestReason GetReturnRequestReason()
         {
             return new ReturnRequestReason
@@ -1581,46 +1745,35 @@ namespace Nop.Tests
             };
         }
 
-        public static ShoppingCartItem GetShoppingCartItem(Product product = null, Customer customer = null, int quantity = 2, string attributesXml = "AttributesXml 1")
+        /// <summary>
+        /// Get shopping cart item
+        /// </summary>
+        /// <returns></returns>
+        public static ShoppingCartItem GetShoppingCartItem()
         {
             return new ShoppingCartItem
             {
                 ShoppingCartType = ShoppingCartType.ShoppingCart,
-                AttributesXml = attributesXml,
+                AttributesXml = "AttributesXml 1",
                 CustomerEnteredPrice = 1,
-                Quantity = quantity,
+                Quantity = 2,
                 CreatedOnUtc = new DateTime(2010, 01, 01),
                 UpdatedOnUtc = new DateTime(2010, 01, 02),
-                Product = product ?? GetProduct(),
-                Customer = customer,
+                Product = GetProduct(),
                 StoreId = 1,
                 RentalStartDateUtc = new DateTime(2010, 01, 03),
                 RentalEndDateUtc = new DateTime(2010, 01, 04)
             };
         }
 
-        public static ShoppingCartItem GetShoppingCartItem(int quantity, 
-            decimal additionalShippingCharge,
-            bool isShipEnabled = true, 
-            Customer customer = null)
-        {
-            customer = customer ?? new Customer();
-            var shoppingCartItem = GetShoppingCartItem(new Product
-            {
-                IsShipEnabled = isShipEnabled,
-                IsFreeShipping = false,
-                AdditionalShippingCharge = additionalShippingCharge
-            }, customer);
-
-            shoppingCartItem.Quantity = quantity;
-
-            return shoppingCartItem;
-        }
-
         #endregion
 
         #region Nop.Core.Domain.Polls
 
+        /// <summary>
+        /// Get poll
+        /// </summary>
+        /// <returns></returns>
         public static Poll GetPoll()
         {
             return new Poll
@@ -1636,6 +1789,10 @@ namespace Nop.Tests
             };
         }
 
+        /// <summary>
+        /// Get poll answer
+        /// </summary>
+        /// <returns></returns>
         public static PollAnswer GetPollAnswer()
         {
             return new PollAnswer
@@ -1646,6 +1803,10 @@ namespace Nop.Tests
             };
         }
 
+        /// <summary>
+        /// Get poll voting record
+        /// </summary>
+        /// <returns></returns>
         public static PollVotingRecord GetPollVotingRecord()
         {
             return new PollVotingRecord
@@ -1659,6 +1820,10 @@ namespace Nop.Tests
 
         #region Nop.Core.Domain.Security
 
+        /// <summary>
+        /// Get ACL record
+        /// </summary>
+        /// <returns></returns>
         public static AclRecord GetAclRecord()
         {
             return new AclRecord
@@ -1669,6 +1834,10 @@ namespace Nop.Tests
             };
         }
 
+        /// <summary>
+        /// Get permission record
+        /// </summary>
+        /// <returns></returns>
         public static PermissionRecord GetPermissionRecord()
         {
             return new PermissionRecord
@@ -1683,6 +1852,10 @@ namespace Nop.Tests
 
         #region Nop.Core.Domain.Seo
 
+        /// <summary>
+        /// Get URL record
+        /// </summary>
+        /// <returns></returns>
         public static UrlRecord GetUrlRecord()
         {
             return new UrlRecord
@@ -1695,9 +1868,13 @@ namespace Nop.Tests
         }
 
         #endregion
-        
+
         #region Nop.Core.Domain.Shipping
 
+        /// <summary>
+        /// Get delivery date
+        /// </summary>
+        /// <returns></returns>
         public static DeliveryDate GetDeliveryDate()
         {
             return new DeliveryDate
@@ -1707,7 +1884,11 @@ namespace Nop.Tests
             };
         }
 
-        public static Shipment GetShipment(Order order = null)
+        /// <summary>
+        /// Get shipment
+        /// </summary>
+        /// <returns></returns>
+        public static Shipment GetShipment()
         {
             return new Shipment
             {
@@ -1716,22 +1897,28 @@ namespace Nop.Tests
                 DeliveryDateUtc = new DateTime(2010, 01, 02),
                 CreatedOnUtc = new DateTime(2010, 01, 03),
                 TotalWeight = 9.87M,
-                AdminComment = "AdminComment 1",
-                Order = order
+                AdminComment = "AdminComment 1"
             };
         }
 
-        public static ShipmentItem GetShipmentItem(Shipment shipment = null)
+        /// <summary>
+        /// Get shipment item
+        /// </summary>
+        /// <returns></returns>
+        public static ShipmentItem GetShipmentItem()
         {
             return new ShipmentItem
             {
                 OrderItemId = 2,
                 Quantity = 3,
-                WarehouseId = 4,
-                Shipment = shipment
+                WarehouseId = 4
             };
         }
 
+        /// <summary>
+        /// Get shipping method
+        /// </summary>
+        /// <returns></returns>
         public static ShippingMethod GetShippingMethod()
         {
             return new ShippingMethod
@@ -1742,6 +1929,10 @@ namespace Nop.Tests
             };
         }
 
+        /// <summary>
+        /// Get shipping options
+        /// </summary>
+        /// <returns></returns>
         public static IList<ShippingOption> GetShippingOptions()
         {
             return new List<ShippingOption>
@@ -1763,6 +1954,10 @@ namespace Nop.Tests
             };
         }
 
+        /// <summary>
+        /// Get warehouse
+        /// </summary>
+        /// <returns></returns>
         public static Warehouse GetWarehouse()
         {
             return new Warehouse
@@ -1777,6 +1972,10 @@ namespace Nop.Tests
 
         #region  Nop.Core.Domain.Stores
 
+        /// <summary>
+        /// Get store
+        /// </summary>
+        /// <returns></returns>
         public static Store GetStore()
         {
             return new Store
@@ -1794,6 +1993,10 @@ namespace Nop.Tests
             };
         }
 
+        /// <summary>
+        /// Get store mapping
+        /// </summary>
+        /// <returns></returns>
         public static StoreMapping GetStoreMapping()
         {
             return new StoreMapping
@@ -1803,11 +2006,15 @@ namespace Nop.Tests
                 Store = GetStore()
             };
         }
-        
+
         #endregion
-        
+
         #region Nop.Core.Domain.Tasks
 
+        /// <summary>
+        /// Get schedule task
+        /// </summary>
+        /// <returns></returns>
         public static ScheduleTask GetScheduleTask()
         {
             return new ScheduleTask
@@ -1829,6 +2036,10 @@ namespace Nop.Tests
 
         #region Nop.Core.Domain.Tax
 
+        /// <summary>
+        /// Ge tax category
+        /// </summary>
+        /// <returns></returns>
         public static TaxCategory GeTaxCategory()
         {
             return new TaxCategory
@@ -1842,6 +2053,10 @@ namespace Nop.Tests
 
         #region Nop.Core.Domain.Topics
 
+        /// <summary>
+        /// Get topic
+        /// </summary>
+        /// <returns></returns>
         public static Topic GetTopic()
         {
             return new Topic
@@ -1868,6 +2083,10 @@ namespace Nop.Tests
             };
         }
 
+        /// <summary>
+        /// Get topic template
+        /// </summary>
+        /// <returns></returns>
         public static TopicTemplate GetTopicTemplate()
         {
             return new TopicTemplate
@@ -1882,6 +2101,10 @@ namespace Nop.Tests
 
         #region Nop.Core.Domain.Vendors
 
+        /// <summary>
+        /// Get vendor
+        /// </summary>
+        /// <returns></returns>
         public static Vendor GetVendor()
         {
             return new Vendor
@@ -1903,32 +2126,65 @@ namespace Nop.Tests
             };
         }
 
-        public static VendorNote GetVendorNote(Vendor vendor = null)
+        /// <summary>
+        /// Get vendor note
+        /// </summary>
+        /// <returns></returns>
+        public static VendorNote GetVendorNote()
         {
             return new VendorNote
             {
                 Note = "Note1",
-                CreatedOnUtc = new DateTime(2010, 01, 01),
-                Vendor = vendor
+                CreatedOnUtc = new DateTime(2010, 01, 01)
             };
         }
-        
+
         #endregion
-        
+
         #endregion
-        
+
+        #region Nop.Services
+
+        #region Nop.Services.Discounts
+
+        /// <summary>
+        /// Get discount for caching
+        /// </summary>
+        /// <returns></returns>
+        public static DiscountForCaching GetDiscountForCaching()
+        {
+            return new DiscountForCaching
+            {
+                Id = 1,
+                Name = "Discount 1",
+                DiscountType = DiscountType.AssignedToShipping,
+                DiscountAmount = 3,
+                DiscountLimitation = DiscountLimitationType.Unlimited,
+            };
+        }
+
+        #endregion
+
         #region Nop.Services.Messages
 
-        public static IList<Token> GeTokens(int count = 1, bool neverHtmlEncoded = false)
+        /// <summary>
+        /// Get tokens
+        /// </summary>
+        /// <param name="quantity">Tokens quantity</param>
+        /// <param name="neverHtmlEncoded">Indicates whether the tokens should not be HTML encoded</param>
+        /// <returns></returns>
+        public static IList<Token> GetTokens(int quantity = 1, bool neverHtmlEncoded = false)
         {
             var tokens = new List<Token>();
-            for (var i = 1; i <= count; i++)
+            for (var i = 1; i <= quantity; i++)
             {
                 tokens.Add(new Token("Token" + i, string.Format("<Value{0}>", i), neverHtmlEncoded));
             }
 
             return tokens;
         }
+
+        #endregion
 
         #endregion
     }

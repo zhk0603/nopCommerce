@@ -10,7 +10,8 @@ namespace Nop.Data.Tests.Orders
         [Test]
         public void Can_save_and_load_orderNote()
         {
-            var on = TestHelper.GetOrderNote(TestHelper.GetOrder());
+            var on = TestHelper.GetOrderNote();
+            on.Order = TestHelper.GetOrder();
 
             var fromDb = SaveAndLoadEntity(on);
             fromDb.ShouldNotBeNull();
@@ -18,7 +19,6 @@ namespace Nop.Data.Tests.Orders
             fromDb.DownloadId.ShouldEqual(1);
             fromDb.DisplayToCustomer.ShouldEqual(true);
             fromDb.CreatedOnUtc.ShouldEqual(new DateTime(2010, 01, 01));
-
             fromDb.Order.ShouldNotBeNull();
         }
     }

@@ -9,7 +9,8 @@ namespace Nop.Data.Tests.Directory
         [Test]
         public void Can_save_and_load_stateProvince()
         {
-            var stateProvince = TestHelper.GetStateProvince(country: TestHelper.GetCountry());
+            var stateProvince = TestHelper.GetStateProvince();
+            stateProvince.Country = TestHelper.GetCountry();
 
             var fromDb = SaveAndLoadEntity(stateProvince);
             fromDb.ShouldNotBeNull();

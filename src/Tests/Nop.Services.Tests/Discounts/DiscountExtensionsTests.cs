@@ -23,7 +23,8 @@ namespace Nop.Services.Tests.Discounts
         [Test]
         public void Can_calculate_discount_amount_percentage()
         {
-            var discount = TestHelper.GetDiscount(discountPercentage: 30);
+            var discount = TestHelper.GetDiscount();
+            discount.DiscountPercentage = 30;
 
             discount.GetDiscountAmount(100).ShouldEqual(30);
             discount.DiscountPercentage = 60;
@@ -33,7 +34,9 @@ namespace Nop.Services.Tests.Discounts
         [Test]
         public void Can_calculate_discount_amount_fixed()
         {
-            var discount = TestHelper.GetDiscount(discountAmount: 10, usePercentage: false);
+            var discount = TestHelper.GetDiscount();
+            discount.DiscountAmount = 10;
+            discount.UsePercentage = false;
 
             discount.GetDiscountAmount(100).ShouldEqual(10);
             discount.DiscountAmount = 20;
@@ -43,7 +46,9 @@ namespace Nop.Services.Tests.Discounts
         [Test]
         public void Maximum_discount_amount_is_used()
         {
-            var discount = TestHelper.GetDiscount(discountPercentage: 30, maximumDiscountAmount: 3.4M);
+            var discount = TestHelper.GetDiscount();
+            discount.MaximumDiscountAmount = 3.4M;
+            discount.DiscountPercentage = 30;
 
             discount.GetDiscountAmount(100).ShouldEqual(3.4M);
             discount.DiscountPercentage = 60;

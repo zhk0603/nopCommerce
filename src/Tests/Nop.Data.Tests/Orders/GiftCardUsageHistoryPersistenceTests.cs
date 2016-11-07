@@ -10,7 +10,9 @@ namespace Nop.Data.Tests.Orders
         [Test]
         public void Can_save_and_load_giftCardUsageHistory()
         {
-            var gcuh = TestHelper.GetGiftCardUsageHistory(TestHelper.GetOrder(), TestHelper.GetGiftCard(true, false));
+            var gcuh = TestHelper.GetGiftCardUsageHistory();
+            gcuh.GiftCard = TestHelper.GetGiftCard();
+            gcuh.UsedWithOrder = TestHelper.GetOrder();
 
             var fromDb = SaveAndLoadEntity(gcuh);
             fromDb.ShouldNotBeNull();

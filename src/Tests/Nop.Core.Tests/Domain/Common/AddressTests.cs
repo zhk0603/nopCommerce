@@ -11,7 +11,9 @@ namespace Nop.Core.Tests.Domain.Common
         [Test]
         public void Can_clone_address()
         {
-            var address = TestHelper.GetAddress(3, 4);
+            var address = TestHelper.GetAddress();
+            address.StateProvinceId = address.StateProvince.Id = 3;
+            address.CountryId = address.Country.Id = 4;
 
             var newAddress = address.Clone() as Address;
             newAddress.ShouldNotBeNull();

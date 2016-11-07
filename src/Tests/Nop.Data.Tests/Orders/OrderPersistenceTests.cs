@@ -78,7 +78,8 @@ namespace Nop.Data.Tests.Orders
         [Test]
         public void Can_save_and_load_order_with_shipping_address()
         {
-            var order = TestHelper.GetOrder(TestHelper.GetAddress());
+            var order = TestHelper.GetOrder();
+            order.ShippingAddress = TestHelper.GetAddress();
 
             var fromDb = SaveAndLoadEntity(order);
             fromDb.ShouldNotBeNull();
@@ -89,7 +90,8 @@ namespace Nop.Data.Tests.Orders
         [Test]
         public void Can_save_and_load_order_with_usedRewardPoints()
         {
-            var order = TestHelper.GetOrder(redeemedRewardPointsEntry: TestHelper.GetRewardPointsHistory());
+            var order = TestHelper.GetOrder();
+            order.RedeemedRewardPointsEntry = TestHelper.GetRewardPointsHistory();
 
             var fromDb = SaveAndLoadEntity(order);
             fromDb.ShouldNotBeNull();
@@ -118,7 +120,8 @@ namespace Nop.Data.Tests.Orders
         public void Can_save_and_load_order_with_giftCardUsageHistory()
         {
             var order = TestHelper.GetOrder();
-            var gcuh = TestHelper.GetGiftCardUsageHistory(giftCard: TestHelper.GetGiftCard(true, false));
+            var gcuh = TestHelper.GetGiftCardUsageHistory();
+            gcuh.GiftCard = TestHelper.GetGiftCard();
             order.GiftCardUsageHistory.Add(gcuh);
             var fromDb = SaveAndLoadEntity(order);
             fromDb.ShouldNotBeNull();

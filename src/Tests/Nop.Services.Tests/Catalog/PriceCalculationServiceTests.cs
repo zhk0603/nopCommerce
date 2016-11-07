@@ -142,12 +142,14 @@ namespace Nop.Services.Tests.Catalog
             var customer = new Customer();
             
             //discounts
-            var discount1 = TestHelper.GetDiscount(DiscountType.AssignedToSkus, false);
-            
-            discount1.AppliedToProducts.Add(product);
-            product.AppliedDiscounts.Add(discount1);
+            var discount = TestHelper.GetDiscount();
+            discount.UsePercentage = false;
+            discount.DiscountType = DiscountType.AssignedToSkus;
 
-            _discountService.Expect(ds => ds.ValidateDiscount(discount1, customer)).Return(new DiscountValidationResult() {IsValid = true});
+            discount.AppliedToProducts.Add(product);
+            product.AppliedDiscounts.Add(discount);
+
+            _discountService.Expect(ds => ds.ValidateDiscount(discount, customer)).Return(new DiscountValidationResult {IsValid = true});
             _discountService.Expect(ds => ds.GetAllDiscountsForCaching(DiscountType.AssignedToCategories)).Return(new List<DiscountForCaching>());
             _discountService.Expect(ds => ds.GetAllDiscountsForCaching(DiscountType.AssignedToManufacturers)).Return(new List<DiscountForCaching>());
 
@@ -186,8 +188,11 @@ namespace Nop.Services.Tests.Catalog
             var customer = new Customer();
 
             //shopping cart
-            var product = TestHelper.GetProduct(customerEntersPrice: false);
-            var sci = TestHelper.GetShoppingCartItem(product, customer);
+            var product = TestHelper.GetProduct();
+            product.CustomerEntersPrice = false;
+            var sci = TestHelper.GetShoppingCartItem();
+            sci.Product = product;
+            sci.Customer = customer;
 
             _discountService.Expect(ds => ds.GetAllDiscountsForCaching(DiscountType.AssignedToCategories)).Return(new List<DiscountForCaching>());
             _discountService.Expect(ds => ds.GetAllDiscountsForCaching(DiscountType.AssignedToManufacturers)).Return(new List<DiscountForCaching>());
@@ -203,9 +208,12 @@ namespace Nop.Services.Tests.Catalog
             var customer = new Customer();
 
             //shopping cart
-            var product = TestHelper.GetProduct(customerEntersPrice: false);
+            var product = TestHelper.GetProduct();
+            product.CustomerEntersPrice = false;
 
-            var sci = TestHelper.GetShoppingCartItem(product, customer);
+            var sci = TestHelper.GetShoppingCartItem();
+            sci.Product = product;
+            sci.Customer = customer;
 
             _discountService.Expect(ds => ds.GetAllDiscountsForCaching(DiscountType.AssignedToCategories)).Return(new List<DiscountForCaching>());
             _discountService.Expect(ds => ds.GetAllDiscountsForCaching(DiscountType.AssignedToManufacturers)).Return(new List<DiscountForCaching>());
@@ -254,10 +262,14 @@ namespace Nop.Services.Tests.Catalog
             //customer
             var customer = new Customer();
 
-            var product = TestHelper.GetProduct(customerEntersPrice: false, price: productPrice);
+            var product = TestHelper.GetProduct();
+            product.CustomerEntersPrice = false;
+            product.Price = productPrice;
 
-            var shoppingCartItem = TestHelper.GetShoppingCartItem(product, customer);
+            var shoppingCartItem = TestHelper.GetShoppingCartItem();
             shoppingCartItem.Quantity = quantity;
+            shoppingCartItem.Product = product;
+            shoppingCartItem.Customer = customer;
 
             _discountService.Expect(ds => ds.GetAllDiscountsForCaching(DiscountType.AssignedToCategories)).Return(new List<DiscountForCaching>());
             _discountService.Expect(ds => ds.GetAllDiscountsForCaching(DiscountType.AssignedToManufacturers)).Return(new List<DiscountForCaching>());

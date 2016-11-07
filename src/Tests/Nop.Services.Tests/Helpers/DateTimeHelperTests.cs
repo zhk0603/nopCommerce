@@ -70,13 +70,15 @@ namespace Nop.Services.Tests.Helpers
             _dateTimeSettings.DefaultStoreTimeZoneId = "E. Europe Standard Time"; //(GMT+02:00) Minsk;
 
             var customer = TestHelper.GetCustomer();
+            
+            var genericAttribute = TestHelper.GetGenericAttribute();
+            genericAttribute.EntityId = customer.Id;
+            genericAttribute.Value = "Russian Standard Time"; //(GMT+03:00) Moscow, St. Petersburg, Volgograd
+            genericAttribute.Key = SystemCustomerAttributeNames.TimeZoneId;
+            genericAttribute.StoreId = 0;
 
             _genericAttributeService.Expect(x => x.GetAttributesForEntity(customer.Id, "Customer"))
-                .Return(new List<GenericAttribute>
-                {
-                    //(GMT+03:00) Moscow, St. Petersburg, Volgograd
-                    TestHelper.GetGenericAttribute(customer.Id, "Russian Standard Time", SystemCustomerAttributeNames.TimeZoneId, 0)
-                });
+                .Return(new List<GenericAttribute> { genericAttribute });
             var timeZone = _dateTimeHelper.GetCustomerTimeZone(customer);
             timeZone.ShouldNotBeNull();
             timeZone.Id.ShouldEqual("Russian Standard Time");
@@ -89,13 +91,14 @@ namespace Nop.Services.Tests.Helpers
             _dateTimeSettings.DefaultStoreTimeZoneId = "E. Europe Standard Time"; //(GMT+02:00) Minsk;
 
             var customer = TestHelper.GetCustomer();
+            
+            var genericAttribute = TestHelper.GetGenericAttribute();
+            genericAttribute.EntityId = customer.Id;
+            genericAttribute.Value = "Russian Standard Time"; //(GMT+03:00) Moscow, St. Petersburg, Volgograd
+            genericAttribute.Key = SystemCustomerAttributeNames.TimeZoneId;
 
             _genericAttributeService.Expect(x => x.GetAttributesForEntity(customer.Id, "Customer"))
-                .Return(new List<GenericAttribute>
-                {
-                    //(GMT+03:00) Moscow, St. Petersburg, Volgograd
-                    TestHelper.GetGenericAttribute(customer.Id, "Russian Standard Time", SystemCustomerAttributeNames.TimeZoneId)
-                });
+                .Return(new List<GenericAttribute> { genericAttribute });
 
             var timeZone = _dateTimeHelper.GetCustomerTimeZone(customer);
             timeZone.ShouldNotBeNull();

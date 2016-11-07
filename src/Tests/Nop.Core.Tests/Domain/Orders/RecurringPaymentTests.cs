@@ -12,8 +12,8 @@ namespace Nop.Core.Tests.Domain.Orders
         [Test]
         public void Can_calculate_nextPaymentDate_with_days_as_cycle_period()
         {
-            var rp = TestHelper.GetRecurringPayment(RecurringProductCyclePeriod.Days, 7);
-
+            var rp = TestHelper.GetRecurringPayment();
+            rp.CycleLength = 7;
             rp.NextPaymentDate.ShouldEqual(new DateTime(2010, 3, 1));
 
             //add one history record
@@ -30,8 +30,8 @@ namespace Nop.Core.Tests.Domain.Orders
         [Test]
         public void Can_calculate_nextPaymentDate_with_weeks_as_cycle_period()
         {
-            var rp = TestHelper.GetRecurringPayment(RecurringProductCyclePeriod.Weeks);
-
+            var rp = TestHelper.GetRecurringPayment();
+            rp.CyclePeriod = RecurringProductCyclePeriod.Weeks;
             rp.NextPaymentDate.ShouldEqual(new DateTime(2010, 3, 1));
 
             //add one history record
@@ -48,7 +48,8 @@ namespace Nop.Core.Tests.Domain.Orders
         [Test]
         public void Can_calculate_nextPaymentDate_with_months_as_cycle_period()
         {
-            var rp = TestHelper.GetRecurringPayment(RecurringProductCyclePeriod.Months);
+            var rp = TestHelper.GetRecurringPayment();
+            rp.CyclePeriod = RecurringProductCyclePeriod.Months;
 
             rp.NextPaymentDate.ShouldEqual(new DateTime(2010, 3, 1));
 
@@ -66,8 +67,8 @@ namespace Nop.Core.Tests.Domain.Orders
         [Test]
         public void Can_calculate_nextPaymentDate_with_years_as_cycle_period()
         {
-            var rp = TestHelper.GetRecurringPayment(RecurringProductCyclePeriod.Years);
-
+            var rp = TestHelper.GetRecurringPayment();
+            rp.CyclePeriod = RecurringProductCyclePeriod.Years;
             rp.NextPaymentDate.ShouldEqual(new DateTime(2010, 3, 1));
 
             //add one history record
@@ -84,9 +85,10 @@ namespace Nop.Core.Tests.Domain.Orders
         [Test]
         public void Next_payment_date_is_null_when_recurring_payment_is_not_active()
         {
-            var rp = TestHelper.GetRecurringPayment(RecurringProductCyclePeriod.Days, 7, false);
-
+            var rp = TestHelper.GetRecurringPayment();
+            rp.IsActive = false;
             rp.NextPaymentDate.ShouldBeNull();
+            rp.CycleLength = 7;
 
             //add one history record
             rp.RecurringPaymentHistory.Add(new RecurringPaymentHistory());
@@ -102,7 +104,7 @@ namespace Nop.Core.Tests.Domain.Orders
         [Test]
         public void Can_calculate_number_of_remaining_cycle()
         {
-            var rp = TestHelper.GetRecurringPayment(RecurringProductCyclePeriod.Days);
+            var rp = TestHelper.GetRecurringPayment();
 
             rp.CyclesRemaining.ShouldEqual(3);
 

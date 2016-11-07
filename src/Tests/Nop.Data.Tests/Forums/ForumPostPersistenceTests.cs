@@ -21,7 +21,8 @@ namespace Nop.Data.Tests.Forums
             forumGroupFromDb.Name.ShouldEqual("Forum Group 1");
             forumGroupFromDb.DisplayOrder.ShouldEqual(1);
 
-            var forum = TestHelper.GetForum(forumGroupFromDb);
+            var forum = TestHelper.GetForum();
+            forum.ForumGroup = forumGroupFromDb;
 
             forumGroup.Forums.Add(forum);
             var forumFromDb = SaveAndLoadEntity(forum);
@@ -33,7 +34,9 @@ namespace Nop.Data.Tests.Forums
             forumFromDb.NumPosts.ShouldEqual(25);
             forumFromDb.ForumGroupId.ShouldEqual(forumGroupFromDb.Id);
 
-            var forumTopic = TestHelper.GetForumTopic(customerFromDb, forumFromDb);
+            var forumTopic = TestHelper.GetForumTopic();
+            forumTopic.Customer = customerFromDb;
+            forumTopic.Forum = forumFromDb;
 
             var forumTopicFromDb = SaveAndLoadEntity(forumTopic);
             forumTopicFromDb.ShouldNotBeNull();
@@ -43,7 +46,9 @@ namespace Nop.Data.Tests.Forums
             forumTopicFromDb.TopicTypeId.ShouldEqual((int)ForumTopicType.Sticky);
             forumTopicFromDb.ForumId.ShouldEqual(forumFromDb.Id);
 
-            var forumPost = TestHelper.GetForumPost(forumTopicFromDb, customerFromDb);
+            var forumPost = TestHelper.GetForumPost();
+            forumPost.ForumTopic = forumTopicFromDb;
+            forumPost.Customer = customerFromDb;
 
             var forumPostFromDb = SaveAndLoadEntity(forumPost);
             forumPostFromDb.ShouldNotBeNull();

@@ -11,8 +11,8 @@ namespace Nop.Data.Tests.Orders
         [Test]
         public void Can_save_and_load_orderItem()
         {
-            var orderItem = TestHelper.GetOrderItem(TestHelper.GetOrder());
-
+            var orderItem = TestHelper.GetOrderItem();
+            orderItem.Order = TestHelper.GetOrder();
             var fromDb = SaveAndLoadEntity(orderItem);
             fromDb.ShouldNotBeNull();
             fromDb.Order.ShouldNotBeNull();
@@ -39,8 +39,9 @@ namespace Nop.Data.Tests.Orders
         [Test]
         public void Can_save_and_load_orderItem_with_giftCard()
         {
-            var orderItem = TestHelper.GetOrderItem(TestHelper.GetOrder());
-            orderItem.AssociatedGiftCards.Add(TestHelper.GetGiftCard(true, false));
+            var orderItem = TestHelper.GetOrderItem();
+            orderItem.Order = TestHelper.GetOrder();
+            orderItem.AssociatedGiftCards.Add(TestHelper.GetGiftCard());
 
             var fromDb = SaveAndLoadEntity(orderItem);
             fromDb.ShouldNotBeNull();

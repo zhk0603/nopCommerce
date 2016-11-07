@@ -24,9 +24,12 @@ namespace Nop.Data.Tests.Common
         [Test]
         public void Can_save_and_load_addressAttribute_with_values()
         {
-            var ca = TestHelper.GetAddressAttribute();
-            
-            var fromDb = SaveAndLoadEntity(ca);
+            var addressAttribute = TestHelper.GetAddressAttribute();
+            var addressAttributeValue = TestHelper.GetAddressAttributeValue();
+            addressAttributeValue.AddressAttribute = addressAttribute;
+            addressAttribute.AddressAttributeValues.Add(addressAttributeValue);
+
+            var fromDb = SaveAndLoadEntity(addressAttribute);
             fromDb.ShouldNotBeNull();
             fromDb.Name.ShouldEqual("Name 1");
 

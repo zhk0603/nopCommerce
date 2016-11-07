@@ -10,9 +10,10 @@ namespace Nop.Data.Tests.Discounts
         [Test]
         public void Can_save_and_load_discountUsageHistory()
         {
-            var discount = TestHelper.GetDiscountUsageHistory(TestHelper.GetOrder());
+            var discountHistory = TestHelper.GetDiscountUsageHistory();
+            discountHistory.Order = TestHelper.GetOrder();
 
-            var fromDb = SaveAndLoadEntity(discount);
+            var fromDb = SaveAndLoadEntity(discountHistory);
             fromDb.ShouldNotBeNull();
             fromDb.CreatedOnUtc.ShouldEqual(new DateTime(2010, 01, 01));
 

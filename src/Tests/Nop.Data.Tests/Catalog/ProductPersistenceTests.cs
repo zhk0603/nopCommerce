@@ -129,7 +129,9 @@ namespace Nop.Data.Tests.Catalog
         public void CanSaveAndLoadProductWithProductCategories()
         {
             var product = TestHelper.GetProduct();
-            product.ProductCategories.Add(TestHelper.GetProductCategory(product));
+            var productCategory = TestHelper.GetProductCategory();
+            productCategory.Product = product;
+            product.ProductCategories.Add(productCategory);
            
             var fromDb = SaveAndLoadEntity(product);
             fromDb.ShouldNotBeNull();
@@ -147,7 +149,9 @@ namespace Nop.Data.Tests.Catalog
         public void CanSaveAndLoadProductWithProductManufacturers()
         {
             var product = TestHelper.GetProduct();
-            product.ProductManufacturers.Add(TestHelper.GetProductManufacturer(product));
+            var productManufacturer = TestHelper.GetProductManufacturer();
+            productManufacturer.Product = product;
+            product.ProductManufacturers.Add(productManufacturer);
 
             var fromDb = SaveAndLoadEntity(product);
             fromDb.ShouldNotBeNull();
@@ -165,7 +169,9 @@ namespace Nop.Data.Tests.Catalog
         public void CanSaveAndLoadProductWithProductPictures()
         {
             var product = TestHelper.GetProduct();
-            product.ProductPictures.Add(TestHelper.GetProductPicture(product));
+            var productPicture = TestHelper.GetProductPicture();
+            productPicture.Product = product;
+            product.ProductPictures.Add(productPicture);
 
             var fromDb = SaveAndLoadEntity(product);
             fromDb.ShouldNotBeNull();
@@ -198,7 +204,9 @@ namespace Nop.Data.Tests.Catalog
         public void CanSaveAndLoadProductWithTierPrices()
         {
             var product = TestHelper.GetProduct();
-            product.TierPrices.Add(TestHelper.GetTierPrice(quantity: 1, price: 2));
+            var tierPrice = TestHelper.GetTierPrice();
+            tierPrice.Price = 2;
+            product.TierPrices.Add(tierPrice);
 
             var fromDb = SaveAndLoadEntity(product);
             fromDb.ShouldNotBeNull();
@@ -213,7 +221,9 @@ namespace Nop.Data.Tests.Catalog
         public void CanSaveAndLoadProductWithProductWarehouseInventory()
         {
             var product = TestHelper.GetProduct();
-            product.ProductWarehouseInventory.Add(TestHelper.GetProductWarehouseInventory(product));
+            var productWarehouseInventory = TestHelper.GetProductWarehouseInventory();
+            productWarehouseInventory.Product = product;
+            product.ProductWarehouseInventory.Add(productWarehouseInventory);
            
             var fromDb = SaveAndLoadEntity(product);
             fromDb.ShouldNotBeNull();

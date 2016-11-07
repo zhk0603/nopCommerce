@@ -43,6 +43,21 @@ namespace Nop.Services.Tests.Customers
         private SecuritySettings _securitySettings;
         private IRewardPointService _rewardPointService;
 
+        private Customer GetCustomerByName(string name,
+           string systemName = "",
+           string password = "password",
+           PasswordFormat passwordFormat = PasswordFormat.Clear)
+        {
+            var customer = string.IsNullOrEmpty(systemName) ? TestHelper.GetCustomer() : TestHelper.GetCustomer(systemName);
+
+            customer.PasswordFormat = passwordFormat;
+            customer.Password = password;
+            customer.Username = name + "@test.com";
+            customer.Email = customer.Username;
+
+            return customer;
+        }
+
         [SetUp]
         public new void SetUp()
         {
@@ -53,7 +68,7 @@ namespace Nop.Services.Tests.Customers
             };
             _rewardPointsSettings = new RewardPointsSettings
             {
-                Enabled = false,
+                Enabled = false
             };
 
             _encryptionService = new EncryptionService(_securitySettings);
@@ -66,10 +81,10 @@ namespace Nop.Services.Tests.Customers
             customer1.PasswordSalt = saltKey;
             customer1.Password = password;
 
-            var customer2 = TestHelper.GetCustomerByName("test", "Registered");
-            var customer3 = TestHelper.GetCustomerByName("user", "Registered", _encryptionService.EncryptText("password"), PasswordFormat.Encrypted);
-            var customer4 = TestHelper.GetCustomerByName("registered", "Registered");
-            var customer5 = TestHelper.GetCustomerByName("notregistered");
+            var customer2 = GetCustomerByName("test", "Registered");
+            var customer3 = GetCustomerByName("user", "Registered", _encryptionService.EncryptText("password"), PasswordFormat.Encrypted);
+            var customer4 = GetCustomerByName("registered", "Registered");
+            var customer5 = GetCustomerByName("notregistered");
 
             _eventPublisher = MockRepository.GenerateMock<IEventPublisher>();
             _eventPublisher.Expect(x => x.Publish(Arg<object>.Is.Anything));

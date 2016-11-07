@@ -11,7 +11,7 @@ namespace Nop.Data.Tests.Customers
         [Test]
         public void Can_save_and_load_customerAttribute()
         {
-            var ca = TestHelper.GetCustomerAttribute(false);
+            var ca = TestHelper.GetCustomerAttribute();
 
             var fromDb = SaveAndLoadEntity(ca);
             fromDb.ShouldNotBeNull();
@@ -25,6 +25,10 @@ namespace Nop.Data.Tests.Customers
         public void Can_save_and_load_customerAttribute_with_values()
         {
             var ca = TestHelper.GetCustomerAttribute();
+            var cav = TestHelper.GetCustomerAttributeValue();
+            cav.CustomerAttribute = ca;
+            ca.CustomerAttributeValues.Add(cav);
+
             var fromDb = SaveAndLoadEntity(ca);
             fromDb.ShouldNotBeNull();
             fromDb.Name.ShouldEqual("Name 1");

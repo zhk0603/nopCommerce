@@ -17,12 +17,22 @@ namespace Nop.Services.Tests.Orders
         [Test]
         public void Can_remove_shippable_attributes()
         {
+            var checkoutAttribute1 = TestHelper.GetCheckoutAttribute();
+            checkoutAttribute1.ShippableProductRequired = false;
+            var checkoutAttribute2 = TestHelper.GetCheckoutAttribute();
+            checkoutAttribute2.Id = 2;
+            var checkoutAttribute3 = TestHelper.GetCheckoutAttribute();
+            checkoutAttribute3.Id = 3;
+            checkoutAttribute3.ShippableProductRequired = false;
+            var checkoutAttribute4 = TestHelper.GetCheckoutAttribute();
+            checkoutAttribute4.Id = 4;
+
             var attributes = new List<CheckoutAttribute>
             {
-                TestHelper.GetCheckoutAttribute(1, false),
-                TestHelper.GetCheckoutAttribute(2),
-                TestHelper.GetCheckoutAttribute(3, false),
-                TestHelper.GetCheckoutAttribute(4)
+                checkoutAttribute1,
+                checkoutAttribute2,
+                checkoutAttribute3,
+                checkoutAttribute4
             };
 
             var filtered = attributes.RemoveShippableAttributes();

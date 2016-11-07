@@ -9,7 +9,8 @@ namespace Nop.Data.Tests.Catalog
         [Test]
         public void Can_save_and_load_tierPrice()
         {
-            var tierPrice = TestHelper.GetTierPrice(TestHelper.GetProduct());
+            var tierPrice = TestHelper.GetTierPrice();
+            tierPrice.Product = TestHelper.GetProduct();
 
             var fromDb = SaveAndLoadEntity(tierPrice);
             fromDb.ShouldNotBeNull();
@@ -23,7 +24,9 @@ namespace Nop.Data.Tests.Catalog
         [Test]
         public void Can_save_and_load_tierPriceWithCustomerRole()
         {
-            var tierPrice = TestHelper.GetTierPrice(TestHelper.GetProduct(), TestHelper.GetCustomerRole("Administrators"));
+            var tierPrice = TestHelper.GetTierPrice();
+            tierPrice.Product = TestHelper.GetProduct();
+            tierPrice.CustomerRole = TestHelper.GetCustomerRole("Administrators");
 
             var fromDb = SaveAndLoadEntity(tierPrice);
             fromDb.ShouldNotBeNull();

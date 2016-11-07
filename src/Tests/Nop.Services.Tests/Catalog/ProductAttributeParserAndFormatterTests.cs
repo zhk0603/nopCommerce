@@ -56,30 +56,82 @@ namespace Nop.Services.Tests.Catalog
             var product = TestHelper.GetProduct();
 
             //color (dropdownlist)
-            pa1 = TestHelper.GetProductAttribute(name: "Color");
-            pam1_1 = TestHelper.GetProductAttributeMapping(product, 11, "Select color:", productAttribute: pa1);
-            pav1_1 = TestHelper.GetProductAttributeValue(11, "Green", pam1_1);
-            pav1_2 = TestHelper.GetProductAttributeValue(12, "Red", pam1_1);
+            pa1 = TestHelper.GetProductAttribute();
+            pa1.Name = "Color";
+            pam1_1 = TestHelper.GetProductAttributeMapping();
+            pam1_1.Product = product;
+            pam1_1.ProductId = product.Id;
+            pam1_1.Id = 11;
+            pam1_1.TextPrompt = "Select color:";
+            pam1_1.ProductAttribute = pa1;
+
+            pav1_1 = TestHelper.GetProductAttributeValue();
+            pav1_1.Id = 11;
+            pav1_1.Name = "Green";
+            pav1_1.ProductAttributeMapping = pam1_1;
+
+            pav1_2 = TestHelper.GetProductAttributeValue();
+            pav1_2.Id = 12;
+            pav1_2.Name = "Red";
+            pav1_2.ProductAttributeMapping = pam1_1;
+
             pam1_1.ProductAttributeValues.Add(pav1_1);
             pam1_1.ProductAttributeValues.Add(pav1_2);
 
             //custom option (checkboxes)
-            pa2 = TestHelper.GetProductAttribute(2, "Some custom option");
-            pam2_1 = TestHelper.GetProductAttributeMapping(product, 21, "Select at least one option: ", AttributeControlType.Checkboxes, pa2);
-            pav2_1 = TestHelper.GetProductAttributeValue(21, "Option 1", pam2_1);
-            pav2_2 = TestHelper.GetProductAttributeValue(22, "Option 2", pam2_1);
+            pa2 = TestHelper.GetProductAttribute();
+            pa2.Id = 2;
+            pa2.Name = "Some custom option";
+            pam2_1 = TestHelper.GetProductAttributeMapping();
+            pam2_1.Product = product;
+            pam2_1.ProductId = product.Id;
+            pam2_1.Id = 21;
+            pam2_1.AttributeControlType = AttributeControlType.Checkboxes;
+            pam2_1.TextPrompt = "Select at least one option: ";
+            pam2_1.ProductAttribute = pa2;
+
+            pav2_1 = TestHelper.GetProductAttributeValue();
+            pav2_1.Id = 21;
+            pav2_1.Name = "Option 1";
+            pav2_1.ProductAttributeMapping = pam2_1;
+
+            pav2_2 = TestHelper.GetProductAttributeValue();
+            pav2_2.Id = 22;
+            pav2_2.Name = "Option 2";
+            pav2_2.ProductAttributeMapping = pam2_1;
+
             pam2_1.ProductAttributeValues.Add(pav2_1);
             pam2_1.ProductAttributeValues.Add(pav2_2);
 
             //custom text
-            pa3 = TestHelper.GetProductAttribute(3, "Custom text");
-            pam3_1 = TestHelper.GetProductAttributeMapping(product, 31, "Enter custom text: ", AttributeControlType.TextBox, pa3);
+            pa3 = TestHelper.GetProductAttribute();
+            pa3.Id = 3;
+            pa3.Name = "Custom text";
+            pam3_1 = TestHelper.GetProductAttributeMapping();
+            pam3_1.Product = product;
+            pam3_1.ProductId = product.Id;
+            pam3_1.Id = 31;
+            pam3_1.AttributeControlType = AttributeControlType.TextBox;
+            pam3_1.TextPrompt = "Enter custom text: ";
+            pam3_1.ProductAttribute = pa3;
 
             //option radio
-            pa4 = TestHelper.GetProductAttribute(4, "Radio list");            
-            pam4_1 = TestHelper.GetProductAttributeMapping(product, 41, "Select option and enter the quantity:", AttributeControlType.RadioList, pa4);            
-            pav4_1 = TestHelper.GetProductAttributeValue(41, "Option with quantity", pam4_1);
-           
+            pa4 = TestHelper.GetProductAttribute();
+            pa4.Id = 4;
+            pa4.Name = "Radio list";
+            pam4_1 = TestHelper.GetProductAttributeMapping();
+            pam4_1.Product = product;
+            pam4_1.ProductId = product.Id;
+            pam4_1.Id = 41;
+            pam4_1.AttributeControlType = AttributeControlType.RadioList;
+            pam4_1.TextPrompt = "Select option and enter the quantity:";
+            pam4_1.ProductAttribute = pa4;
+
+            pav4_1 = TestHelper.GetProductAttributeValue();
+            pav4_1.Id = 41;
+            pav4_1.Name = "Option with quantity";
+            pav4_1.ProductAttributeMapping = pam4_1;
+
             #endregion
 
             _productAttributeRepo = MockRepository.GenerateMock<IRepository<ProductAttribute>>();
@@ -257,7 +309,7 @@ namespace Nop.Services.Tests.Catalog
             };
             var customer = new Customer();
             string formattedAttributes = _productAttributeFormatter.FormatAttributes(product,
-                attributes, customer, "<br />", false, false, true, true);
+                attributes, customer, "<br />", false, false);
             formattedAttributes.ShouldEqual("From: senderName 1 <senderEmail@gmail.com><br />For: recipientName 1 <recipientEmail@gmail.com>");
         }
 
@@ -275,7 +327,7 @@ namespace Nop.Services.Tests.Catalog
             };
             var customer = new Customer();
             string formattedAttributes = _productAttributeFormatter.FormatAttributes(product,
-                attributes, customer, "<br />", false, false, true, true);
+                attributes, customer, "<br />", false, false);
             formattedAttributes.ShouldEqual("From: senderName 1<br />For: recipientName 1");
         }
 
@@ -303,7 +355,7 @@ namespace Nop.Services.Tests.Catalog
             };
             var customer = new Customer();
             string formattedAttributes = _productAttributeFormatter.FormatAttributes(product,
-                attributes, customer, "<br />", false, false, true, true);
+                attributes, customer, "<br />", false, false);
             formattedAttributes.ShouldEqual("Color: Green<br />Some custom option: Option 1<br />Some custom option: Option 2<br />Custom text: Some custom text goes here<br />From: senderName 1 <senderEmail@gmail.com><br />For: recipientName 1 <recipientEmail@gmail.com>");
         }
     }

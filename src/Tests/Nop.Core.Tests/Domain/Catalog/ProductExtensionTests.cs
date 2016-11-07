@@ -21,7 +21,8 @@ namespace Nop.Core.Tests.Domain.Catalog
         [Test]
         public void Should_be_available_when_startdate_is_not_set()
         {
-            var product = TestHelper.GetProduct(false);
+            var product = TestHelper.GetProduct();
+            product.AvailableStartDateTimeUtc = null;
             product.IsAvailable(new DateTime(2010, 01, 03)).ShouldEqual(true);
         }
 
@@ -40,7 +41,8 @@ namespace Nop.Core.Tests.Domain.Catalog
         [Test]
         public void Should_be_available_when_enddate_is_not_set()
         {
-            var product = TestHelper.GetProduct(setAvailableEndDateTimeUtc: false);
+            var product = TestHelper.GetProduct();
+            product.AvailableEndDateTimeUtc = null;
             product.IsAvailable(new DateTime(2010, 01, 03)).ShouldEqual(true);
         }
 

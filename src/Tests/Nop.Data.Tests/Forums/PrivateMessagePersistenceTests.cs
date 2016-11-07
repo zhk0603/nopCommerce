@@ -20,7 +20,10 @@ namespace Nop.Data.Tests.Forums
             var customer2FromDb = SaveAndLoadEntity(customer2);
             customer2FromDb.ShouldNotBeNull();
 
-            var privateMessage = TestHelper.GetPrivateMessage(customer1FromDb, customer2FromDb, storeFromDb);
+            var privateMessage = TestHelper.GetPrivateMessage();
+            privateMessage.FromCustomer = customer1FromDb;
+            privateMessage.ToCustomer = customer2FromDb;
+            privateMessage.StoreId = storeFromDb.Id;
 
             var fromDb = SaveAndLoadEntity(privateMessage);
             fromDb.ShouldNotBeNull();

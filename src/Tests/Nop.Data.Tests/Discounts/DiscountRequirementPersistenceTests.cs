@@ -9,7 +9,8 @@ namespace Nop.Data.Tests.Discounts
         [Test]
         public void Can_save_and_load_discountRequirement()
         {
-            var discountRequirement = TestHelper.GetDiscountRequirement(TestHelper.GetDiscount());
+            var discountRequirement = TestHelper.GetDiscountRequirement();
+            discountRequirement.Discount = TestHelper.GetDiscount();
 
             var fromDb = SaveAndLoadEntity(discountRequirement);
             fromDb.ShouldNotBeNull();

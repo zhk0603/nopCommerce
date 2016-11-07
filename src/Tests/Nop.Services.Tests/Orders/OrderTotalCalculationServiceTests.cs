@@ -65,7 +65,7 @@ namespace Nop.Services.Tests.Orders
         private AddressSettings _addressSettings;
         private IRewardPointService _rewardPointService;
 
-        private IList<ShoppingCartItem> GetShoppingCartItems(Customer customer, bool isFreeShipping = true, decimal price1 = 12.34M, decimal price2 = 21.57M, bool isShipEnabled = true)
+        private static IList<ShoppingCartItem> GetShoppingCartItems(Customer customer, bool isFreeShipping = true, decimal price1 = 12.34M, decimal price2 = 21.57M, bool isShipEnabled = true)
         {
             customer.IsTaxExempt = false;
 
@@ -78,8 +78,10 @@ namespace Nop.Services.Tests.Orders
                 IsFreeShipping = isFreeShipping
             };
 
-            var sci1 = TestHelper.GetShoppingCartItem(product1, customer);
+            var sci1 = TestHelper.GetShoppingCartItem();
             sci1.CustomerEnteredPrice = price1;
+            sci1.Product = product1;
+            sci1.Customer = customer;
 
             var product2 = new Product
             {
@@ -90,19 +92,40 @@ namespace Nop.Services.Tests.Orders
                 IsFreeShipping = isFreeShipping
             };
 
-            var sci2 = TestHelper.GetShoppingCartItem(product2, customer);
+            var sci2 = TestHelper.GetShoppingCartItem();
+            sci2.Product = product2;
+            sci2.Customer = customer;
             sci2.Quantity = 3;
             sci2.CustomerEnteredPrice = price2;
 
             return new List<ShoppingCartItem> { sci1, sci2 };
         }
 
-        private IList<ShoppingCartItem> CreateShoppingCartItems(Customer customer = null)
+        private static ShoppingCartItem GetShoppingCartItem(int quantity,
+            decimal additionalShippingCharge,
+            Customer customer,
+            bool isShipEnabled = true)
         {
-            var sci1 = TestHelper.GetShoppingCartItem(3, 5.5M, customer: customer);
-            var sci2 = TestHelper.GetShoppingCartItem(4, 6.5M, customer: customer);
+            customer = customer ?? new Customer();
+            var shoppingCartItem = TestHelper.GetShoppingCartItem();
+            shoppingCartItem.Product = new Product
+            {
+                IsShipEnabled = isShipEnabled,
+                IsFreeShipping = false,
+                AdditionalShippingCharge = additionalShippingCharge
+            };
+            shoppingCartItem.Customer = customer;
+            shoppingCartItem.Quantity = quantity;
+
+            return shoppingCartItem;
+        }
+
+        private static IList<ShoppingCartItem> CreateShoppingCartItems(Customer customer = null)
+        {
+            var sci1 = GetShoppingCartItem(3, 5.5M, customer);
+            var sci2 = GetShoppingCartItem(4, 6.5M, customer);
             //sci3 is not shippable
-            var sci3 = TestHelper.GetShoppingCartItem(5, 7.5M, false, customer);
+            var sci3 = GetShoppingCartItem(5, 7.5M, customer, false);
 
             return new List<ShoppingCartItem> { sci1, sci2, sci3 };
         }

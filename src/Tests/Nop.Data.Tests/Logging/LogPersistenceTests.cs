@@ -27,7 +27,8 @@ namespace Nop.Data.Tests.Logging
         [Test]
         public void Can_save_and_load_log_with_customer()
         {
-            var log = TestHelper.GetLog(TestHelper.GetCustomer());
+            var log = TestHelper.GetLog();
+            log.Customer = TestHelper.GetCustomer();
 
             var fromDb = SaveAndLoadEntity(log);
             fromDb.ShouldNotBeNull();

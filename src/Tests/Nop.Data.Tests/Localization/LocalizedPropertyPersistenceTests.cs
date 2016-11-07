@@ -9,7 +9,8 @@ namespace Nop.Data.Tests.Localization
         [Test]
         public void Can_save_and_load_localizedProperty()
         {
-            var localizedProperty = TestHelper.GetLocalizedProperty(TestHelper.GetLanguage());
+            var localizedProperty = TestHelper.GetLocalizedProperty();
+            localizedProperty.Language = TestHelper.GetLanguage();
 
             var fromDb = SaveAndLoadEntity(localizedProperty);
             fromDb.ShouldNotBeNull();

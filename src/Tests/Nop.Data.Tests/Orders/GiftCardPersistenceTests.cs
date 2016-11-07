@@ -12,7 +12,7 @@ namespace Nop.Data.Tests.Orders
         [Test]
         public void Can_save_and_load_giftCard()
         {
-            var giftCard = TestHelper.GetGiftCard(true, false);
+            var giftCard = TestHelper.GetGiftCard();
 
             var fromDb = SaveAndLoadEntity(giftCard);
             fromDb.ShouldNotBeNull();
@@ -32,8 +32,9 @@ namespace Nop.Data.Tests.Orders
         [Test]
         public void Can_save_and_load_giftCard_with_usageHistory()
         {
-            var giftCard = TestHelper.GetGiftCard(true, false);
-            var gcuh = TestHelper.GetGiftCardUsageHistory(TestHelper.GetOrder());
+            var giftCard = TestHelper.GetGiftCard();
+            var gcuh = TestHelper.GetGiftCardUsageHistory();
+            gcuh.UsedWithOrder = TestHelper.GetOrder();
             giftCard.GiftCardUsageHistory.Add(gcuh);
             var fromDb = SaveAndLoadEntity(giftCard);
             fromDb.ShouldNotBeNull();
@@ -46,8 +47,9 @@ namespace Nop.Data.Tests.Orders
         [Test]
         public void Can_save_and_load_giftCard_with_associatedItem()
         {
-            var giftCard = TestHelper.GetGiftCard(true, false);
-            var oi = TestHelper.GetOrderItem(TestHelper.GetOrder());
+            var giftCard = TestHelper.GetGiftCard();
+            var oi = TestHelper.GetOrderItem();
+            oi.Order = TestHelper.GetOrder();
             giftCard.PurchasedWithOrderItem = oi;
 
             var fromDb = SaveAndLoadEntity(giftCard);

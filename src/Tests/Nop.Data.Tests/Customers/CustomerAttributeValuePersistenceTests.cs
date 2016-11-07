@@ -9,7 +9,7 @@ namespace Nop.Data.Tests.Customers
         [Test]
         public void Can_save_and_load_customerAttributeValue()
         {
-            var cav = TestHelper.GetCustomerAttributeValue(true);
+            var cav = TestHelper.GetCustomerAttributeValue();
 
             var fromDb = SaveAndLoadEntity(cav);
             fromDb.ShouldNotBeNull();

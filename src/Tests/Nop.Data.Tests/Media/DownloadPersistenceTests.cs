@@ -10,7 +10,7 @@ namespace Nop.Data.Tests.Media
         [Test]
         public void Can_save_and_load_download()
         {
-            var download = TestHelper.GetGeDownload();
+            var download = TestHelper.GetDownload();
 
             var fromDb = SaveAndLoadEntity(download);
             fromDb.ShouldNotBeNull();

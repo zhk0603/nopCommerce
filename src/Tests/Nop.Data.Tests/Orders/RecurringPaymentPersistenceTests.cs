@@ -12,9 +12,10 @@ namespace Nop.Data.Tests.Orders
         [Test]
         public void Can_save_and_load_recurringPayment()
         {
-            var rp = TestHelper.GetRecurringPayment(RecurringProductCyclePeriod.Days, 1);
+            var rp = TestHelper.GetRecurringPayment();
             rp.Deleted = true;
             rp.InitialOrder = TestHelper.GetOrder();
+            rp.CycleLength = 1;
 
             var fromDb = SaveAndLoadEntity(rp);
             fromDb.ShouldNotBeNull();
@@ -32,8 +33,11 @@ namespace Nop.Data.Tests.Orders
         [Test]
         public void Can_save_and_load_recurringPayment_with_history()
         {
-            var rp = TestHelper.GetRecurringPayment(RecurringProductCyclePeriod.Days, 1, initialOrder: TestHelper.GetOrder(), deleted: true);
+            var rp = TestHelper.GetRecurringPayment();
+            rp.Deleted = true;
+            rp.InitialOrder = TestHelper.GetOrder();
             rp.RecurringPaymentHistory.Add(TestHelper.GetRecurringPaymentHistory());
+            rp.CycleLength = 1;
 
             var fromDb = SaveAndLoadEntity(rp);
             fromDb.ShouldNotBeNull();

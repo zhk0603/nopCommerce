@@ -22,7 +22,9 @@ namespace Nop.Data.Tests.Catalog
         public void Can_save_and_load_specificationAttribute_with_specificationAttributeOptions()
         {
             var specificationAttribute = TestHelper.GetSpecificationAttribute();
-            specificationAttribute.SpecificationAttributeOptions.Add(TestHelper.GetSpecificationAttributeOption(false));
+            var specificationAttributeOption = TestHelper.GetSpecificationAttributeOption();
+            specificationAttributeOption.SpecificationAttribute = specificationAttribute;
+            specificationAttribute.SpecificationAttributeOptions.Add(specificationAttributeOption);
             var fromDb = SaveAndLoadEntity(specificationAttribute);
             fromDb.ShouldNotBeNull();
             fromDb.Name.ShouldEqual("SpecificationAttribute name 1");

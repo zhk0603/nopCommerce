@@ -62,7 +62,8 @@ namespace Nop.Services.Tests.Catalog
         public void Can_formatPrice_with_custom_currencyFormatting()
         {
             Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
-            var currency = TestHelper.GetCurrency(customFormatting: "€0.00");
+            var currency = TestHelper.GetCurrency();
+            currency.CustomFormatting = "€0.00";
 
             _priceFormatter.FormatPrice(1234.5M, false, currency, TestHelper.GetLanguage(), false, false).ShouldEqual("€1234.50");
         }

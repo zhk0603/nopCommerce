@@ -11,7 +11,8 @@ namespace Nop.Data.Tests.Shipping
         [Test]
         public void Can_save_and_load_shipment()
         {
-            var shipment = TestHelper.GetShipment(TestHelper.GetOrder());
+            var shipment = TestHelper.GetShipment();
+            shipment.Order = TestHelper.GetOrder();
 
             var fromDb = SaveAndLoadEntity(shipment);
             fromDb.ShouldNotBeNull();
@@ -26,7 +27,8 @@ namespace Nop.Data.Tests.Shipping
         [Test]
         public void Can_save_and_load_shipment_with_items()
         {
-            var shipment = TestHelper.GetShipment(TestHelper.GetOrder());
+            var shipment = TestHelper.GetShipment();
+            shipment.Order = TestHelper.GetOrder();
             shipment.ShipmentItems.Add(TestHelper.GetShipmentItem());
 
             var fromDb = SaveAndLoadEntity(shipment);

@@ -9,7 +9,8 @@ namespace Nop.Data.Tests.Customers
         [Test]
         public void Can_save_and_load_externalAuthenticationRecord()
         {
-            var externalAuthenticationRecord = TestHelper.GetExternalAuthenticationRecord(TestHelper.GetCustomer());
+            var externalAuthenticationRecord = TestHelper.GetExternalAuthenticationRecord();
+            externalAuthenticationRecord.Customer = TestHelper.GetCustomer();
 
             var fromDb = SaveAndLoadEntity(externalAuthenticationRecord);
             fromDb.ShouldNotBeNull();

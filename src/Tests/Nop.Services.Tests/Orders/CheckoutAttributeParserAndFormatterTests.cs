@@ -49,24 +49,38 @@ namespace Nop.Services.Tests.Orders
             ca1.Name = "Color";
             ca1.TextPrompt = "Select color:";
 
-            cav1_1 = TestHelper.GetCheckoutAttributeValue(11, "Green", ca1);
-            cav1_2 = TestHelper.GetCheckoutAttributeValue(12, "Red", ca1);
+            cav1_1 = TestHelper.GetCheckoutAttributeValue();
+            cav1_1.Id = 11;
+            cav1_1.Name = "Green";
+            cav1_2 = TestHelper.GetCheckoutAttributeValue();
+            cav1_2.Id = 12;
+            cav1_2.Name = "Red";
+            cav1_1.CheckoutAttribute = cav1_2.CheckoutAttribute = ca1;
+
             ca1.CheckoutAttributeValues.Add(cav1_1);
             ca1.CheckoutAttributeValues.Add(cav1_2);
 
             //custom option (checkboxes)
-            ca2 = TestHelper.GetCheckoutAttribute(2);
+            ca2 = TestHelper.GetCheckoutAttribute();
+            ca2.Id = 2;
             ca2.AttributeControlType = AttributeControlType.Checkboxes;
             ca2.Name = "Custom option";
             ca2.TextPrompt = "Select custom option:";
             
-            cav2_1 = TestHelper.GetCheckoutAttributeValue(21, "Option 1", ca2); 
-            cav2_2 = TestHelper.GetCheckoutAttributeValue(22, "Option 2", ca2);
+            cav2_1 = TestHelper.GetCheckoutAttributeValue();
+            cav2_1.Id = 21;
+            cav2_1.Name = "Option 1";
+            cav2_2 = TestHelper.GetCheckoutAttributeValue();
+            cav2_2.Id = 22;
+            cav2_2.Name = "Option 2";
+            cav2_1.CheckoutAttribute = cav2_2.CheckoutAttribute = ca2;
+
             ca2.CheckoutAttributeValues.Add(cav2_1);
             ca2.CheckoutAttributeValues.Add(cav2_2);
             
             //custom text
-            ca3 = TestHelper.GetCheckoutAttribute(3);
+            ca3 = TestHelper.GetCheckoutAttribute();
+            ca3.Id = 3;
             ca3.AttributeControlType = AttributeControlType.MultilineTextbox;
             ca3.Name = "Custom text";
             ca3.TextPrompt = "Enter custom text:";

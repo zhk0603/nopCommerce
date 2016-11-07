@@ -18,20 +18,42 @@ namespace Nop.Services.Tests.Catalog
         [Test]
         public void Can_remove_duplicatedQuantities()
         {
+            var tierPrice1 = TestHelper.GetTierPrice();
+            tierPrice1.Price = 150;
+            var tierPrice2 = TestHelper.GetTierPrice();
+            tierPrice2.Price = 100;
+            tierPrice2.Id = 2;
+            var tierPrice3 = TestHelper.GetTierPrice();
+            tierPrice3.Price = 300;
+            tierPrice3.Id = 3;
+            tierPrice3.Quantity = 3;
+            var tierPrice4= TestHelper.GetTierPrice();
+            tierPrice4.Price = 250;
+            tierPrice4.Id = 4;
+            tierPrice4.Quantity = 4;
+            var tierPrice5 = TestHelper.GetTierPrice();
+            tierPrice5.Price = 300;
+            tierPrice5.Id = 5;
+            tierPrice5.Quantity = 4;
+            var tierPrice6 = TestHelper.GetTierPrice();
+            tierPrice6.Price = 350;
+            tierPrice6.Id = 6;
+            tierPrice6.Quantity = 6;
+
             var tierPrices = new List<TierPrice>
             {
                 //will be removed
-                TestHelper.GetTierPrice(price: 150),
+                tierPrice1,
                 //will stay
-                TestHelper.GetTierPrice(price: 100, id: 2),
+                tierPrice2,
                 //will stay
-                TestHelper.GetTierPrice(price: 300, quantity: 3, id: 3),
+                tierPrice3,
                 //will stay
-                TestHelper.GetTierPrice(price: 250, quantity: 4, id: 4),
+                tierPrice4,
                 //will be removed
-                TestHelper.GetTierPrice(price: 300, quantity: 4, id: 5),
+                tierPrice5,
                  //will stay
-                TestHelper.GetTierPrice(price: 350, quantity: 5, id: 6)
+                tierPrice6
             };
 
             tierPrices.RemoveDuplicatedQuantities();

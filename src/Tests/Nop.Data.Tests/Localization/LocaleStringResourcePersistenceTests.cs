@@ -9,7 +9,8 @@ namespace Nop.Data.Tests.Localization
         [Test]
         public void Can_save_and_load_lst()
         {
-            var lst = TestHelper.GetLocaleStringResource(TestHelper.GetLanguage());
+            var lst = TestHelper.GetLocaleStringResource();
+            lst.Language = TestHelper.GetLanguage();
 
             var fromDb = SaveAndLoadEntity(lst);
             fromDb.ShouldNotBeNull();

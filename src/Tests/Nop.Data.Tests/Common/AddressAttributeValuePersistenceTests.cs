@@ -9,7 +9,7 @@ namespace Nop.Data.Tests.Common
         [Test]
         public void Can_save_and_load_addressAttributeValue()
         {
-            var cav = TestHelper.GetAddressAttributeValue(true);
+            var cav = TestHelper.GetAddressAttributeValue();
 
             var fromDb = SaveAndLoadEntity(cav);
             fromDb.ShouldNotBeNull();

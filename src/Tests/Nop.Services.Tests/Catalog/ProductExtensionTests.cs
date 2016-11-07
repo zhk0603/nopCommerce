@@ -30,16 +30,26 @@ namespace Nop.Services.Tests.Catalog
         [Test]
         public void Can_calculate_total_quantity_when_we_do_not_use_multiple_warehouses()
         {
-            var product = TestHelper.GetProduct(useMultipleWarehouses: false);
-            
-            product.ProductWarehouseInventory.Add(TestHelper.GetProductWarehouseInventory(product, warehouseId: 1,
-                stockQuantity: 2));
-            product.ProductWarehouseInventory.Add(TestHelper.GetProductWarehouseInventory(product, warehouseId: 2,
-                stockQuantity: 8));
-            product.ProductWarehouseInventory.Add(TestHelper.GetProductWarehouseInventory(product, warehouseId: 3,
-                stockQuantity: -2));
+            var product = TestHelper.GetProduct();
+            product.UseMultipleWarehouses = false;
 
-            var result = product.GetTotalStockQuantity(true);
+            var productWarehouseInventory1 = TestHelper.GetProductWarehouseInventory();
+            productWarehouseInventory1.WarehouseId = 1;
+            productWarehouseInventory1.StockQuantity = 2;
+            var productWarehouseInventory2 = TestHelper.GetProductWarehouseInventory();
+            productWarehouseInventory2.WarehouseId = 2;
+            productWarehouseInventory2.StockQuantity = 8;
+            var productWarehouseInventory3 = TestHelper.GetProductWarehouseInventory();
+            productWarehouseInventory3.WarehouseId = 3;
+            productWarehouseInventory3.StockQuantity = -2;
+
+            productWarehouseInventory1.Product = productWarehouseInventory2.Product = productWarehouseInventory3.Product = product;
+
+            product.ProductWarehouseInventory.Add(productWarehouseInventory1);
+            product.ProductWarehouseInventory.Add(productWarehouseInventory2);
+            product.ProductWarehouseInventory.Add(productWarehouseInventory3);
+
+            var result = product.GetTotalStockQuantity();
             result.ShouldEqual(13);
         }
 
@@ -48,15 +58,24 @@ namespace Nop.Services.Tests.Catalog
         {
             var product = TestHelper.GetProduct();
 
-            //ReservedQuantity = 4
-            product.ProductWarehouseInventory.Add(TestHelper.GetProductWarehouseInventory(product, warehouseId: 1,
-                stockQuantity: 8));
-            product.ProductWarehouseInventory.Add(TestHelper.GetProductWarehouseInventory(product, warehouseId: 2,
-                stockQuantity: 14));
-            product.ProductWarehouseInventory.Add(TestHelper.GetProductWarehouseInventory(product, warehouseId: 3,
-                stockQuantity: -2));
+            var productWarehouseInventory1 = TestHelper.GetProductWarehouseInventory();
+            productWarehouseInventory1.WarehouseId = 1;
+            productWarehouseInventory1.StockQuantity = 8;
+            var productWarehouseInventory2 = TestHelper.GetProductWarehouseInventory();
+            productWarehouseInventory2.WarehouseId = 2;
+            productWarehouseInventory2.StockQuantity = 14;
+            var productWarehouseInventory3 = TestHelper.GetProductWarehouseInventory();
+            productWarehouseInventory3.WarehouseId = 3;
+            productWarehouseInventory3.StockQuantity = -2;
 
-            var result = product.GetTotalStockQuantity(true);
+            productWarehouseInventory1.Product = productWarehouseInventory2.Product = productWarehouseInventory3.Product = product;
+
+            //ReservedQuantity = 4
+            product.ProductWarehouseInventory.Add(productWarehouseInventory1);
+            product.ProductWarehouseInventory.Add(productWarehouseInventory2);
+            product.ProductWarehouseInventory.Add(productWarehouseInventory3);
+
+            var result = product.GetTotalStockQuantity();
             result.ShouldEqual(8);
         }
 
@@ -65,13 +84,22 @@ namespace Nop.Services.Tests.Catalog
         {
             var product = TestHelper.GetProduct();
 
+            var productWarehouseInventory1 = TestHelper.GetProductWarehouseInventory();
+            productWarehouseInventory1.WarehouseId = 1;
+            productWarehouseInventory1.StockQuantity = 8;
+            var productWarehouseInventory2 = TestHelper.GetProductWarehouseInventory();
+            productWarehouseInventory2.WarehouseId = 2;
+            productWarehouseInventory2.StockQuantity = 14;
+            var productWarehouseInventory3 = TestHelper.GetProductWarehouseInventory();
+            productWarehouseInventory3.WarehouseId = 3;
+            productWarehouseInventory3.StockQuantity = -2;
+
+            productWarehouseInventory1.Product = productWarehouseInventory2.Product = productWarehouseInventory3.Product = product;
+
             //ReservedQuantity = 4
-            product.ProductWarehouseInventory.Add(TestHelper.GetProductWarehouseInventory(product, warehouseId: 1,
-                stockQuantity: 8));
-            product.ProductWarehouseInventory.Add(TestHelper.GetProductWarehouseInventory(product, warehouseId: 2,
-                stockQuantity: 14));
-            product.ProductWarehouseInventory.Add(TestHelper.GetProductWarehouseInventory(product, warehouseId: 3,
-                stockQuantity: -2));
+            product.ProductWarehouseInventory.Add(productWarehouseInventory1);
+            product.ProductWarehouseInventory.Add(productWarehouseInventory2);
+            product.ProductWarehouseInventory.Add(productWarehouseInventory3);
 
             var result = product.GetTotalStockQuantity(false);
             result.ShouldEqual(20);
@@ -82,13 +110,22 @@ namespace Nop.Services.Tests.Catalog
         {
             var product = TestHelper.GetProduct();
 
+            var productWarehouseInventory1 = TestHelper.GetProductWarehouseInventory();
+            productWarehouseInventory1.WarehouseId = 1;
+            productWarehouseInventory1.StockQuantity = 8;
+            var productWarehouseInventory2 = TestHelper.GetProductWarehouseInventory();
+            productWarehouseInventory2.WarehouseId = 2;
+            productWarehouseInventory2.StockQuantity = 14;
+            var productWarehouseInventory3 = TestHelper.GetProductWarehouseInventory();
+            productWarehouseInventory3.WarehouseId = 3;
+            productWarehouseInventory3.StockQuantity = -2;
+
+            productWarehouseInventory1.Product = productWarehouseInventory2.Product = productWarehouseInventory3.Product = product;
+
             //ReservedQuantity = 4
-            product.ProductWarehouseInventory.Add(TestHelper.GetProductWarehouseInventory(product, warehouseId: 1,
-                stockQuantity: 8));
-            product.ProductWarehouseInventory.Add(TestHelper.GetProductWarehouseInventory(product, warehouseId: 2,
-                stockQuantity: 14));
-            product.ProductWarehouseInventory.Add(TestHelper.GetProductWarehouseInventory(product, warehouseId: 3,
-                stockQuantity: -2));
+            product.ProductWarehouseInventory.Add(productWarehouseInventory1);
+            product.ProductWarehouseInventory.Add(productWarehouseInventory2);
+            product.ProductWarehouseInventory.Add(productWarehouseInventory3);
 
             var result = product.GetTotalStockQuantity(true, 1);
             result.ShouldEqual(4);
@@ -124,7 +161,8 @@ namespace Nop.Services.Tests.Catalog
         [Test]
         public void Can_calculate_rental_periods_for_weeks()
         {
-            var product = TestHelper.GetProduct(rentalPricePeriod: RentalPricePeriod.Weeks);
+            var product = TestHelper.GetProduct();
+            product.RentalPricePeriod = RentalPricePeriod.Weeks;
             var startDate = new DateTime(2014, 3, 5);
 
             DateTime[] dt =
@@ -155,7 +193,8 @@ namespace Nop.Services.Tests.Catalog
         [Test]
         public void Can_calculate_rental_periods_for_months()
         {
-            var product = TestHelper.GetProduct(rentalPricePeriod: RentalPricePeriod.Months);
+            var product = TestHelper.GetProduct();
+            product.RentalPricePeriod = RentalPricePeriod.Months;
             var startDate = new DateTime(2014, 3, 5);
 
             DateTime[] dt =
@@ -210,7 +249,8 @@ namespace Nop.Services.Tests.Catalog
         [Test]
         public void Can_calculate_rental_periods_for_years()
         {
-            var product = TestHelper.GetProduct(rentalPricePeriod: RentalPricePeriod.Years);
+            var product = TestHelper.GetProduct();
+            product.RentalPricePeriod = RentalPricePeriod.Years;
             var startDate = new DateTime(2014, 3, 5);
 
             DateTime[] dt =

@@ -36,8 +36,15 @@ namespace Nop.Services.Tests.Logging
             _customer1.Id = 1;
            _customer2 = TestHelper.GetCustomer();
             _customer2.Id = 2;
-            _activity1 = TestHelper.GetActivityLog(1, _customer1, _activityType1);
-            _activity2 = TestHelper.GetActivityLog(2, _customer2, _activityType1);
+            _activity1 = TestHelper.GetActivityLog();
+            _activity1.ActivityLogType = _activityType1;
+            _activity1.Customer = _customer1;
+            _activity1.CustomerId = _customer1.Id;
+            _activity2 = TestHelper.GetActivityLog();
+            _activity2.Id = 2;
+            _activity2.ActivityLogType = _activityType1;
+            _activity2.Customer = _customer2;
+            _activity2.CustomerId = _customer2.Id;
 
             _cacheManager = new NopNullCache();
             _workContext = MockRepository.GenerateMock<IWorkContext>();

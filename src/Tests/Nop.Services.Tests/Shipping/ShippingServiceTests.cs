@@ -116,14 +116,26 @@ namespace Nop.Services.Tests.Shipping
         [Test]
         public void Can_get_shoppingCart_totalWeight_without_attributes()
         {
+            var product1 = TestHelper.GetProduct();
+            product1.Weight = 1.5M;
+            var product2 = TestHelper.GetProduct();
+            product2.Weight = 11.5M;
+
+            var shoppingCartItem1 = TestHelper.GetShoppingCartItem();
+            shoppingCartItem1.Quantity = 3;
+            shoppingCartItem1.Product = product1;
+            var shoppingCartItem2 = TestHelper.GetShoppingCartItem();
+            shoppingCartItem2.Quantity = 4;
+            shoppingCartItem2.Product = product2;
+
+            shoppingCartItem1.AttributesXml = shoppingCartItem2.AttributesXml = string.Empty;
+
             var request = new GetShippingOptionRequest
             {
                 Items =
                 {
-                    new GetShippingOptionRequest.PackageItem(
-                        TestHelper.GetShoppingCartItem(TestHelper.GetProduct(weight: 1.5M), quantity: 3, attributesXml: string.Empty)),
-                    new GetShippingOptionRequest.PackageItem(
-                        TestHelper.GetShoppingCartItem(TestHelper.GetProduct(weight: 11.5M), quantity: 4, attributesXml: string.Empty))
+                    new GetShippingOptionRequest.PackageItem(shoppingCartItem1),
+                    new GetShippingOptionRequest.PackageItem(shoppingCartItem2)
                 }
             };
             _shippingService.GetTotalWeight(request).ShouldEqual(50.5M);

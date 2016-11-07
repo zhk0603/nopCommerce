@@ -18,7 +18,7 @@ namespace Nop.Services.Tests.Messages
             };
             var tokenizer = new Tokenizer(messageTemplatesSettings);
 
-            var tokens = TestHelper.GeTokens();
+            var tokens = TestHelper.GetTokens();
 
             //correct case
             tokenizer
@@ -40,7 +40,7 @@ namespace Nop.Services.Tests.Messages
             var tokenizer = new Tokenizer(messageTemplatesSettings);
             
             tokenizer
-                .Replace("Some text %TOKEn1%", TestHelper.GeTokens(), false)
+                .Replace("Some text %TOKEn1%", TestHelper.GetTokens(), false)
                 .ShouldEqual("Some text <Value1>");
         }
 
@@ -54,7 +54,7 @@ namespace Nop.Services.Tests.Messages
             var tokenizer = new Tokenizer(messageTemplatesSettings);
             
             tokenizer
-                .Replace("Some text %Token1%", TestHelper.GeTokens(), true)
+                .Replace("Some text %Token1%", TestHelper.GetTokens(), true)
                 .ShouldEqual("Some text &lt;Value1&gt;");
         }
 
@@ -68,7 +68,7 @@ namespace Nop.Services.Tests.Messages
             var tokenizer = new Tokenizer(messageTemplatesSettings);
             
             tokenizer
-                .Replace("Some text %Token1%", TestHelper.GeTokens(neverHtmlEncoded: true), true)
+                .Replace("Some text %Token1%", TestHelper.GetTokens(neverHtmlEncoded: true), true)
                 .ShouldEqual("Some text <Value1>");
         }
     }

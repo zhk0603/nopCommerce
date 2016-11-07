@@ -11,8 +11,12 @@ namespace Nop.Data.Tests.Orders
         [Test]
         public void Can_save_and_load_recurringPaymentHistory()
         {
-            var rph = TestHelper.GetRecurringPaymentHistory(TestHelper.GetRecurringPayment(RecurringProductCyclePeriod.Days, initialOrder: TestHelper.GetOrder()));
+            var rp = TestHelper.GetRecurringPayment();
+            rp.InitialOrder = TestHelper.GetOrder();
 
+            var rph = TestHelper.GetRecurringPaymentHistory();
+            rph.RecurringPayment = rp;
+            
             var fromDb = SaveAndLoadEntity(rph);
             fromDb.ShouldNotBeNull();
             fromDb.CreatedOnUtc.ShouldEqual(new DateTime(2010, 01, 03));
