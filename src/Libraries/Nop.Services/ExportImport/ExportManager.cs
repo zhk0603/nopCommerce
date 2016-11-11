@@ -16,12 +16,12 @@ using Nop.Core.Domain.Tax;
 using Nop.Core.Domain.Vendors;
 using Nop.Services.Catalog;
 using Nop.Services.Common;
+using Nop.Services.Customers;
 using Nop.Services.Directory;
 using Nop.Services.ExportImport.Help;
 using Nop.Services.Media;
 using Nop.Services.Messages;
 using Nop.Services.Seo;
-using Nop.Services.Shipping;
 using Nop.Services.Shipping.Date;
 using Nop.Services.Stores;
 using Nop.Services.Tax;
@@ -48,11 +48,12 @@ namespace Nop.Services.ExportImport
         private readonly ProductEditorSettings _productEditorSettings;
         private readonly IVendorService _vendorService;
         private readonly IProductTemplateService _productTemplateService;
-        private readonly IShippingService _shippingService;
         private readonly IDateRangeService _dateRangeService;
         private readonly ITaxCategoryService _taxCategoryService;
         private readonly IMeasureService _measureService;
         private readonly CatalogSettings _catalogSettings;
+        private readonly IGenericAttributeService _genericAttributeService;
+        private readonly ICustomerAttributeFormatter _customerAttributeFormatter;
 
         #endregion
 
@@ -68,11 +69,12 @@ namespace Nop.Services.ExportImport
             ProductEditorSettings productEditorSettings,
             IVendorService vendorService,
             IProductTemplateService productTemplateService,
-            IShippingService shippingService,
             IDateRangeService dateRangeService,
             ITaxCategoryService taxCategoryService,
             IMeasureService measureService,
-            CatalogSettings catalogSettings)
+            CatalogSettings catalogSettings,
+            IGenericAttributeService genericAttributeService,
+            ICustomerAttributeFormatter customerAttributeFormatter)
         {
             this._categoryService = categoryService;
             this._manufacturerService = manufacturerService;
@@ -84,11 +86,12 @@ namespace Nop.Services.ExportImport
             this._productEditorSettings = productEditorSettings;
             this._vendorService = vendorService;
             this._productTemplateService = productTemplateService;
-            this._shippingService = shippingService;
             this._dateRangeService = dateRangeService;
             this._taxCategoryService = taxCategoryService;
             this._measureService = measureService;
             this._catalogSettings = catalogSettings;
+            this._genericAttributeService = genericAttributeService;
+            this._customerAttributeFormatter = customerAttributeFormatter;
         }
 
         #endregion
@@ -410,6 +413,13 @@ namespace Nop.Services.ExportImport
                 return stream.ToArray();
             }
         }
+
+        private string GetCustomCustomerAttributes(Customer customer)
+        {
+            var selectedCustomerAttributes = customer.GetAttribute<string>(SystemCustomerAttributeNames.CustomCustomerAttributes, _genericAttributeService);
+            return _customerAttributeFormatter.FormatAttributes(selectedCustomerAttributes, ";");
+        }
+
         #endregion
 
         #region Methods
@@ -1283,6 +1293,7 @@ namespace Nop.Services.ExportImport
                 new PropertyByName<Customer>("AvatarPictureId", p => p.GetAttribute<int>(SystemCustomerAttributeNames.AvatarPictureId)),
                 new PropertyByName<Customer>("ForumPostCount", p => p.GetAttribute<int>(SystemCustomerAttributeNames.ForumPostCount)),
                 new PropertyByName<Customer>("Signature", p => p.GetAttribute<string>(SystemCustomerAttributeNames.Signature)),
+                new PropertyByName<Customer>("CustomCustomerAttributes",  GetCustomCustomerAttributes)
             };
 
             return ExportToXlsx(properties, customers);
@@ -1349,6 +1360,15 @@ namespace Nop.Services.ExportImport
                 xmlWriter.WriteElementString("AvatarPictureId", null, customer.GetAttribute<int>(SystemCustomerAttributeNames.AvatarPictureId).ToString());
                 xmlWriter.WriteElementString("ForumPostCount", null, customer.GetAttribute<int>(SystemCustomerAttributeNames.ForumPostCount).ToString());
                 xmlWriter.WriteElementString("Signature", null, customer.GetAttribute<string>(SystemCustomerAttributeNames.Signature));
+
+                var selectedCustomerAttributesString = customer.GetAttribute<string>(SystemCustomerAttributeNames.CustomCustomerAttributes, _genericAttributeService);
+
+                if (!string.IsNullOrEmpty(selectedCustomerAttributesString))
+                {
+                    var selectedCustomerAttributes = new StringReader(selectedCustomerAttributesString);
+                    var selectedCustomerAttributesXmlReader = XmlReader.Create(selectedCustomerAttributes);
+                    xmlWriter.WriteNode(selectedCustomerAttributesXmlReader, false);
+                }
 
                 xmlWriter.WriteEndElement();
             }

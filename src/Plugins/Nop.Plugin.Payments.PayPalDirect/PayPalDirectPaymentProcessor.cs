@@ -30,6 +30,7 @@ namespace Nop.Plugin.Payments.PayPalDirect
         private readonly CurrencySettings _currencySettings;
         private readonly ICurrencyService _currencyService;
         private readonly ICustomerService _customerService;
+        private readonly ILocalizationService _localizationService;
         private readonly IOrderTotalCalculationService _orderTotalCalculationService;
         private readonly ISettingService _settingService;
         private readonly IStoreContext _storeContext;
@@ -42,6 +43,7 @@ namespace Nop.Plugin.Payments.PayPalDirect
         public PayPalDirectPaymentProcessor(CurrencySettings currencySettings,
             ICurrencyService currencyService,
             ICustomerService customerService,
+            ILocalizationService localizationService,
             IOrderTotalCalculationService orderTotalCalculationService,
             ISettingService settingService, 
             IStoreContext storeContext,
@@ -50,6 +52,7 @@ namespace Nop.Plugin.Payments.PayPalDirect
             this._currencySettings = currencySettings;
             this._currencyService = currencyService;
             this._customerService = customerService;
+            this._localizationService = localizationService;
             this._orderTotalCalculationService = orderTotalCalculationService;
             this._settingService = settingService;
             this._storeContext = storeContext;
@@ -255,9 +258,18 @@ namespace Nop.Plugin.Payments.PayPalDirect
                         var authorization = payment.transactions[0].related_resources[0].authorization;
                         if (authorization != null)
                         {
+                            if (authorization.fmf_details != null)
+                            {
+                                result.AuthorizationTransactionResult = string.Format("Authorization is {0}. Based on fraud filter: {1}. {2}",
+                                    authorization.fmf_details.filter_type, authorization.fmf_details.name, authorization.fmf_details.description);
+                                result.NewPaymentStatus = GetPaymentStatus(Authorization.Get(apiContext, authorization.id).state);
+                            }
+                            else
+                            {
+                                result.AuthorizationTransactionResult = authorization.state;
+                                result.NewPaymentStatus = GetPaymentStatus(authorization.state);
+                            }
                             result.AuthorizationTransactionId = authorization.id;
-                            result.AuthorizationTransactionResult = authorization.state;
-                            result.NewPaymentStatus = GetPaymentStatus(authorization.state);
                         }
                     }
                     else
@@ -265,10 +277,20 @@ namespace Nop.Plugin.Payments.PayPalDirect
                         var sale = payment.transactions[0].related_resources[0].sale;
                         if (sale != null)
                         {
+                            if (sale.fmf_details != null)
+                            {
+                                result.CaptureTransactionResult = string.Format("Sale is {0}. Based on fraud filter: {1}. {2}",
+                                    sale.fmf_details.filter_type, sale.fmf_details.name, sale.fmf_details.description);
+                                result.NewPaymentStatus = GetPaymentStatus(Sale.Get(apiContext, sale.id).state);
+                            }
+                            else
+                            {
+                                result.CaptureTransactionResult = sale.state;
+                                result.NewPaymentStatus = GetPaymentStatus(sale.state);
+                            }
                             result.CaptureTransactionId = sale.id;
-                            result.CaptureTransactionResult = sale.state;
                             result.AvsResult = sale.processor_response != null ? sale.processor_response.avs_code : string.Empty;
-                            result.NewPaymentStatus = GetPaymentStatus(sale.state);
+
                         }
                     }
                 else
@@ -391,9 +413,8 @@ namespace Nop.Plugin.Payments.PayPalDirect
             try
             {
                 var apiContext = PaypalHelper.GetApiContext(_paypalDirectPaymentSettings);
-                var capture = PayPal.Api.Capture.Get(apiContext, refundPaymentRequest.Order.CaptureTransactionId);
                 var currency = _currencyService.GetCurrencyById(_currencySettings.PrimaryStoreCurrencyId);
-                var refund = new Refund
+                var refundRequest = new RefundRequest
                 {
                     amount = new Amount
                     {
@@ -401,9 +422,8 @@ namespace Nop.Plugin.Payments.PayPalDirect
                         currency = currency != null ? currency.CurrencyCode : null
                     }
                 };
-                capture.Refund(apiContext, refund);
-                capture = PayPal.Api.Capture.Get(apiContext, refundPaymentRequest.Order.CaptureTransactionId);
-
+                PayPal.Api.Capture.Refund(apiContext, refundPaymentRequest.Order.CaptureTransactionId, refundRequest);
+                var capture = PayPal.Api.Capture.Get(apiContext, refundPaymentRequest.Order.CaptureTransactionId);
                 result.NewPaymentStatus = GetPaymentStatus(capture.state);
             }
             catch (PayPal.PayPalException exc)
@@ -772,6 +792,7 @@ namespace Nop.Plugin.Payments.PayPalDirect
             this.AddOrUpdatePluginLocaleResource("Plugins.Payments.PayPalDirect.Fields.UseSandbox.Hint", "Check to enable Sandbox (testing environment).");
             this.AddOrUpdatePluginLocaleResource("Plugins.Payments.PayPalDirect.Fields.WebhookId", "Webhook ID");
             this.AddOrUpdatePluginLocaleResource("Plugins.Payments.PayPalDirect.Fields.WebhookId.Hint", "Specify webhook ID.");
+            this.AddOrUpdatePluginLocaleResource("Plugins.Payments.PayPalDirect.PaymentMethodDescription", "Pay by credit / debit card");
             this.AddOrUpdatePluginLocaleResource("Plugins.Payments.PayPalDirect.WebhookCreate", "Get webhook ID");
             this.AddOrUpdatePluginLocaleResource("Plugins.Payments.PayPalDirect.WebhookError", "Webhook was not created (see details in the log)");
 
@@ -813,6 +834,7 @@ namespace Nop.Plugin.Payments.PayPalDirect
             this.DeletePluginLocaleResource("Plugins.Payments.PayPalDirect.Fields.UseSandbox.Hint");
             this.DeletePluginLocaleResource("Plugins.Payments.PayPalDirect.Fields.WebhookId");
             this.DeletePluginLocaleResource("Plugins.Payments.PayPalDirect.Fields.WebhookId.Hint");
+            this.DeletePluginLocaleResource("Plugins.Payments.PayPalDirect.PaymentMethodDescription");
             this.DeletePluginLocaleResource("Plugins.Payments.PayPalDirect.WebhookCreate");
             this.DeletePluginLocaleResource("Plugins.Payments.PayPalDirect.WebhookError");
 
@@ -877,6 +899,16 @@ namespace Nop.Plugin.Payments.PayPalDirect
         public bool SkipPaymentInfo
         {
             get { return false; }
+        }
+
+        /// <summary>
+        /// Gets a payment method description that will be displayed on checkout pages in the public store
+        /// </summary>
+        public string PaymentMethodDescription
+        {
+            //return description of this payment method to be display on "payment method" checkout step. good practice is to make it localizable
+            //for example, for a redirection payment method, description may be like this: "You will be redirected to PayPal site to complete the payment"
+            get { return _localizationService.GetResource("Plugins.Payments.PayPalDirect.PaymentMethodDescription"); }
         }
 
         #endregion

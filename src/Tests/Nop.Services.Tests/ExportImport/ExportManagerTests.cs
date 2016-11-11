@@ -8,7 +8,6 @@ using Nop.Services.Directory;
 using Nop.Services.ExportImport;
 using Nop.Services.Media;
 using Nop.Services.Messages;
-using Nop.Services.Shipping;
 using Nop.Services.Shipping.Date;
 using Nop.Services.Stores;
 using Nop.Services.Tax;
@@ -16,6 +15,8 @@ using Nop.Services.Vendors;
 using Nop.Tests;
 using NUnit.Framework;
 using Rhino.Mocks;
+using Nop.Services.Common;
+using Nop.Services.Customers;
 
 namespace Nop.Services.Tests.ExportImport
 {
@@ -33,11 +34,12 @@ namespace Nop.Services.Tests.ExportImport
         private IWorkContext _workContext;
         private IVendorService _vendorService;
         private IProductTemplateService _productTemplateService;
-        private IShippingService _shippingService;
         private IDateRangeService _dateRangeService;
         private ITaxCategoryService _taxCategoryService;
         private IMeasureService _measureService;
         private CatalogSettings _catalogSettings;
+        private IGenericAttributeService _genericAttributeService;
+        private ICustomerAttributeFormatter _customerAttributeFormatter;
 
         [SetUp]
         public new void SetUp()
@@ -52,18 +54,20 @@ namespace Nop.Services.Tests.ExportImport
             _workContext = MockRepository.GenerateMock<IWorkContext>();
             _vendorService = MockRepository.GenerateMock<IVendorService>();
             _productTemplateService = MockRepository.GenerateMock<IProductTemplateService>();
-            _shippingService = MockRepository.GenerateMock<IShippingService>();
             _dateRangeService = MockRepository.GenerateMock<IDateRangeService>();
             _taxCategoryService = MockRepository.GenerateMock<ITaxCategoryService>();
             _measureService = MockRepository.GenerateMock<IMeasureService>();
             _catalogSettings = new CatalogSettings();
+            _genericAttributeService = MockRepository.GenerateMock<IGenericAttributeService>();
+            _customerAttributeFormatter = MockRepository.GenerateMock<ICustomerAttributeFormatter>();
 
             _exportManager = new ExportManager(_categoryService,
-                _manufacturerService, _productAttributeService, 
+                _manufacturerService, _productAttributeService,
                 _pictureService, _newsLetterSubscriptionService,
-                _storeService, _workContext, _productEditorSettings, 
-                _vendorService, _productTemplateService, _shippingService,
-                _dateRangeService, _taxCategoryService, _measureService, _catalogSettings);
+                _storeService, _workContext, _productEditorSettings,
+                _vendorService, _productTemplateService, _dateRangeService,
+                _taxCategoryService, _measureService, _catalogSettings,
+                 _genericAttributeService, _customerAttributeFormatter);
         }
 
         [Test]

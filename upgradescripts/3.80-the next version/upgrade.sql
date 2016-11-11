@@ -521,6 +521,222 @@ set @resources='
   <LocaleResource Name="ShoppingCart.AvailabilityRange">
     <Value>Available in {0}</Value>
   </LocaleResource>
+  <LocaleResource Name="Plugins.Payment.CheckMoneyOrder.PaymentMethodDescription">
+    <Value>Pay by cheque or money order</Value>
+  </LocaleResource>
+  <LocaleResource Name="Plugins.Payments.Manual.PaymentMethodDescription">
+    <Value>Pay by credit / debit card</Value>
+  </LocaleResource>
+  <LocaleResource Name="Plugins.Payments.PayPalDirect.PaymentMethodDescription">
+    <Value>Pay by credit / debit card</Value>
+  </LocaleResource>
+  <LocaleResource Name="Plugins.Payments.PayPalStandard.PaymentMethodDescription">
+    <Value>You will be redirected to PayPal site to complete the payment</Value>
+  </LocaleResource>
+  <LocaleResource Name="Plugins.Payment.PurchaseOrder.PaymentMethodDescription">
+    <Value>Pay by purchase order (PO) number</Value>
+  </LocaleResource>
+  <LocaleResource Name="Account.AccountActivation.AlreadyActivated">
+    <Value>Your account already has been activated</Value>
+  </LocaleResource>
+  <LocaleResource Name="Account.PasswordRecovery.PasswordAlreadyHasBeenChanged">
+    <Value>Your password already has been changed. For changing it once more, you need to again recover the password.</Value>
+  </LocaleResource>
+  <LocaleResource Name="Newsletter.ResultAlreadyDeactivated">
+    <Value>Your subscription already has been deactivated.</Value>
+  </LocaleResource>
+  <LocaleResource Name="Plugins.Shipping.FixedRateShipping.Fields.ShippingMethodName">
+    <Value></Value>
+  </LocaleResource>
+  <LocaleResource Name="Plugins.Shipping.FixedRateShipping.Fields.Rate">
+    <Value></Value>
+  </LocaleResource>
+  <LocaleResource Name="Plugins.Shipping.ByWeight.Fields.Store">
+    <Value></Value>
+  </LocaleResource>
+  <LocaleResource Name="Plugins.Shipping.ByWeight.Fields.Store.Hint">
+    <Value></Value>
+  </LocaleResource>
+  <LocaleResource Name="Plugins.Shipping.ByWeight.Fields.Warehouse">
+    <Value></Value>
+  </LocaleResource>
+  <LocaleResource Name="Plugins.Shipping.ByWeight.Fields.Warehouse.Hint">
+    <Value></Value>
+  </LocaleResource>
+  <LocaleResource Name="Plugins.Shipping.ByWeight.Fields.Country">
+    <Value></Value>
+  </LocaleResource>
+  <LocaleResource Name="Plugins.Shipping.ByWeight.Fields.Country.Hint">
+    <Value></Value>
+  </LocaleResource>
+  <LocaleResource Name="Plugins.Shipping.ByWeight.Fields.StateProvince">
+    <Value></Value>
+  </LocaleResource>
+  <LocaleResource Name="Plugins.Shipping.ByWeight.Fields.StateProvince.Hint">
+    <Value></Value>
+  </LocaleResource>
+  <LocaleResource Name="Plugins.Shipping.ByWeight.Fields.Zip">
+    <Value></Value>
+  </LocaleResource>
+  <LocaleResource Name="Plugins.Shipping.ByWeight.Fields.Zip.Hint">
+    <Value></Value>
+  </LocaleResource>
+  <LocaleResource Name="Plugins.Shipping.ByWeight.Fields.ShippingMethod">
+    <Value></Value>
+  </LocaleResource>
+  <LocaleResource Name="Plugins.Shipping.ByWeight.Fields.ShippingMethod.Hint">
+    <Value></Value>
+  </LocaleResource>
+  <LocaleResource Name="Plugins.Shipping.ByWeight.Fields.From">
+    <Value></Value>
+  </LocaleResource>
+  <LocaleResource Name="Plugins.Shipping.ByWeight.Fields.From.Hint">
+    <Value></Value>
+  </LocaleResource>
+  <LocaleResource Name="Plugins.Shipping.ByWeight.Fields.To">
+    <Value></Value>
+  </LocaleResource>
+  <LocaleResource Name="Plugins.Shipping.ByWeight.Fields.To.Hint">
+    <Value></Value>
+  </LocaleResource>
+  <LocaleResource Name="Plugins.Shipping.ByWeight.Fields.AdditionalFixedCost">
+    <Value></Value>
+  </LocaleResource>
+  <LocaleResource Name="Plugins.Shipping.ByWeight.Fields.AdditionalFixedCost.Hint">
+    <Value></Value>
+  </LocaleResource>
+  <LocaleResource Name="Plugins.Shipping.ByWeight.Fields.LowerWeightLimit">
+    <Value></Value>
+  </LocaleResource>
+  <LocaleResource Name="Plugins.Shipping.ByWeight.Fields.LowerWeightLimit.Hint">
+    <Value></Value>
+  </LocaleResource>
+  <LocaleResource Name="Plugins.Shipping.ByWeight.Fields.PercentageRateOfSubtotal">
+    <Value></Value>
+  </LocaleResource>
+  <LocaleResource Name="Plugins.Shipping.ByWeight.Fields.PercentageRateOfSubtotal.Hint">
+    <Value></Value>
+  </LocaleResource>
+  <LocaleResource Name="Plugins.Shipping.ByWeight.Fields.RatePerWeightUnit">
+    <Value></Value>
+  </LocaleResource>
+  <LocaleResource Name="Plugins.Shipping.ByWeight.Fields.RatePerWeightUnit.Hint">
+    <Value></Value>
+  </LocaleResource>
+  <LocaleResource Name="Plugins.Shipping.ByWeight.Fields.LimitMethodsToCreated">
+    <Value></Value>
+  </LocaleResource>
+  <LocaleResource Name="Plugins.Shipping.ByWeight.Fields.LimitMethodsToCreated.Hint">
+    <Value></Value>
+  </LocaleResource>
+  <LocaleResource Name="Plugins.Shipping.ByWeight.Fields.DataHtml">
+    <Value></Value>
+  </LocaleResource>
+  <LocaleResource Name="Plugins.Shipping.ByWeight.AddRecord">
+    <Value></Value>
+  </LocaleResource>
+  <LocaleResource Name="Plugins.Shipping.ByWeight.Formula">
+    <Value></Value>
+  </LocaleResource>
+  <LocaleResource Name="Plugins.Shipping.ByWeight.Formula.Value">
+    <Value></Value>
+  </LocaleResource>
+  <LocaleResource Name="Plugins.Shipping.FixedOrByWeight.ShippingByWeight">
+    <Value>By Weight</Value>
+  </LocaleResource>
+  <LocaleResource Name="Plugins.Shipping.FixedOrByWeight.Fixed">
+    <Value>Fixed Rate</Value>
+  </LocaleResource>
+  <LocaleResource Name="Plugins.Shipping.FixedOrByWeight.Fields.Rate">
+    <Value>Rate</Value>
+  </LocaleResource>
+  <LocaleResource Name="Plugins.Shipping.FixedOrByWeight.Fields.Store">
+    <Value>Store</Value>
+  </LocaleResource>
+  <LocaleResource Name="Plugins.Shipping.FixedOrByWeight.Fields.Store.Hint">
+    <Value>If an asterisk is selected, then this shipping rate will apply to all stores.</Value>
+  </LocaleResource>
+  <LocaleResource Name="Plugins.Shipping.FixedOrByWeight.Fields.Warehouse">
+    <Value>Warehouse</Value>
+  </LocaleResource>
+  <LocaleResource Name="Plugins.Shipping.FixedOrByWeight.Fields.Warehouse.Hint">
+    <Value>If an asterisk is selected, then this shipping rate will apply to all warehouses.</Value>
+  </LocaleResource>
+  <LocaleResource Name="Plugins.Shipping.FixedOrByWeight.Fields.Country">
+    <Value>Country</Value>
+  </LocaleResource>
+  <LocaleResource Name="Plugins.Shipping.FixedOrByWeight.Fields.Country.Hint">
+    <Value>If an asterisk is selected, then this shipping rate will apply to all customers, regardless of the country.</Value>
+  </LocaleResource>
+  <LocaleResource Name="Plugins.Shipping.FixedOrByWeight.Fields.StateProvince">
+    <Value>State / province</Value>
+  </LocaleResource>
+  <LocaleResource Name="Plugins.Shipping.FixedOrByWeight.Fields.StateProvince.Hint">
+    <Value>If an asterisk is selected, then this shipping rate will apply to all customers from the given country, regardless of the state.</Value>
+  </LocaleResource>
+  <LocaleResource Name="Plugins.Shipping.FixedOrByWeight.Fields.Zip">
+    <Value>Zip</Value>
+  </LocaleResource>
+  <LocaleResource Name="Plugins.Shipping.FixedOrByWeight.Fields.Zip.Hint">
+    <Value>Zip / postal code. If zip is empty, then this shipping rate will apply to all customers from the given country or state, regardless of the zip code.</Value>
+  </LocaleResource>
+  <LocaleResource Name="Plugins.Shipping.FixedOrByWeight.Fields.ShippingMethod">
+    <Value>Shipping method</Value>
+  </LocaleResource>
+  <LocaleResource Name="Plugins.Shipping.FixedOrByWeight.Fields.From">
+    <Value>Order weight from</Value>
+  </LocaleResource>
+  <LocaleResource Name="Plugins.Shipping.FixedOrByWeight.Fields.From.Hint">
+    <Value>Order weight from.</Value>
+  </LocaleResource>
+  <LocaleResource Name="Plugins.Shipping.FixedOrByWeight.Fields.To">
+    <Value>Order weight to</Value>
+  </LocaleResource>
+  <LocaleResource Name="Plugins.Shipping.FixedOrByWeight.Fields.To.Hint">
+    <Value>Order weight to.</Value>
+  </LocaleResource>
+  <LocaleResource Name="Plugins.Shipping.FixedOrByWeight.Fields.AdditionalFixedCost">
+    <Value>Additional fixed cost</Value>
+  </LocaleResource>
+  <LocaleResource Name="Plugins.Shipping.FixedOrByWeight.Fields.AdditionalFixedCost.Hint">
+    <Value>Specify an additional fixed cost per shopping cart for this option. Set to 0 if you don''t want an additional fixed cost to be applied.</Value>
+  </LocaleResource>
+  <LocaleResource Name="Plugins.Shipping.FixedOrByWeight.Fields.LowerWeightLimit">
+    <Value>Lower weight limit</Value>
+  </LocaleResource>
+  <LocaleResource Name="Plugins.Shipping.FixedOrByWeight.Fields.LowerWeightLimit.Hint">
+    <Value>Lower weight limit. This field can be used for \"per extra weight unit\" scenarios.</Value>
+  </LocaleResource>
+  <LocaleResource Name="Plugins.Shipping.FixedOrByWeight.Fields.PercentageRateOfSubtotal">
+    <Value>Charge percentage (of subtotal)</Value>
+  </LocaleResource>
+  <LocaleResource Name="Plugins.Shipping.FixedOrByWeight.Fields.PercentageRateOfSubtotal.Hint">
+    <Value>Charge percentage (of subtotal).</Value>
+  </LocaleResource>
+  <LocaleResource Name="Plugins.Shipping.FixedOrByWeight.Fields.RatePerWeightUnit">
+    <Value>Rate per weight unit</Value>
+  </LocaleResource>
+  <LocaleResource Name="Plugins.Shipping.FixedOrByWeight.Fields.RatePerWeightUnit.Hint">
+    <Value>Rate per weight unit.</Value>
+  </LocaleResource>
+  <LocaleResource Name="Plugins.Shipping.FixedOrByWeight.Fields.LimitMethodsToCreated">
+    <Value>Limit shipping methods to configured ones</Value>
+  </LocaleResource>
+  <LocaleResource Name="Plugins.Shipping.FixedOrByWeight.Fields.LimitMethodsToCreated.Hint">
+    <Value>If you check this option, then your customers will be limited to shipping options configured here. Otherwise, they''ll be able to choose any existing shipping options even they''ve not configured here (zero shipping fee in this case).</Value>
+  </LocaleResource>
+  <LocaleResource Name="Plugins.Shipping.FixedOrByWeight.Fields.DataHtml">
+    <Value>Data</Value>
+  </LocaleResource>
+  <LocaleResource Name="Plugins.Shipping.FixedOrByWeight.AddRecord">
+    <Value>Add record</Value>
+  </LocaleResource>
+  <LocaleResource Name="Plugins.Shipping.FixedOrByWeight.Formula">
+    <Value>Formula to calculate rates</Value>
+  </LocaleResource>
+  <LocaleResource Name="Plugins.Shipping.FixedOrByWeight.Formula.Value">
+    <Value>[additional fixed cost] + ([order total weight] - [lower weight limit]) * [rate per weight unit] + [order subtotal] * [charge percentage]</Value>
+  </LocaleResource>
 </Language>
 '
 
@@ -1237,4 +1453,197 @@ WHERE [ProductAvailabilityRangeId] IS NULL
 GO
 
 ALTER TABLE [Product] ALTER COLUMN [ProductAvailabilityRangeId] int NOT NULL
+GO
+
+--new setting
+IF NOT EXISTS (SELECT 1 FROM [Setting] WHERE [name] = N'paymentsettings.showpaymentmethoddescriptions')
+BEGIN
+	INSERT [Setting] ([Name], [Value], [StoreId])
+	VALUES (N'paymentsettings.showpaymentmethoddescriptions', N'True', 0)
+END
+GO
+
+
+--ensure that dbo is added to existing stored procedures
+IF EXISTS (
+		SELECT *
+		FROM sys.objects
+		WHERE object_id = OBJECT_ID(N'[FullText_IsSupported]') AND OBJECTPROPERTY(object_id,N'IsProcedure') = 1)
+DROP PROCEDURE [FullText_IsSupported]
+GO
+CREATE PROCEDURE [dbo].[FullText_IsSupported]
+AS
+BEGIN	
+	EXEC('
+	SELECT CASE SERVERPROPERTY(''IsFullTextInstalled'')
+	WHEN 1 THEN 
+		CASE DatabaseProperty (DB_NAME(DB_ID()), ''IsFulltextEnabled'')
+		WHEN 1 THEN 1
+		ELSE 0
+		END
+	ELSE 0
+	END')
+END
+GO
+
+
+IF EXISTS (
+		SELECT *
+		FROM sys.objects
+		WHERE object_id = OBJECT_ID(N'[FullText_Enable]') AND OBJECTPROPERTY(object_id,N'IsProcedure') = 1)
+DROP PROCEDURE [FullText_Enable]
+GO
+CREATE PROCEDURE [dbo].[FullText_Enable]
+AS
+BEGIN
+	--create catalog
+	EXEC('
+	IF NOT EXISTS (SELECT 1 FROM sys.fulltext_catalogs WHERE [name] = ''nopCommerceFullTextCatalog'')
+		CREATE FULLTEXT CATALOG [nopCommerceFullTextCatalog] AS DEFAULT')
+	
+	--create indexes
+	DECLARE @create_index_text nvarchar(4000)
+	SET @create_index_text = '
+	IF NOT EXISTS (SELECT 1 FROM sys.fulltext_indexes WHERE object_id = object_id(''[Product]''))
+		CREATE FULLTEXT INDEX ON [Product]([Name], [ShortDescription], [FullDescription])
+		KEY INDEX [' + dbo.[nop_getprimarykey_indexname] ('Product') +  '] ON [nopCommerceFullTextCatalog] WITH CHANGE_TRACKING AUTO'
+	EXEC(@create_index_text)
+	
+	SET @create_index_text = '
+	IF NOT EXISTS (SELECT 1 FROM sys.fulltext_indexes WHERE object_id = object_id(''[LocalizedProperty]''))
+		CREATE FULLTEXT INDEX ON [LocalizedProperty]([LocaleValue])
+		KEY INDEX [' + dbo.[nop_getprimarykey_indexname] ('LocalizedProperty') +  '] ON [nopCommerceFullTextCatalog] WITH CHANGE_TRACKING AUTO'
+	EXEC(@create_index_text)
+
+	SET @create_index_text = '
+	IF NOT EXISTS (SELECT 1 FROM sys.fulltext_indexes WHERE object_id = object_id(''[ProductTag]''))
+		CREATE FULLTEXT INDEX ON [ProductTag]([Name])
+		KEY INDEX [' + dbo.[nop_getprimarykey_indexname] ('ProductTag') +  '] ON [nopCommerceFullTextCatalog] WITH CHANGE_TRACKING AUTO'
+	EXEC(@create_index_text)
+END
+GO
+
+
+
+IF EXISTS (
+		SELECT *
+		FROM sys.objects
+		WHERE object_id = OBJECT_ID(N'[FullText_Disable]') AND OBJECTPROPERTY(object_id,N'IsProcedure') = 1)
+DROP PROCEDURE [FullText_Disable]
+GO
+CREATE PROCEDURE [dbo].[FullText_Disable]
+AS
+BEGIN
+	EXEC('
+	--drop indexes
+	IF EXISTS (SELECT 1 FROM sys.fulltext_indexes WHERE object_id = object_id(''[Product]''))
+		DROP FULLTEXT INDEX ON [Product]
+	')
+
+	EXEC('
+	IF EXISTS (SELECT 1 FROM sys.fulltext_indexes WHERE object_id = object_id(''[LocalizedProperty]''))
+		DROP FULLTEXT INDEX ON [LocalizedProperty]
+	')
+
+	EXEC('
+	IF EXISTS (SELECT 1 FROM sys.fulltext_indexes WHERE object_id = object_id(''[ProductTag]''))
+		DROP FULLTEXT INDEX ON [ProductTag]
+	')
+
+	--drop catalog
+	EXEC('
+	IF EXISTS (SELECT 1 FROM sys.fulltext_catalogs WHERE [name] = ''nopCommerceFullTextCatalog'')
+		DROP FULLTEXT CATALOG [nopCommerceFullTextCatalog]
+	')
+END
+GO
+
+
+
+
+IF EXISTS (
+		SELECT *
+		FROM sys.objects
+		WHERE object_id = OBJECT_ID(N'[LanguagePackImport]') AND OBJECTPROPERTY(object_id,N'IsProcedure') = 1)
+DROP PROCEDURE [LanguagePackImport]
+GO
+CREATE PROCEDURE [dbo].[LanguagePackImport]
+(
+	@LanguageId int,
+	@XmlPackage xml
+)
+AS
+BEGIN
+	IF EXISTS(SELECT * FROM [Language] WHERE [Id] = @LanguageId)
+	BEGIN
+		CREATE TABLE #LocaleStringResourceTmp
+			(
+				[LanguageId] [int] NOT NULL,
+				[ResourceName] [nvarchar](200) NOT NULL,
+				[ResourceValue] [nvarchar](MAX) NOT NULL
+			)
+
+		INSERT INTO #LocaleStringResourceTmp (LanguageID, ResourceName, ResourceValue)
+		SELECT	@LanguageId, nref.value('@Name', 'nvarchar(200)'), nref.value('Value[1]', 'nvarchar(MAX)')
+		FROM	@XmlPackage.nodes('//Language/LocaleResource') AS R(nref)
+
+		DECLARE @ResourceName nvarchar(200)
+		DECLARE @ResourceValue nvarchar(MAX)
+		DECLARE cur_localeresource CURSOR FOR
+		SELECT LanguageID, ResourceName, ResourceValue
+		FROM #LocaleStringResourceTmp
+		OPEN cur_localeresource
+		FETCH NEXT FROM cur_localeresource INTO @LanguageId, @ResourceName, @ResourceValue
+		WHILE @@FETCH_STATUS = 0
+		BEGIN
+			IF (EXISTS (SELECT 1 FROM [LocaleStringResource] WHERE LanguageID=@LanguageId AND ResourceName=@ResourceName))
+			BEGIN
+				UPDATE [LocaleStringResource]
+				SET [ResourceValue]=@ResourceValue
+				WHERE LanguageID=@LanguageId AND ResourceName=@ResourceName
+			END
+			ELSE 
+			BEGIN
+				INSERT INTO [LocaleStringResource]
+				(
+					[LanguageId],
+					[ResourceName],
+					[ResourceValue]
+				)
+				VALUES
+				(
+					@LanguageId,
+					@ResourceName,
+					@ResourceValue
+				)
+			END
+			
+			
+			FETCH NEXT FROM cur_localeresource INTO @LanguageId, @ResourceName, @ResourceValue
+			END
+		CLOSE cur_localeresource
+		DEALLOCATE cur_localeresource
+
+		DROP TABLE #LocaleStringResourceTmp
+	END
+END
+
+ --new setting
+IF NOT EXISTS (SELECT 1 FROM [Setting] WHERE [name] = N'fixedorbyweightsettings.shippingbyweightenabled')
+BEGIN
+	INSERT [Setting] ([Name], [Value], [StoreId])
+	VALUES (N'fixedorbyweightsettings.shippingbyweightenabled', N'False', 0)
+END
+GO
+
+--rename settings
+UPDATE [Setting] 
+SET [Name] = N'fixedorbyweightsettings.limitmethodstocreated' 
+WHERE [Name] = N'shippingbyweightsettings.limitmethodstocreated'
+GO
+
+--rename settings
+UPDATE [Setting] 
+SET [Name] = N'shippingratecomputationmethod.fixedorbyweight.rate.shippingmethodid' + SUBSTRING(name, 62, len(name))
+WHERE [Name] like N'shippingratecomputationmethod.fixedrate.rate.shippingmethodid%'
 GO
