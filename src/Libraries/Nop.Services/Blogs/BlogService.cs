@@ -119,7 +119,7 @@ namespace Nop.Services.Blogs
                         join sm in _storeMappingRepository.Table
                         on new { c1 = bp.Id, c2 = "BlogPost" } equals new { c1 = sm.EntityId, c2 = sm.EntityName } into bp_sm
                         from sm in bp_sm.DefaultIfEmpty()
-                        where !bp.LimitedToStores || storeId == sm.StoreId
+                        where sm != null && (!bp.LimitedToStores || storeId == sm.StoreId)
                         select bp;
 
                 //only distinct blog posts (group by ID)

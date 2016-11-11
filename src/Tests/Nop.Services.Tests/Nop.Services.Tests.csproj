@@ -44,6 +44,14 @@
       <HintPath>..\..\packages\Autofac.Mvc5.4.0.0\lib\net451\Autofac.Integration.Mvc.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.Threading.Tasks, Version=1.0.12.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.Bcl.Async.1.0.168\lib\net40\Microsoft.Threading.Tasks.dll</HintPath>
       <Private>True</Private>
@@ -68,6 +76,7 @@
       <HintPath>..\..\packages\RhinoMocks.3.6.1\lib\net\Rhino.Mocks.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Net" />
@@ -117,6 +126,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Affiliates\AffiliateExtensionsTests.cs" />
+    <Compile Include="Affiliates\AffiliateServiceTests.cs" />
+    <Compile Include="Blogs\BlogExtensionsTests.cs" />
+    <Compile Include="Blogs\BlogServiceTests.cs" />
+    <Compile Include="Catalog\BackInStockSubscriptionServiceTests.cs" />
+    <Compile Include="Catalog\CategoryExtensionsTests.cs" />
+    <Compile Include="Catalog\CategoryServiceTests.cs" />
+    <Compile Include="Catalog\CategoryTemplateServiceTests.cs" />
     <Compile Include="Catalog\ProductExtensionTests.cs" />
     <Compile Include="Catalog\TierPriceExtensionTests.cs" />
     <Compile Include="Catalog\PriceCalculationServiceTests.cs" />

@@ -2187,5 +2187,10 @@ namespace Nop.Tests
         #endregion
 
         #endregion
+        
+        public static IQueryable<T> ToIQueryable<T>(params T[] list)
+        {
+            return new EnumerableQuery<T>(list);
+        }
     }
 }

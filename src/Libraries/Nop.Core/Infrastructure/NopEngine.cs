@@ -162,7 +162,7 @@ namespace Nop.Core.Infrastructure
         /// <summary>
         /// Container manager
         /// </summary>
-        public ContainerManager ContainerManager
+        public virtual ContainerManager ContainerManager
         {
             get { return _containerManager; }
         }
