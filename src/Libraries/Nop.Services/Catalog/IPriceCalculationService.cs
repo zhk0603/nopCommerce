@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using Nop.Core.Domain.Catalog;
 using Nop.Core.Domain.Customers;
 using Nop.Core.Domain.Orders;
@@ -21,11 +20,9 @@ namespace Nop.Services.Catalog
         /// <param name="includeDiscounts">A value indicating whether include discounts or not for final price computation</param>
         /// <param name="quantity">Shopping cart item quantity</param>
         /// <returns>Final price</returns>
-        decimal GetFinalPrice(Product product,
-            Customer customer,
-            decimal additionalCharge = decimal.Zero, 
-            bool includeDiscounts = true, 
-            int quantity = 1);
+        decimal GetFinalPrice(Product product, Customer customer,
+            decimal additionalCharge = decimal.Zero, bool includeDiscounts = true, int quantity = 1);
+
         /// <summary>
         /// Gets the final price
         /// </summary>
@@ -34,16 +31,11 @@ namespace Nop.Services.Catalog
         /// <param name="additionalCharge">Additional charge</param>
         /// <param name="includeDiscounts">A value indicating whether include discounts or not for final price computation</param>
         /// <param name="quantity">Shopping cart item quantity</param>
-        /// <param name="discountAmount">Applied discount amount</param>
-        /// <param name="appliedDiscounts">Applied discounts</param>
+        /// <param name="discountPrice">Discount price details</param>
         /// <returns>Final price</returns>
-        decimal GetFinalPrice(Product product,
-            Customer customer,
-            decimal additionalCharge,
-            bool includeDiscounts,
-            int quantity,
-            out decimal discountAmount,
-            out List<DiscountForCaching> appliedDiscounts);
+        decimal GetFinalPrice(Product product, Customer customer,
+            decimal additionalCharge, bool includeDiscounts, int quantity, out DiscountPrice discountPrice);
+
         /// <summary>
         /// Gets the final price
         /// </summary>
@@ -54,20 +46,11 @@ namespace Nop.Services.Catalog
         /// <param name="quantity">Shopping cart item quantity</param>
         /// <param name="rentalStartDate">Rental period start date (for rental products)</param>
         /// <param name="rentalEndDate">Rental period end date (for rental products)</param>
-        /// <param name="discountAmount">Applied discount amount</param>
-        /// <param name="appliedDiscounts">Applied discounts</param>
+        /// <param name="discountPrice">Discount price details</param>
         /// <returns>Final price</returns>
-        decimal GetFinalPrice(Product product,
-            Customer customer,
-            decimal additionalCharge,
-            bool includeDiscounts,
-            int quantity,
-            DateTime? rentalStartDate,
-            DateTime? rentalEndDate,
-            out decimal discountAmount,
-            out List<DiscountForCaching> appliedDiscounts);
-
-
+        decimal GetFinalPrice(Product product, Customer customer,
+            decimal additionalCharge, bool includeDiscounts, int quantity,
+            DateTime? rentalStartDate, DateTime? rentalEndDate, out DiscountPrice discountPrice);
 
         /// <summary>
         /// Gets the shopping cart unit price (one item)
@@ -75,20 +58,17 @@ namespace Nop.Services.Catalog
         /// <param name="shoppingCartItem">The shopping cart item</param>
         /// <param name="includeDiscounts">A value indicating whether include discounts or not for price computation</param>
         /// <returns>Shopping cart unit price (one item)</returns>
-        decimal GetUnitPrice(ShoppingCartItem shoppingCartItem,
-            bool includeDiscounts = true);
+        decimal GetUnitPrice(ShoppingCartItem shoppingCartItem, bool includeDiscounts = true);
+
         /// <summary>
         /// Gets the shopping cart unit price (one item)
         /// </summary>
         /// <param name="shoppingCartItem">The shopping cart item</param>
         /// <param name="includeDiscounts">A value indicating whether include discounts or not for price computation</param>
-        /// <param name="discountAmount">Applied discount amount</param>
-        /// <param name="appliedDiscounts">Applied discounts</param>
+        /// <param name="discountPrice">Discount price details</param>
         /// <returns>Shopping cart unit price (one item)</returns>
-        decimal GetUnitPrice(ShoppingCartItem shoppingCartItem,
-            bool includeDiscounts,
-            out decimal discountAmount,
-            out List<DiscountForCaching> appliedDiscounts);
+        decimal GetUnitPrice(ShoppingCartItem shoppingCartItem, bool includeDiscounts, out DiscountPrice discountPrice);
+
         /// <summary>
         /// Gets the shopping cart unit price (one item)
         /// </summary>
@@ -101,41 +81,28 @@ namespace Nop.Services.Catalog
         /// <param name="rentalStartDate">Rental start date (null for not rental products)</param>
         /// <param name="rentalEndDate">Rental end date (null for not rental products)</param>
         /// <param name="includeDiscounts">A value indicating whether include discounts or not for price computation</param>
-        /// <param name="discountAmount">Applied discount amount</param>
-        /// <param name="appliedDiscounts">Applied discounts</param>
+        /// <param name="discountPrice">Discount price details</param>
         /// <returns>Shopping cart unit price (one item)</returns>
-        decimal GetUnitPrice(Product product,
-            Customer customer,
-            ShoppingCartType shoppingCartType,
-            int quantity,
-            string attributesXml,
-            decimal customerEnteredPrice,
-            DateTime? rentalStartDate, DateTime? rentalEndDate,
-            bool includeDiscounts,
-            out decimal discountAmount,
-            out List<DiscountForCaching> appliedDiscounts);
+        decimal GetUnitPrice(Product product, Customer customer, ShoppingCartType shoppingCartType,
+            int quantity, string attributesXml, decimal customerEnteredPrice,
+            DateTime? rentalStartDate, DateTime? rentalEndDate, bool includeDiscounts, out DiscountPrice discountPrice);
+
         /// <summary>
         /// Gets the shopping cart item sub total
         /// </summary>
         /// <param name="shoppingCartItem">The shopping cart item</param>
         /// <param name="includeDiscounts">A value indicating whether include discounts or not for price computation</param>
         /// <returns>Shopping cart item sub total</returns>
-        decimal GetSubTotal(ShoppingCartItem shoppingCartItem,
-            bool includeDiscounts = true);
+        decimal GetSubTotal(ShoppingCartItem shoppingCartItem, bool includeDiscounts = true);
+
         /// <summary>
         /// Gets the shopping cart item sub total
         /// </summary>
         /// <param name="shoppingCartItem">The shopping cart item</param>
         /// <param name="includeDiscounts">A value indicating whether include discounts or not for price computation</param>
-        /// <param name="discountAmount">Applied discount amount</param>
-        /// <param name="appliedDiscounts">Applied discounts</param>
-        /// <param name="maximumDiscountQty">Maximum discounted qty. Return not nullable value if discount cannot be applied to ALL items</param>
+        /// <param name="discountPrice">Discount price details</param>
         /// <returns>Shopping cart item sub total</returns>
-        decimal GetSubTotal(ShoppingCartItem shoppingCartItem,
-            bool includeDiscounts,
-            out decimal discountAmount,
-            out List<DiscountForCaching> appliedDiscounts,
-            out int? maximumDiscountQty);
+        decimal GetSubTotal(ShoppingCartItem shoppingCartItem, bool includeDiscounts, out DiscountPrice discountPrice);
 
         /// <summary>
         /// Gets the product cost (one item)
@@ -145,9 +112,6 @@ namespace Nop.Services.Catalog
         /// <returns>Product cost (one item)</returns>
         decimal GetProductCost(Product product, string attributesXml);
 
-
-
-        
         /// <summary>
         /// Get a price adjustment of a product attribute value
         /// </summary>

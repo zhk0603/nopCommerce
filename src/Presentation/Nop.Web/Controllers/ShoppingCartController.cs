@@ -950,14 +950,10 @@ namespace Nop.Web.Controllers
             if (_permissionService.Authorize(StandardPermissionProvider.DisplayPrices) && !product.CustomerEntersPrice)
             {
                 //we do not calculate price of "customer enters price" option is enabled
-                List<DiscountForCaching> scDiscounts;
-                decimal discountAmount;
-                decimal finalPrice = _priceCalculationService.GetUnitPrice(product,
-                    _workContext.CurrentCustomer,
-                    ShoppingCartType.ShoppingCart,
-                    1, attributeXml, 0,
-                    rentalStartDate, rentalEndDate,
-                    true, out discountAmount, out scDiscounts);
+                DiscountPrice discountPrice;
+                var finalPrice = _priceCalculationService.GetUnitPrice(product, _workContext.CurrentCustomer, ShoppingCartType.ShoppingCart,
+                    1, attributeXml, 0, rentalStartDate, rentalEndDate, true, out discountPrice);
+
                 decimal taxRate;
                 decimal finalPriceWithDiscountBase = _taxService.GetProductPrice(product, finalPrice, out taxRate);
                 decimal finalPriceWithDiscount = _currencyService.ConvertFromPrimaryStoreCurrency(finalPriceWithDiscountBase, _workContext.WorkingCurrency);

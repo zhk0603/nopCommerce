@@ -408,16 +408,16 @@ namespace Nop.Web.Factories
             else
             {
                 //sub total
-                List<DiscountForCaching> scDiscounts;
-                int? maximumDiscountQty;
-                decimal shoppingCartItemDiscountBase;
+                DiscountPrice discountPrice;
                 decimal taxRate;
-                decimal shoppingCartItemSubTotalWithDiscountBase = _taxService.GetProductPrice(sci.Product, _priceCalculationService.GetSubTotal(sci, true, out shoppingCartItemDiscountBase, out scDiscounts, out maximumDiscountQty), out taxRate);
+                decimal shoppingCartItemSubTotalWithDiscountBase = _taxService.GetProductPrice(sci.Product, _priceCalculationService.GetSubTotal(sci, true, out discountPrice), out taxRate);
                 decimal shoppingCartItemSubTotalWithDiscount = _currencyService.ConvertFromPrimaryStoreCurrency(shoppingCartItemSubTotalWithDiscountBase, _workContext.WorkingCurrency);
                 cartItemModel.SubTotal = _priceFormatter.FormatPrice(shoppingCartItemSubTotalWithDiscount);
-                cartItemModel.MaximumDiscountedQty = maximumDiscountQty;
+                if (discountPrice.DiscountPricesByQuantity.Count > 1)
+                    cartItemModel.MaximumDiscountedQty = discountPrice.DiscountPricesByQuantity.Min(priceByQuantity => priceByQuantity.Quantity);
 
                 //display an applied discount amount
+                var shoppingCartItemDiscountBase = discountPrice.DiscountAmount;
                 if (shoppingCartItemDiscountBase > decimal.Zero)
                 {
                     shoppingCartItemDiscountBase = _taxService.GetProductPrice(sci.Product, shoppingCartItemDiscountBase, out taxRate);
@@ -544,17 +544,16 @@ namespace Nop.Web.Factories
             else
             {
                 //sub total
-                List<DiscountForCaching> scDiscounts;
-                int? maximumDiscountQty;
-                decimal shoppingCartItemDiscountBase;
+                DiscountPrice discountPrice;
                 decimal taxRate;
-                decimal shoppingCartItemSubTotalWithDiscountBase = _taxService.GetProductPrice(sci.Product, _priceCalculationService.GetSubTotal(sci, true, out shoppingCartItemDiscountBase, out scDiscounts,
-                        out maximumDiscountQty), out taxRate);
+                decimal shoppingCartItemSubTotalWithDiscountBase = _taxService.GetProductPrice(sci.Product, _priceCalculationService.GetSubTotal(sci, true, out discountPrice), out taxRate);
                 decimal shoppingCartItemSubTotalWithDiscount = _currencyService.ConvertFromPrimaryStoreCurrency(shoppingCartItemSubTotalWithDiscountBase, _workContext.WorkingCurrency);
                 cartItemModel.SubTotal = _priceFormatter.FormatPrice(shoppingCartItemSubTotalWithDiscount);
-                cartItemModel.MaximumDiscountedQty = maximumDiscountQty;
+                if (discountPrice.DiscountPricesByQuantity.Count > 1)
+                    cartItemModel.MaximumDiscountedQty = discountPrice.DiscountPricesByQuantity.Min(priceByQuantity => priceByQuantity.Quantity);
 
                 //display an applied discount amount
+                var shoppingCartItemDiscountBase = discountPrice.DiscountAmount;
                 if (shoppingCartItemDiscountBase > decimal.Zero)
                 {
                     shoppingCartItemDiscountBase = _taxService.GetProductPrice(sci.Product, shoppingCartItemDiscountBase, out taxRate);

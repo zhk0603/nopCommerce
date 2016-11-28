@@ -19,71 +19,106 @@ namespace Nop.Services.Discounts
                 throw new ArgumentNullException(nameof(discount));
 
             //calculate discount amount
-            decimal result;
-            if (discount.UsePercentage)
-                result = (decimal)((((float)amount) * ((float)discount.DiscountPercentage)) / 100f);
-            else
-                result = discount.DiscountAmount;
+            var result = discount.UsePercentage ? (decimal)((((float)amount) * ((float)discount.DiscountPercentage)) / 100f) : discount.DiscountAmount;
 
             //validate maximum discount amount
-            if (discount.UsePercentage && 
-                discount.MaximumDiscountAmount.HasValue &&
-                result > discount.MaximumDiscountAmount.Value)
+            if (discount.UsePercentage && discount.MaximumDiscountAmount.HasValue && result > discount.MaximumDiscountAmount.Value)
                 result = discount.MaximumDiscountAmount.Value;
 
-            if (result < decimal.Zero)
-                result = decimal.Zero;
+            return Math.Max(decimal.Zero, result);
+        }
+
+        /// <summary>
+        /// Get discount price details
+        /// </summary>
+        /// <param name="allowedDiscounts">A list of allowed discounts</param>
+        /// <param name="requestDetails">Details of the request of discount price</param>
+        /// <returns>Result of requesting discount price</returns>
+        public static DiscountPrice GetDiscountPrice(this IList<DiscountForCaching> allowedDiscounts, DiscountPriceRequest requestDetails)
+        {
+            var result = new DiscountPrice { PriceWithDiscount = requestDetails.PriceWithoutDiscounts };
+
+            if (!allowedDiscounts.Any())
+                return result;
+
+            //find all possible discounts
+            var allPossibleDiscounts = allowedDiscounts.Select(discount =>
+            {
+                var discountAmount = discount.GetDiscountAmount(requestDetails.PriceWithoutDiscounts);
+
+                //check whether MaximumDiscountedQuantity is set
+                var discountQuantity = !discount.MaximumDiscountedQuantity.HasValue || discount.MaximumDiscountedQuantity.Value > requestDetails.Quantity
+                    ? requestDetails.Quantity : discount.MaximumDiscountedQuantity.Value;
+
+                return new
+                {
+                    Discount = discount,
+                    DiscountAmount = discountAmount,
+                    DiscountQuantity = discountQuantity,
+                    TotalDiscountAmount = discountAmount * discountQuantity
+                };
+            }).ToList();
+
+            //get non-cumulative discounts
+            var nonCumulativeDiscounts = allPossibleDiscounts.Where(discount => !discount.Discount.IsCumulative).ToList();
+            
+            //get cumulative discounts
+            var cumulativeDiscounts = allPossibleDiscounts.Where(discount => discount.Discount.IsCumulative).ToList();
+            var appliedDiscounts = cumulativeDiscounts;
+
+            if (nonCumulativeDiscounts.Any())
+            {
+                //there can be only one non-cumulative discount, thus select preferred one 
+                var preferredNonCumulativeDiscount = nonCumulativeDiscounts.Aggregate((current, next) => current.TotalDiscountAmount > next.TotalDiscountAmount ? current : next);
+
+                //select preferred discount or all cumulative ones
+                if (!cumulativeDiscounts.Any() || preferredNonCumulativeDiscount.TotalDiscountAmount > cumulativeDiscounts.Sum(discount => discount.TotalDiscountAmount))
+                    appliedDiscounts = new[] { preferredNonCumulativeDiscount }.ToList();
+            }
+
+            //set original price for quantity if there are no discounts for all quantity
+            if (!appliedDiscounts.Any(discount => discount.DiscountQuantity == requestDetails.Quantity))
+            {
+                result.DiscountPricesByQuantity.Add(new DiscountPriceByQuantity
+                {
+                    Quantity = requestDetails.Quantity,
+                    DiscountPrice = requestDetails.PriceWithoutDiscounts
+                });
+            }
+
+            //summarize discount amount and get the price with discounts for all quantities
+            result.DiscountPricesByQuantity.AddRange(appliedDiscounts.Select(discount => discount.DiscountQuantity).Distinct()
+                .Select(quantity => new DiscountPriceByQuantity
+                {
+                    Quantity = quantity,
+                    DiscountPrice = requestDetails.PriceWithoutDiscounts - appliedDiscounts.Where(discount => discount.DiscountQuantity >= quantity).Sum(discount => discount.DiscountAmount)
+                }));
+            result.DiscountPricesByQuantity = result.DiscountPricesByQuantity.OrderBy(priceByQuantity => priceByQuantity.Quantity).ToList();
+
+            result.PriceWithDiscount = result.DiscountPricesByQuantity.FirstOrDefault(priceByQuantity => priceByQuantity.Quantity == requestDetails.Quantity).DiscountPrice;
+            result.DiscountAmount = requestDetails.PriceWithoutDiscounts - result.PriceWithDiscount;
+            result.AppliedDiscounts = appliedDiscounts.Select(discount => discount.Discount).ToList();
 
             return result;
         }
 
         /// <summary>
-        /// Get preferred discount (with maximum discount value)
+        /// Get subtotal amount with discounts
         /// </summary>
-        /// <param name="discounts">A list of discounts to check</param>
-        /// <param name="amount">Amount (initial value)</param>
-        /// <param name="discountAmount">Discount amount</param>
-        /// <returns>Preferred discount</returns>
-        public static List<DiscountForCaching> GetPreferredDiscount(this IList<DiscountForCaching> discounts,
-            decimal amount, out decimal discountAmount)
+        /// <param name="discountPrice">Discount ptice details</param>
+        /// <returns>Subtotal amount</returns>
+        public static decimal GetSubTotalWithDiscounts(this DiscountPrice discountPrice)
         {
-            if (discounts == null)
-                throw new ArgumentNullException(nameof(discounts));
+            var previousQuantity = 0;
 
-            var result = new List<DiscountForCaching>();
-            discountAmount = decimal.Zero;
-            if (!discounts.Any())
-                return result;
-
-            //first we check simple discounts
-            foreach (var discount in discounts)
+            return discountPrice.DiscountPricesByQuantity.Sum(x =>
             {
-                decimal currentDiscountValue = discount.GetDiscountAmount(amount);
-                if (currentDiscountValue > discountAmount)
-                {
-                    discountAmount = currentDiscountValue;
+                //get the quantity for which price is used 
+                var discountQuantity = x.Quantity - previousQuantity;
+                previousQuantity = x.Quantity;
 
-                    result.Clear();
-                    result.Add(discount);
-                }
-            }
-            //now let's check cumulative discounts
-            //right now we calculate discount values based on the original amount value
-            //please keep it in mind if you're going to use discounts with "percentage"
-            var cumulativeDiscounts = discounts.Where(x => x.IsCumulative).OrderBy(x => x.Name).ToList();
-            if (cumulativeDiscounts.Count > 1)
-            {
-                var cumulativeDiscountAmount = cumulativeDiscounts.Sum(d => d.GetDiscountAmount(amount));
-                if (cumulativeDiscountAmount > discountAmount)
-                {
-                    discountAmount = cumulativeDiscountAmount;
-
-                    result.Clear();
-                    result.AddRange(cumulativeDiscounts);
-                }
-            }
-
-            return result;
+                return discountQuantity * x.DiscountPrice;
+            });
         }
 
         /// <summary>
@@ -101,11 +136,7 @@ namespace Nop.Services.Discounts
             if (discount == null)
                 throw new ArgumentNullException(nameof(discount));
 
-            foreach (var dis1 in discounts)
-                if (discount.Id == dis1.Id)
-                    return true;
-
-            return false;
+            return discounts.Any(x => x.Id == discount.Id);
         }
 
         /// <summary>

@@ -111,30 +111,23 @@ namespace Nop.Services.Orders
         /// <param name="orderSubTotal">Order subtotal</param>
         /// <param name="appliedDiscounts">Applied discounts</param>
         /// <returns>Order discount</returns>
-        protected virtual decimal GetOrderSubtotalDiscount(Customer customer,
-            decimal orderSubTotal, out List<DiscountForCaching> appliedDiscounts)
+        protected virtual decimal GetOrderSubtotalDiscount(Customer customer, decimal orderSubTotal, out List<DiscountForCaching> appliedDiscounts)
         {
             appliedDiscounts = new List<DiscountForCaching>();
-            decimal discountAmount = decimal.Zero;
             if (_catalogSettings.IgnoreDiscounts)
-                return discountAmount;
+                return decimal.Zero;
 
-            var allDiscounts = _discountService.GetAllDiscountsForCaching(DiscountType.AssignedToOrderSubTotal);
-            var allowedDiscounts = new List<DiscountForCaching>();
-            if (allDiscounts != null)
-                foreach (var discount in allDiscounts)
-                    if (_discountService.ValidateDiscount(discount, customer).IsValid &&
-                        !allowedDiscounts.ContainsDiscount(discount))
-                    {
-                        allowedDiscounts.Add(discount);
-                    }
+            var allowedDiscounts = _discountService.GetAllDiscountsForCaching(DiscountType.AssignedToOrderSubTotal)
+                .Where(discount => _discountService.ValidateDiscount(discount, customer).IsValid).Distinct().ToList();
 
-            appliedDiscounts = allowedDiscounts.GetPreferredDiscount(orderSubTotal, out discountAmount);
+            var discountPrice = allowedDiscounts.GetDiscountPrice(new DiscountPriceRequest(orderSubTotal));
+            appliedDiscounts = discountPrice.AppliedDiscounts;
 
-            if (discountAmount < decimal.Zero)
-                discountAmount = decimal.Zero;
+            var subtotalDiscountAmount = Math.Max(decimal.Zero, discountPrice.DiscountAmount);
+            if (_shoppingCartSettings.RoundPricesDuringCalculation)
+                subtotalDiscountAmount = RoundingHelper.RoundPrice(subtotalDiscountAmount);
 
-            return discountAmount;
+            return subtotalDiscountAmount;
         }
 
         /// <summary>
@@ -147,25 +140,16 @@ namespace Nop.Services.Orders
         protected virtual decimal GetShippingDiscount(Customer customer, decimal shippingTotal, out List<DiscountForCaching> appliedDiscounts)
         {
             appliedDiscounts = new List<DiscountForCaching>();
-            decimal shippingDiscountAmount = decimal.Zero;
             if (_catalogSettings.IgnoreDiscounts)
-                return shippingDiscountAmount;
+                return decimal.Zero;
 
-            var allDiscounts = _discountService.GetAllDiscountsForCaching(DiscountType.AssignedToShipping);
-            var allowedDiscounts = new List<DiscountForCaching>();
-            if (allDiscounts != null)
-                foreach (var discount in allDiscounts)
-                    if (_discountService.ValidateDiscount(discount, customer).IsValid &&
-                        !allowedDiscounts.ContainsDiscount(discount))
-                    {
-                        allowedDiscounts.Add(discount);
-                    }
+            var allowedDiscounts = _discountService.GetAllDiscountsForCaching(DiscountType.AssignedToShipping)
+                .Where(discount => _discountService.ValidateDiscount(discount, customer).IsValid).Distinct().ToList();
 
-            appliedDiscounts = allowedDiscounts.GetPreferredDiscount(shippingTotal, out shippingDiscountAmount);
+            var discountPrice = allowedDiscounts.GetDiscountPrice(new DiscountPriceRequest(shippingTotal));
+            appliedDiscounts = discountPrice.AppliedDiscounts;
 
-            if (shippingDiscountAmount < decimal.Zero)
-                shippingDiscountAmount = decimal.Zero;
-
+            var shippingDiscountAmount = Math.Max(decimal.Zero, discountPrice.DiscountAmount);
             if (_shoppingCartSettings.RoundPricesDuringCalculation)
                 shippingDiscountAmount = RoundingHelper.RoundPrice(shippingDiscountAmount);
 
@@ -182,29 +166,20 @@ namespace Nop.Services.Orders
         protected virtual decimal GetOrderTotalDiscount(Customer customer, decimal orderTotal, out List<DiscountForCaching> appliedDiscounts)
         {
             appliedDiscounts = new List<DiscountForCaching>();
-            decimal discountAmount = decimal.Zero;
             if (_catalogSettings.IgnoreDiscounts)
-                return discountAmount;
+                return decimal.Zero;
 
-            var allDiscounts = _discountService.GetAllDiscountsForCaching(DiscountType.AssignedToOrderTotal);
-            var allowedDiscounts = new List<DiscountForCaching>();
-            if (allDiscounts != null)
-                foreach (var discount in allDiscounts)
-                    if (_discountService.ValidateDiscount(discount, customer).IsValid &&
-                        !allowedDiscounts.ContainsDiscount(discount))
-                    {
-                        allowedDiscounts.Add(discount);
-                    }
+            var allowedDiscounts = _discountService.GetAllDiscountsForCaching(DiscountType.AssignedToOrderTotal)
+                .Where(discount => _discountService.ValidateDiscount(discount, customer).IsValid).Distinct().ToList();
 
-            appliedDiscounts = allowedDiscounts.GetPreferredDiscount(orderTotal, out discountAmount);
+            var discountPrice = allowedDiscounts.GetDiscountPrice(new DiscountPriceRequest(orderTotal));
+            appliedDiscounts = discountPrice.AppliedDiscounts;
 
-            if (discountAmount < decimal.Zero)
-                discountAmount = decimal.Zero;
-
+            var totalDiscountAmount = Math.Max(decimal.Zero, discountPrice.DiscountAmount);
             if (_shoppingCartSettings.RoundPricesDuringCalculation)
-                discountAmount = RoundingHelper.RoundPrice(discountAmount);
+                totalDiscountAmount = RoundingHelper.RoundPrice(totalDiscountAmount);
 
-            return discountAmount;
+            return totalDiscountAmount;
         }
 
         #endregion

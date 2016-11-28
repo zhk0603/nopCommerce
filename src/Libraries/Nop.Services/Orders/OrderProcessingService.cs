@@ -1271,18 +1271,16 @@ namespace Nop.Services.Orders
                     {
                         //prices
                         decimal taxRate;
-                        List<DiscountForCaching> scDiscounts;
-                        decimal discountAmount;
-                        int? maximumDiscountQty;
+                        DiscountPrice discountPrice;
                         var scUnitPrice = _priceCalculationService.GetUnitPrice(sc);
-                        var scSubTotal = _priceCalculationService.GetSubTotal(sc, true, out discountAmount, out scDiscounts, out maximumDiscountQty);
+                        var scSubTotal = _priceCalculationService.GetSubTotal(sc, true, out discountPrice);
                         var scUnitPriceInclTax = _taxService.GetProductPrice(sc.Product, scUnitPrice, true, details.Customer, out taxRate);
                         var scUnitPriceExclTax = _taxService.GetProductPrice(sc.Product, scUnitPrice, false, details.Customer, out taxRate);
                         var scSubTotalInclTax = _taxService.GetProductPrice(sc.Product, scSubTotal, true, details.Customer, out taxRate);
                         var scSubTotalExclTax = _taxService.GetProductPrice(sc.Product, scSubTotal, false, details.Customer, out taxRate);
-                        var discountAmountInclTax = _taxService.GetProductPrice(sc.Product, discountAmount, true, details.Customer, out taxRate);
-                        var discountAmountExclTax = _taxService.GetProductPrice(sc.Product, discountAmount, false, details.Customer, out taxRate);
-                        foreach (var disc in scDiscounts)
+                        var discountAmountInclTax = _taxService.GetProductPrice(sc.Product, discountPrice.DiscountAmount, true, details.Customer, out taxRate);
+                        var discountAmountExclTax = _taxService.GetProductPrice(sc.Product, discountPrice.DiscountAmount, false, details.Customer, out taxRate);
+                        foreach (var disc in discountPrice.AppliedDiscounts)
                             if (!details.AppliedDiscounts.ContainsDiscount(disc))
                                 details.AppliedDiscounts.Add(disc);
 
