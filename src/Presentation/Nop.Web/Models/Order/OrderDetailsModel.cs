@@ -81,12 +81,17 @@ namespace Nop.Web.Models.Order
 
         public partial class OrderItemModel : BaseNopEntityModel
         {
+            public OrderItemModel()
+            {
+                UnitPrices = new List<string>();
+            }
+
             public Guid OrderItemGuid { get; set; }
             public string Sku { get; set; }
             public int ProductId { get; set; }
             public string ProductName { get; set; }
             public string ProductSeName { get; set; }
-            public string UnitPrice { get; set; }
+            public List<string> UnitPrices { get; set; }
             public string SubTotal { get; set; }
             public int Quantity { get; set; }
             public string AttributeInfo { get; set; }

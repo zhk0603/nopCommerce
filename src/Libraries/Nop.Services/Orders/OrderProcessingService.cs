@@ -1315,6 +1315,20 @@ namespace Nop.Services.Orders
                         order.OrderItems.Add(orderItem);
                         _orderService.UpdateOrder(order);
 
+                        //prices by quantity (in case if there are applied discounts with MaximumDiscountedQuantity)
+                        if (discountPrice.DiscountPricesByQuantity.Count > 1)
+                        {
+                            //including tax
+                            var pricesByQuantityInclTax = discountPrice.DiscountPricesByQuantity.ToDictionary(priceByQuantity => priceByQuantity.Quantity,
+                                priceByQuantity => _taxService.GetProductPrice(sc.Product, priceByQuantity.DiscountPrice, true, details.Customer, out taxRate));
+                            _genericAttributeService.SaveAttribute(orderItem, "pricesByQuantityInclTax", pricesByQuantityInclTax);
+
+                            //excluding tax
+                            var pricesByQuantityExclTax = discountPrice.DiscountPricesByQuantity.ToDictionary(priceByQuantity => priceByQuantity.Quantity,
+                                priceByQuantity => _taxService.GetProductPrice(sc.Product, priceByQuantity.DiscountPrice, false, details.Customer, out taxRate));
+                            _genericAttributeService.SaveAttribute(orderItem, "pricesByQuantityExclTax", pricesByQuantityExclTax);
+                        }
+
                         //gift cards
                         if (sc.Product.IsGiftCard)
                         {

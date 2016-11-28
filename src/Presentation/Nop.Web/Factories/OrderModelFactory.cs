@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Nop.Core;
 using Nop.Core.Domain.Catalog;
@@ -8,6 +9,7 @@ using Nop.Core.Domain.Orders;
 using Nop.Core.Domain.Shipping;
 using Nop.Core.Domain.Tax;
 using Nop.Services.Catalog;
+using Nop.Services.Common;
 using Nop.Services.Directory;
 using Nop.Services.Helpers;
 using Nop.Services.Localization;
@@ -410,8 +412,28 @@ namespace Nop.Web.Factories
                 if (order.CustomerTaxDisplayType == TaxDisplayType.IncludingTax)
                 {
                     //including tax
-                    var unitPriceInclTaxInCustomerCurrency = _currencyService.ConvertCurrency(orderItem.UnitPriceInclTax, order.CurrencyRate);
-                    orderItemModel.UnitPrice = _priceFormatter.FormatPrice(unitPriceInclTaxInCustomerCurrency, true, order.CustomerCurrencyCode, _workContext.WorkingLanguage, true);
+                    var pricesByQuantityInclTax = orderItem.GetAttribute<Dictionary<int, decimal>>("pricesByQuantityInclTax");
+                    if (pricesByQuantityInclTax == null || !pricesByQuantityInclTax.Any())
+                    {
+                        //only one price for all items
+                        var unitPriceInclTaxInCustomerCurrency = _currencyService.ConvertCurrency(orderItem.UnitPriceInclTax, order.CurrencyRate);
+                        orderItemModel.UnitPrices.Add(_priceFormatter.FormatPrice(unitPriceInclTaxInCustomerCurrency, true, order.CustomerCurrencyCode, _workContext.WorkingLanguage, true));
+                    }
+                    else
+                    {
+                        //there is a distribution of prices by quantity
+                        var previousQuantity = 0;
+                        orderItemModel.UnitPrices.AddRange(pricesByQuantityInclTax.Keys.Select(quantity =>
+                        {
+                            var currentQuantity = quantity - previousQuantity;
+                            previousQuantity = quantity;
+
+                            var unitPriceInclTaxInCustomerCurrency = _currencyService.ConvertCurrency(pricesByQuantityInclTax[quantity], order.CurrencyRate);
+                            var unitPrice = _priceFormatter.FormatPrice(unitPriceInclTaxInCustomerCurrency, true, order.CustomerCurrencyCode, _workContext.WorkingLanguage, true);
+
+                            return string.Format(_localizationService.GetResource("Order.Product(s).PriceByQuantity"), currentQuantity, unitPrice);
+                        }));
+                    }
 
                     var priceInclTaxInCustomerCurrency = _currencyService.ConvertCurrency(orderItem.PriceInclTax, order.CurrencyRate);
                     orderItemModel.SubTotal = _priceFormatter.FormatPrice(priceInclTaxInCustomerCurrency, true, order.CustomerCurrencyCode, _workContext.WorkingLanguage, true);
@@ -419,8 +441,28 @@ namespace Nop.Web.Factories
                 else
                 {
                     //excluding tax
-                    var unitPriceExclTaxInCustomerCurrency = _currencyService.ConvertCurrency(orderItem.UnitPriceExclTax, order.CurrencyRate);
-                    orderItemModel.UnitPrice = _priceFormatter.FormatPrice(unitPriceExclTaxInCustomerCurrency, true, order.CustomerCurrencyCode, _workContext.WorkingLanguage, false);
+                    var pricesByQuantityExclTax = orderItem.GetAttribute<Dictionary<int, decimal>>("pricesByQuantityExclTax");
+                    if (pricesByQuantityExclTax == null || !pricesByQuantityExclTax.Any())
+                    {
+                        //only one price for all items
+                        var unitPriceExclTaxInCustomerCurrency = _currencyService.ConvertCurrency(orderItem.UnitPriceExclTax, order.CurrencyRate);
+                        orderItemModel.UnitPrices.Add(_priceFormatter.FormatPrice(unitPriceExclTaxInCustomerCurrency, true, order.CustomerCurrencyCode, _workContext.WorkingLanguage, false));
+                    }
+                    else
+                    {
+                        //there is a distribution of prices by quantity
+                        var previousQuantity = 0;
+                        orderItemModel.UnitPrices.AddRange(pricesByQuantityExclTax.Keys.Select(quantity =>
+                        {
+                            var currentQuantity = quantity - previousQuantity;
+                            previousQuantity = quantity;
+
+                            var unitPriceExclTaxInCustomerCurrency = _currencyService.ConvertCurrency(pricesByQuantityExclTax[quantity], order.CurrencyRate);
+                            var unitPrice = _priceFormatter.FormatPrice(unitPriceExclTaxInCustomerCurrency, true, order.CustomerCurrencyCode, _workContext.WorkingLanguage, false);
+
+                            return string.Format(_localizationService.GetResource("Order.Product(s).PriceByQuantity"), currentQuantity, unitPrice);
+                        }));
+                    }
 
                     var priceExclTaxInCustomerCurrency = _currencyService.ConvertCurrency(orderItem.PriceExclTax, order.CurrencyRate);
                     orderItemModel.SubTotal = _priceFormatter.FormatPrice(priceExclTaxInCustomerCurrency, true, order.CustomerCurrencyCode, _workContext.WorkingLanguage, false);

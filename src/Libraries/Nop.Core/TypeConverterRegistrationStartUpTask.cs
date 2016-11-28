@@ -23,6 +23,7 @@ namespace Nop.Core
 
             //dictionaries
             TypeDescriptor.AddAttributes(typeof(Dictionary<int, int>), new TypeConverterAttribute(typeof(GenericDictionaryTypeConverter<int, int>)));
+            TypeDescriptor.AddAttributes(typeof(Dictionary<int, decimal>), new TypeConverterAttribute(typeof(GenericDictionaryTypeConverter<int, decimal>)));
 
             //shipping option
             TypeDescriptor.AddAttributes(typeof(ShippingOption), new TypeConverterAttribute(typeof(ShippingOptionTypeConverter)));

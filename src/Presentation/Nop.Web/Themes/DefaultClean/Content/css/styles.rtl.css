@@ -3980,6 +3980,9 @@ label, label + * {
 	color: #444;
 }
 
+.order-details-page .product-unit-price {
+    display: block;
+}
 
 /****** SEARCH & SITEMAP ******/
 

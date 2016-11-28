@@ -56,6 +56,12 @@ set @resources='
   <LocaleResource Name="Admin.Configuration.Settings.Media.ManufacturerThumbPictureSize.Hint">
     <Value>The default size (pixels) for manufacturer thumbnail images.</Value>
   </LocaleResource>
+  <LocaleResource Name="Messages.Order.Product(s).PriceByQuantity">
+    <Value>{0} items for {1}</Value>
+   </LocaleResource>
+   <LocaleResource Name="Order.Product(s).PriceByQuantity">
+    <Value>{0} items for {1}</Value>
+   </LocaleResource>
 </Language>
 '
 
