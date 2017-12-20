@@ -933,10 +933,14 @@ namespace Nop.Services.Common
                     if (_addressSettings.StreetAddress2Enabled && !string.IsNullOrEmpty(order.ShippingAddress.Address2))
                         shippingAddress.AddCell(GetParagraph("PDFInvoice.Address2", indent, lang, font, order.ShippingAddress.Address2));
                     if (_addressSettings.CityEnabled || _addressSettings.StateProvinceEnabled ||
-                        _addressSettings.ZipPostalCodeEnabled)
-                        shippingAddress.AddCell(new Paragraph(
-                            $"{indent}{order.ShippingAddress.City}, {(order.ShippingAddress.StateProvince != null ? order.ShippingAddress.StateProvince.GetLocalized(x => x.Name, lang.Id) : "")} {order.ShippingAddress.ZipPostalCode}",
-                            font));
+                        _addressSettings.CountyEnabled || _addressSettings.ZipPostalCodeEnabled)
+                    {
+                        var cityStateZip = $"{indent}{order.ShippingAddress.City}, " +
+                            $"{(!string.IsNullOrEmpty(order.ShippingAddress.County) ? $"{order.ShippingAddress.County}, " : string.Empty)}" +
+                            $"{(order.ShippingAddress.StateProvince?.GetLocalized(x => x.Name, lang.Id) ?? string.Empty)} " +
+                            $"{order.ShippingAddress.ZipPostalCode}";
+                        shippingAddress.AddCell(new Paragraph(cityStateZip, font));
+                    }
                     if (_addressSettings.CountryEnabled && order.ShippingAddress.Country != null)
                         shippingAddress.AddCell(
                             new Paragraph(indent + order.ShippingAddress.Country.GetLocalized(x => x.Name, lang.Id), font));
@@ -1008,10 +1012,15 @@ namespace Nop.Services.Common
                 billingAddress.AddCell(GetParagraph("PDFInvoice.Address", indent, lang, font, order.BillingAddress.Address1));
             if (_addressSettings.StreetAddress2Enabled && !string.IsNullOrEmpty(order.BillingAddress.Address2))
                 billingAddress.AddCell(GetParagraph("PDFInvoice.Address2", indent, lang, font, order.BillingAddress.Address2));
-            if (_addressSettings.CityEnabled || _addressSettings.StateProvinceEnabled || _addressSettings.ZipPostalCodeEnabled)
-                billingAddress.AddCell(new Paragraph(
-                    $"{indent}{order.BillingAddress.City}, {(order.BillingAddress.StateProvince != null ? order.BillingAddress.StateProvince.GetLocalized(x => x.Name, lang.Id) : "")} {order.BillingAddress.ZipPostalCode}",
-                    font));
+            if (_addressSettings.CityEnabled || _addressSettings.StateProvinceEnabled || 
+                _addressSettings.CountyEnabled || _addressSettings.ZipPostalCodeEnabled)
+            {
+                var cityStateZip = $"{indent}{order.BillingAddress.City}, " +
+                    $"{(!string.IsNullOrEmpty(order.BillingAddress.County) ? $"{order.BillingAddress.County}, " : string.Empty)}" +
+                    $"{(order.BillingAddress.StateProvince?.GetLocalized(x => x.Name, lang.Id) ?? string.Empty)} " +
+                    $"{order.BillingAddress.ZipPostalCode}";
+                billingAddress.AddCell(new Paragraph(cityStateZip, font));
+            }
             if (_addressSettings.CountryEnabled && order.BillingAddress.Country != null)
                 billingAddress.AddCell(new Paragraph(indent + order.BillingAddress.Country.GetLocalized(x => x.Name, lang.Id),
                     font));
@@ -1294,8 +1303,15 @@ namespace Nop.Services.Common
                     if (_addressSettings.StreetAddress2Enabled && !string.IsNullOrEmpty(order.ShippingAddress.Address2))
                         addressTable.AddCell(GetParagraph("PDFPackagingSlip.Address2", lang, font, order.ShippingAddress.Address2));
 
-                    if (_addressSettings.CityEnabled || _addressSettings.StateProvinceEnabled || _addressSettings.ZipPostalCodeEnabled)
-                        addressTable.AddCell(new Paragraph($"{order.ShippingAddress.City}, {(order.ShippingAddress.StateProvince != null ? order.ShippingAddress.StateProvince.GetLocalized(x => x.Name, lang.Id) : "")} {order.ShippingAddress.ZipPostalCode}", font));
+                    if (_addressSettings.CityEnabled || _addressSettings.StateProvinceEnabled || 
+                        _addressSettings.CountyEnabled || _addressSettings.ZipPostalCodeEnabled)
+                    {
+                        var cityStateZip = $"{order.ShippingAddress.City}, " +
+                            $"{(!string.IsNullOrEmpty(order.ShippingAddress.County) ? $"{order.ShippingAddress.County}, " : string.Empty)}" +
+                            $"{(order.ShippingAddress.StateProvince?.GetLocalized(x => x.Name, lang.Id) ?? string.Empty)} " +
+                            $"{order.ShippingAddress.ZipPostalCode}";
+                        addressTable.AddCell(new Paragraph(cityStateZip, font));
+                    }
 
                     if (_addressSettings.CountryEnabled && order.ShippingAddress.Country != null)
                         addressTable.AddCell(new Paragraph(order.ShippingAddress.Country.GetLocalized(x => x.Name, lang.Id), font));

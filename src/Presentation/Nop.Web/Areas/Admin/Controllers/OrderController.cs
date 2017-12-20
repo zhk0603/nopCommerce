@@ -635,6 +635,8 @@ namespace Nop.Web.Areas.Admin.Controllers
                 model.ShippingAddress.CountryEnabled = _addressSettings.CountryEnabled;
                 model.ShippingAddress.CountryRequired = _addressSettings.CountryEnabled; //country is required when enabled
                 model.ShippingAddress.StateProvinceEnabled = _addressSettings.StateProvinceEnabled;
+                model.ShippingAddress.CountyEnabled = _addressSettings.CountyEnabled;
+                model.ShippingAddress.CountyRequired = _addressSettings.CountyRequired;
                 model.ShippingAddress.CityEnabled = _addressSettings.CityEnabled;
                 model.ShippingAddress.CityRequired = _addressSettings.CityRequired;
                 model.ShippingAddress.StreetAddressEnabled = _addressSettings.StreetAddressEnabled;
@@ -679,6 +681,8 @@ namespace Nop.Web.Areas.Admin.Controllers
             model.BillingAddress.CountryEnabled = _addressSettings.CountryEnabled;
             model.BillingAddress.CountryRequired = _addressSettings.CountryEnabled; //country is required when enabled
             model.BillingAddress.StateProvinceEnabled = _addressSettings.StateProvinceEnabled;
+            model.BillingAddress.CountyEnabled = _addressSettings.CountyEnabled;
+            model.BillingAddress.CountyRequired = _addressSettings.CountyRequired;
             model.BillingAddress.CityEnabled = _addressSettings.CityEnabled;
             model.BillingAddress.CityRequired = _addressSettings.CityRequired;
             model.BillingAddress.StreetAddressEnabled = _addressSettings.StreetAddressEnabled;
@@ -2899,6 +2903,8 @@ namespace Nop.Web.Areas.Admin.Controllers
             model.Address.CountryEnabled = _addressSettings.CountryEnabled;
             model.Address.CountryRequired = _addressSettings.CountryEnabled; //country is required when enabled
             model.Address.StateProvinceEnabled = _addressSettings.StateProvinceEnabled;
+            model.Address.CountyEnabled = _addressSettings.CountyEnabled;
+            model.Address.CountyRequired = _addressSettings.CountyRequired;
             model.Address.CityEnabled = _addressSettings.CityEnabled;
             model.Address.CityRequired = _addressSettings.CityRequired;
             model.Address.StreetAddressEnabled = _addressSettings.StreetAddressEnabled;
@@ -2991,6 +2997,8 @@ namespace Nop.Web.Areas.Admin.Controllers
             model.Address.CountryEnabled = _addressSettings.CountryEnabled;
             model.Address.CountryRequired = _addressSettings.CountryEnabled; //country is required when enabled
             model.Address.StateProvinceEnabled = _addressSettings.StateProvinceEnabled;
+            model.Address.CountyEnabled = _addressSettings.CountyEnabled;
+            model.Address.CountyRequired = _addressSettings.CountyRequired;
             model.Address.CityEnabled = _addressSettings.CityEnabled;
             model.Address.CityRequired = _addressSettings.CityRequired;
             model.Address.StreetAddressEnabled = _addressSettings.StreetAddressEnabled;

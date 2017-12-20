@@ -105,6 +105,17 @@
                                         </td>
                                     </tr>
                                 }
+                                @if (Model.ShippingAddress.CountyEnabled)
+                                {
+                                    <tr>
+                                        <td>
+                                            @T("Admin.Orders.Address.County")
+                                        </td>
+                                        <td>
+                                            @Model.ShippingAddress.County
+                                        </td>
+                                    </tr>
+                                }
                                 @if (Model.ShippingAddress.StateProvinceEnabled)
                                 {
                                     <tr>
