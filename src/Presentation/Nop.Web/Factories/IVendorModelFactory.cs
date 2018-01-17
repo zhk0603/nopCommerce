@@ -1,4 +1,6 @@
-﻿using Nop.Web.Models.Vendors;
+﻿using System.Collections.Generic;
+using Nop.Core.Domain.Vendors;
+using Nop.Web.Models.Vendors;
 
 namespace Nop.Web.Factories
 {
@@ -21,7 +23,16 @@ namespace Nop.Web.Factories
         /// </summary>
         /// <param name="model">Vendor info model</param>
         /// <param name="excludeProperties">Whether to exclude populating of model properties from the entity</param>
+        /// <param name="overriddenVendorAttributesXml">Overridden vendor attributes in XML format; pass null to use VendorAttributes of vendor</param>
         /// <returns>Vendor info model</returns>
-        VendorInfoModel PrepareVendorInfoModel(VendorInfoModel model, bool excludeProperties);
+        VendorInfoModel PrepareVendorInfoModel(VendorInfoModel model, bool excludeProperties, string overriddenVendorAttributesXml = "");
+
+        /// <summary>
+        /// Prepare vendor attribute models
+        /// </summary>
+        /// <param name="vendor">Vendor</param>
+        /// <param name="overriddenAttributesXml">Overridden vendor attributes in XML format; pass null to use VendorAttributes of vendor</param>
+        /// <returns>List of the vendor attribute model</returns>
+        IList<VendorAttributeModel> PrepareVendorAttributes(Vendor vendor, string overriddenAttributesXml = "");
     }
 }

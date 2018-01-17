@@ -11118,6 +11118,18 @@ namespace Nop.Services.Installation
                 },
                 new ActivityLogType
                 {
+                    SystemKeyword = "AddNewVendorAttribute",
+                    Enabled = true,
+                    Name = "Add a new vendor attribute"
+                },
+                new ActivityLogType
+                {
+                    SystemKeyword = "AddNewVendorAttributeValue",
+                    Enabled = true,
+                    Name = "Add a new vendor attribute value"
+                },
+                new ActivityLogType
+                {
                     SystemKeyword = "AddNewWarehouse",
                     Enabled = true,
                     Name = "Add a new warehouse"
@@ -11358,6 +11370,18 @@ namespace Nop.Services.Installation
                 },
                 new ActivityLogType
                 {
+                    SystemKeyword = "DeleteVendorAttribute",
+                    Enabled = true,
+                    Name = "Delete a vendor attribute"
+                },
+                new ActivityLogType
+                {
+                    SystemKeyword = "DeleteVendorAttributeValue",
+                    Enabled = true,
+                    Name = "Delete a vendor attribute value"
+                },
+                new ActivityLogType
+                {
                     SystemKeyword = "DeleteWarehouse",
                     Enabled = true,
                     Name = "Delete a warehouse"
@@ -11583,6 +11607,18 @@ namespace Nop.Services.Installation
                     SystemKeyword = "EditVendor",
                     Enabled = true,
                     Name = "Edit a vendor"
+                },
+                new ActivityLogType
+                {
+                    SystemKeyword = "EditVendorAttribute",
+                    Enabled = true,
+                    Name = "Edit a vendor attribute"
+                },
+                new ActivityLogType
+                {
+                    SystemKeyword = "EditVendorAttributeValue",
+                    Enabled = true,
+                    Name = "Edit a vendor attribute value"
                 },
                 new ActivityLogType
                 {

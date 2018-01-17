@@ -182,6 +182,8 @@
                         </div>
                     </div>
                 </div>
+                @*render vendor attributes*@
+                @await Html.PartialAsync("../VendorAttribute/ListBlock.cshtml")
                 @await Component.InvokeAsync("AdminWidget", new { widgetZone = "admin_vendor_settings_bottom" })
             </div>
         </div>
