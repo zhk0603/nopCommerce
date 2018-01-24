@@ -118,7 +118,7 @@
                                 @Model.Order.PickupAddress.Address1
                             </li>
                             <li class="city-state-zip">
-                                @Model.Order.PickupAddress.City,
+                                @Model.Order.PickupAddress.City, @Model.Order.PickupAddress.County, @Model.Order.PickupAddress.StateProvinceName
                                 @Model.Order.PickupAddress.ZipPostalCode
                             </li>
                             @if (!string.IsNullOrEmpty(Model.Order.PickupAddress.CountryName))

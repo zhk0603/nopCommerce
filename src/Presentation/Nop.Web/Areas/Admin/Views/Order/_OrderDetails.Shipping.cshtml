@@ -207,6 +207,17 @@
                                         </td>
                                     </tr>
                                 }
+                                @if (!string.IsNullOrEmpty(Model.PickupAddress.County))
+                                {
+                                    <tr>
+                                        <td>
+                                            @T("Admin.Orders.Address.County")
+                                        </td>
+                                        <td>
+                                            @Model.PickupAddress.County
+                                        </td>
+                                    </tr>
+                                }
                                 @if (!string.IsNullOrEmpty(Model.PickupAddress.CountryName))
                                 {
                                     <tr>

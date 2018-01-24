@@ -321,16 +321,41 @@
                                         @Model.PickupAddress.Address1
                                     </li>
                                 }
-                                if (!string.IsNullOrEmpty(Model.PickupAddress.City) || !string.IsNullOrEmpty(Model.PickupAddress.ZipPostalCode))
+                                if (!string.IsNullOrEmpty(Model.PickupAddress.City)|| 
+                                    !string.IsNullOrEmpty(Model.PickupAddress.County) || 
+                                    !string.IsNullOrEmpty(Model.PickupAddress.StateProvinceName) || 
+                                    !string.IsNullOrEmpty(Model.PickupAddress.ZipPostalCode))
                                 {
                                     <li class="city-state-zip">
                                         @if (!string.IsNullOrEmpty(Model.PickupAddress.City))
                                         {
                                             @Model.PickupAddress.City
-                                        }                                            
+                                            @if (!string.IsNullOrEmpty(Model.PickupAddress.County) || 
+                                                !string.IsNullOrEmpty(Model.PickupAddress.StateProvinceName) || 
+                                                !string.IsNullOrEmpty(Model.PickupAddress.ZipPostalCode))
+                                            {
+                                                <text>,</text>
+                                            }
+                                        }
+                                        @if (!string.IsNullOrEmpty(Model.PickupAddress.County))
+                                        {
+                                            @Model.PickupAddress.County
+                                            @if (!string.IsNullOrEmpty(Model.PickupAddress.StateProvinceName) || 
+                                                !string.IsNullOrEmpty(Model.PickupAddress.ZipPostalCode))
+                                            {
+                                                <text>,</text>
+                                            }
+                                        }
+                                        @if (!string.IsNullOrEmpty(Model.PickupAddress.StateProvinceName))
+                                        {
+                                            @Model.PickupAddress.StateProvinceName
+                                            @if (!string.IsNullOrEmpty(Model.PickupAddress.ZipPostalCode))
+                                            {
+                                                <text>,</text>
+                                            }
+                                        }
                                         @if (!string.IsNullOrEmpty(Model.PickupAddress.ZipPostalCode))
                                         {
-                                            <text>,</text>
                                             @Model.PickupAddress.ZipPostalCode
                                         }
                                     </li>

@@ -67,45 +67,45 @@
                                     </li>
                                 }
                                 @if (address.CityEnabled && !string.IsNullOrEmpty(address.City)||
-                                    address.CountyEnabled && !string.IsNullOrEmpty(address.County) ||
-                                    address.StateProvinceEnabled && !string.IsNullOrEmpty(address.StateProvinceName) ||
-                                    address.ZipPostalCodeEnabled && !string.IsNullOrEmpty(address.ZipPostalCode))
+                             address.CountyEnabled && !string.IsNullOrEmpty(address.County) ||
+                             address.StateProvinceEnabled && !string.IsNullOrEmpty(address.StateProvinceName) ||
+                             address.ZipPostalCodeEnabled && !string.IsNullOrEmpty(address.ZipPostalCode))
                                 {
-                                    var cityStateZip = string.Empty;
+                                    var addressLine = string.Empty;
                                     if (address.CityEnabled && !string.IsNullOrEmpty(address.City))
                                     {
-                                        cityStateZip += address.City;
+                                        addressLine += address.City;
                                         if (address.CountyEnabled && !string.IsNullOrEmpty(address.County) ||
                                             address.StateProvinceEnabled && !string.IsNullOrEmpty(address.StateProvinceName) ||
                                             address.ZipPostalCodeEnabled && !string.IsNullOrEmpty(address.ZipPostalCode))
                                         {
-                                            cityStateZip += ", ";
+                                            addressLine += ", ";
                                         }
                                     }
                                     if (address.CountyEnabled && !string.IsNullOrEmpty(address.County))
                                     {
-                                        cityStateZip += address.County;
+                                        addressLine += address.County;
                                         if (address.StateProvinceEnabled && !string.IsNullOrEmpty(address.StateProvinceName) ||
                                             address.ZipPostalCodeEnabled && !string.IsNullOrEmpty(address.ZipPostalCode))
                                         {
-                                            cityStateZip += ", ";
+                                            addressLine += ", ";
                                         }
                                     }
                                     if (address.StateProvinceEnabled && !string.IsNullOrEmpty(address.StateProvinceName))
                                     {
-                                        cityStateZip += address.StateProvinceName;
+                                        addressLine += address.StateProvinceName;
                                         if (address.ZipPostalCodeEnabled && !string.IsNullOrEmpty(address.ZipPostalCode))
                                         {
-                                            cityStateZip += ", ";
+                                            addressLine += ", ";
                                         }
                                     }
                                     if (address.ZipPostalCodeEnabled && !string.IsNullOrEmpty(address.ZipPostalCode))
                                     {
-                                        cityStateZip += address.ZipPostalCode;
+                                        addressLine += address.ZipPostalCode;
                                     }
 
                                     <li class="city-state-zip">
-                                        @cityStateZip
+                                        @addressLine
                                     </li>
                                 }
                                 @if (address.CountryEnabled && !string.IsNullOrEmpty(address.CountryName))
