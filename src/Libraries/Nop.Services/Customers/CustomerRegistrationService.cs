@@ -273,20 +273,24 @@ namespace Nop.Services.Customers
             var registeredRole = _customerService.GetCustomerRoleBySystemName(SystemCustomerRoleNames.Registered);
             if (registeredRole == null)
                 throw new NopException("'Registered' role could not be loaded");
-            request.Customer.CustomerRoles.Add(registeredRole);
+            //request.Customer.CustomerRoles.Add(registeredRole);
+            request.Customer.CustomerCustomerRoleMappings.Add(new CustomerCustomerRoleMapping { CustomerRole = registeredRole });
             //remove from 'Guests' role
             var guestRole = request.Customer.CustomerRoles.FirstOrDefault(cr => cr.SystemName == SystemCustomerRoleNames.Guests);
             if (guestRole != null)
-                request.Customer.CustomerRoles.Remove(guestRole);
-            
-            //Add reward points for customer registration (if enabled)
-            if (_rewardPointsSettings.Enabled &&
-                _rewardPointsSettings.PointsForRegistration > 0)
             {
-                _rewardPointService.AddRewardPointsHistoryEntry(request.Customer, 
-                    _rewardPointsSettings.PointsForRegistration,
-                    request.StoreId,
-                    _localizationService.GetResource("RewardPoints.Message.EarnedForRegistration"));
+                //request.Customer.CustomerRoles.Remove(guestRole);
+                request.Customer.CustomerCustomerRoleMappings
+                    .Remove(request.Customer.CustomerCustomerRoleMappings.FirstOrDefault(mapping => mapping.CustomerRoleId == guestRole.Id));
+            }
+
+            //add reward points for customer registration (if enabled)
+            if (_rewardPointsSettings.Enabled && _rewardPointsSettings.PointsForRegistration > 0)
+            {
+                var endDate = _rewardPointsSettings.RegistrationPointsValidity > 0 
+                    ? (DateTime?)DateTime.UtcNow.AddDays(_rewardPointsSettings.RegistrationPointsValidity.Value) : null;
+                _rewardPointService.AddRewardPointsHistoryEntry(request.Customer, _rewardPointsSettings.PointsForRegistration,
+                    request.StoreId, _localizationService.GetResource("RewardPoints.Message.EarnedForRegistration"), endDate: endDate);
             }
 
             _customerService.UpdateCustomer(request.Customer);

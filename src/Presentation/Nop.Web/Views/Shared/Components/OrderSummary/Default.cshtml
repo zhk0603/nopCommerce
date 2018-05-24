@@ -1,8 +1,10 @@
 @model ShoppingCartModel
 @using Nop.Core
+@using Nop.Core.Domain.Orders
 @using Nop.Core.Domain.Tax
 @inject IWebHelper webHelper
 @inject IWorkContext workContext
+@inject OrderSettings orderSettings
 <div class="order-summary-content">
     @await Component.InvokeAsync("Widget", new { widgetZone = PublicWidgetZones.OrderSummaryContentBefore })
     @await Html.PartialAsync("_OrderReviewData", Model.OrderReviewData)
@@ -146,7 +148,7 @@
                                             <ul>
                                                 @foreach (var warning in item.Warnings)
                                                 {
-                                                    <li>@warning</li>
+                                                    <li>@Html.Raw(warning)</li>
                                                 }
                                             </ul>
                                         </div>
@@ -268,7 +270,7 @@
                                 @if (Model.TermsOfServicePopup)
                                 {
                                     <a class="read" id="read-terms">@T("Checkout.TermsOfService.Read")</a>
-                                    <script type="text/javascript" asp-location="Footer">
+                                    <script asp-location="Footer">
                                         $(document).ready(function() {
                                             $('#read-terms').on('click',
                                                 function(e) {
@@ -289,7 +291,7 @@
                         <div class="checkout-buttons">
                             @if (string.IsNullOrEmpty(Model.MinOrderSubtotalWarning) && !Model.HideCheckoutButton)
                             {
-                                <script type="text/javascript" asp-location="Footer">
+                                <script asp-location="Footer">
                                     $(document).ready(function () {
                                         $('#checkout').click(function () {
                                             //terms of service
@@ -307,9 +309,18 @@
                                         });
                                     });
                                 </script>
-                                <button type="submit" id="checkout" name="checkout" value="checkout" class="button-1 checkout-button">
-                                    @T("Checkout.Button")
-                                </button>
+                                if (orderSettings.CheckoutDisabled)
+                                {
+                                    <div class="checkout-disabled">
+                                        @T("Checkout.Disabled")
+                                    </div>
+                                }
+                                else
+                                {
+                                    <button type="submit" id="checkout" name="checkout" value="checkout" class="button-1 checkout-button">
+                                        @T("Checkout.Button")
+                                    </button>
+                                }
                             }
                         </div>
                         <div class="addon-buttons">

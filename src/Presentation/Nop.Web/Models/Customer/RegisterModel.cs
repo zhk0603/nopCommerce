@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using FluentValidation.Attributes;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Nop.Web.Framework.Mvc.ModelBinding;
-using Nop.Web.Framework.Mvc.Models;
+using Nop.Web.Framework.Models;
 using Nop.Web.Validators.Customer;
 
 namespace Nop.Web.Models.Customer
@@ -18,6 +18,7 @@ namespace Nop.Web.Models.Customer
             this.AvailableCountries = new List<SelectListItem>();
             this.AvailableStates = new List<SelectListItem>();
             this.CustomerAttributes = new List<CustomerAttributeModel>();
+            this.GdprConsents = new List<GdprConsentModel>();
         }
         
         [DataType(DataType.EmailAddress)]
@@ -102,6 +103,11 @@ namespace Nop.Web.Models.Customer
         [NopResourceDisplayName("Account.Fields.City")]
         public string City { get; set; }
 
+        public bool CountyEnabled { get; set; }
+        public bool CountyRequired { get; set; }
+        [NopResourceDisplayName("Account.Fields.County")]
+        public string County { get; set; }
+
         public bool CountryEnabled { get; set; }
         public bool CountryRequired { get; set; }
         [NopResourceDisplayName("Account.Fields.Country")]
@@ -148,5 +154,7 @@ namespace Nop.Web.Models.Customer
         public bool DisplayCaptcha { get; set; }
 
         public IList<CustomerAttributeModel> CustomerAttributes { get; set; }
+
+        public IList<GdprConsentModel> GdprConsents { get; set; }
     }
 }

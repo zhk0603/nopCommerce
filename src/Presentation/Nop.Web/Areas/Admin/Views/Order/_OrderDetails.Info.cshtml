@@ -6,7 +6,7 @@
 
 @if (!Model.IsLoggedInAsVendor)
 {
-    <script type="text/javascript">
+    <script>
         $(document).ready(function () {
             toggleChangeOrderStatus(false);
             toggleOrderTotals(false);
@@ -403,7 +403,7 @@
                             <nop-label asp-for="RedeemedRewardPoints" />
                         </div>
                         <div class="col-md-9">
-                            <div class="form-text-row">@Model.RedeemedRewardPoints + @T("Admin.Orders.Fields.RedeemedRewardPoints.Points").Text + "/" + @Model.RedeemedRewardPointsAmount</div>
+                            <div class="form-text-row">@($"{Model.RedeemedRewardPoints}{T("Admin.Orders.Fields.RedeemedRewardPoints.Points")} {Model.RedeemedRewardPointsAmount}")</div>
                         </div>
                     </div>
                 }

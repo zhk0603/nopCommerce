@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Nop.Core;
-using Nop.Core.Domain.Catalog;
 using Nop.Core.Domain.Forums;
 using Nop.Core.Domain.Seo;
 using Nop.Core.Infrastructure;
-using Nop.Data;
+using Nop.Data.Extensions;
 using Nop.Services.Localization;
 
 namespace Nop.Services.Seo
@@ -24,35 +23,6 @@ namespace Nop.Services.Seo
 
         #endregion
         
-        #region Product tag
-
-        /// <summary>
-        /// Gets product tag SE (search engine) name
-        /// </summary>
-        /// <param name="productTag">Product tag</param>
-        /// <returns>Product tag SE (search engine) name</returns>
-        public static string GetSeName(this ProductTag productTag)
-        {
-            var workContext = EngineContext.Current.Resolve<IWorkContext>();
-            return GetSeName(productTag, workContext.WorkingLanguage.Id);
-        }
-
-        /// <summary>
-        /// Gets product tag SE (search engine) name
-        /// </summary>
-        /// <param name="productTag">Product tag</param>
-        /// <param name="languageId">Language identifier</param>
-        /// <returns>Product tag SE (search engine) name</returns>
-        public static string GetSeName(this ProductTag productTag, int languageId)
-        {
-            if (productTag == null)
-                throw new ArgumentNullException(nameof(productTag));
-            var seName = GetSeName(productTag.GetLocalized(x => x.Name, languageId));
-            return seName;
-        }
-
-        #endregion
-
         #region Forum
 
         /// <summary>
@@ -135,7 +105,7 @@ namespace Nop.Services.Seo
             if (entity == null)
                 throw new ArgumentNullException(nameof(entity));
 
-            var entityName = entity.GetUnproxiedEntityType().Name;
+            var entityName = entity.GetType().BaseType.Name;
             return GetSeName(entity.Id, entityName, languageId, returnDefaultValue, ensureTwoPublishedLanguages);
         }
 
@@ -193,7 +163,7 @@ namespace Nop.Services.Seo
             if (entity == null)
                 throw new ArgumentNullException(nameof(entity));
 
-            return ValidateSeName(entity.Id, entity.GetUnproxiedEntityType().Name, seName, name, ensureNotEmpty);
+            return ValidateSeName(entity.Id, entity.GetType().BaseType.Name, seName, name, ensureNotEmpty);
         }
 
         /// <summary>

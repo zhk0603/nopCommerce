@@ -456,7 +456,8 @@ namespace Nop.Web.Factories
                 sci.RentalStartDateUtc,
                 sci.RentalEndDateUtc,
                 sci.Quantity,
-                false);
+                false,
+                sci.Id);
             foreach (var warning in itemWarnings)
                 cartItemModel.Warnings.Add(warning);
 
@@ -589,7 +590,8 @@ namespace Nop.Web.Factories
                 sci.RentalStartDateUtc,
                 sci.RentalEndDateUtc,
                 sci.Quantity,
-                false);
+                false,
+                sci.Id);
             foreach (var warning in itemWarnings)
                 cartItemModel.Warnings.Add(warning);
 
@@ -647,6 +649,7 @@ namespace Nop.Web.Factories
                     {
                         Address1 = pickupPoint.Address,
                         City = pickupPoint.City,
+                        County = pickupPoint.County,
                         CountryName = country?.Name ?? string.Empty,
                         StateProvinceName = state?.Name ?? string.Empty,
                         ZipPostalCode = pickupPoint.ZipPostalCode
@@ -1185,18 +1188,16 @@ namespace Nop.Web.Factories
                 }
 
                 //reward points to be earned
-                if (_rewardPointsSettings.Enabled &&
-                    _rewardPointsSettings.DisplayHowMuchWillBeEarned &&
-                    shoppingCartTotalBase.HasValue)
+                if (_rewardPointsSettings.Enabled && _rewardPointsSettings.DisplayHowMuchWillBeEarned && shoppingCartTotalBase.HasValue)
                 {
-                    var shippingBaseInclTax = model.RequiresShipping
-                        ? _orderTotalCalculationService.GetShoppingCartShippingTotal(cart, true)
-                        : 0;
-                    if (shippingBaseInclTax.HasValue)
-                    {
-                        var totalForRewardPoints = _orderTotalCalculationService.CalculateApplicableOrderTotalForRewardPoints(shippingBaseInclTax.Value, shoppingCartTotalBase.Value);
+                    //get shipping total
+                    var shippingBaseInclTax = !model.RequiresShipping ? 0 : _orderTotalCalculationService.GetShoppingCartShippingTotal(cart, true) ?? 0;
+
+                    //get total for reward points
+                    var totalForRewardPoints = _orderTotalCalculationService
+                        .CalculateApplicableOrderTotalForRewardPoints(shippingBaseInclTax, shoppingCartTotalBase.Value);
+                    if (totalForRewardPoints > decimal.Zero)
                         model.WillEarnRewardPoints = _orderTotalCalculationService.CalculateRewardPoints(_workContext.CurrentCustomer, totalForRewardPoints);
-                    }
                 }
 
             }

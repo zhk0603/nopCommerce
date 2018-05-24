@@ -34,7 +34,7 @@
                         @T("Admin.Configuration.Settings.Vendor.BlockTitle.Common")
                     </div>
                     <div class="panel-body">
-                        <script type="text/javascript">
+                        <script>
                             $(document).ready(function () {
                                 $("#@Html.IdFor(model => model.AllowVendorsToEditInfo)").click(toggleAllowVendorsToEditInfo);
                                 $("#@Html.IdFor(model => model.AllowCustomersToApplyForVendorAccount)").click(toggleAllowCustomersToApplyForVendorAccount);
@@ -182,6 +182,8 @@
                         </div>
                     </div>
                 </div>
+                @*render vendor attributes*@
+                @await Html.PartialAsync("../VendorAttribute/ListBlock.cshtml", Model.VendorAttributeSearchModel)
                 @await Component.InvokeAsync("AdminWidget", new { widgetZone = AdminWidgetZones.VendorSettingsBottom })
             </div>
         </div>

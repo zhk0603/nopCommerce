@@ -78,7 +78,7 @@ namespace Nop.Services.Shipping
         /// <param name="shippingSettings">Shipping settings</param>
         /// <param name="pluginFinder">Plugin finder</param>
         /// <param name="storeContext">Store context</param>
-        /// <param name="eventPublisher">Event published</param>
+        /// <param name="eventPublisher">Event publisher</param>
         /// <param name="shoppingCartSettings">Shopping cart settings</param>
         /// <param name="cacheManager">Cache manager</param>
         public ShippingService(IRepository<ShippingMethod> shippingMethodRepository,
@@ -241,7 +241,7 @@ namespace Nop.Services.Shipping
             {
                 var query1 = from sm in _shippingMethodRepository.Table
                              where
-                             sm.RestrictedCountries.Select(c => c.Id).Contains(filterByCountryId.Value)
+                             sm.ShippingMethodCountryMappings.Select(mapping => mapping.CountryId).Contains(filterByCountryId.Value)
                              select sm.Id;
 
                 var query2 = from sm in _shippingMethodRepository.Table
@@ -771,8 +771,6 @@ namespace Nop.Services.Shipping
                         //store
                         StoreId = storeId
                     };
-                    //add item
-                    request.Items.Add(new GetShippingOptionRequest.PackageItem(sci));
                     //customer
                     request.Customer = cart.GetCustomer();
                     //ship to
@@ -795,18 +793,37 @@ namespace Nop.Services.Shipping
                         request.CountryFrom = originAddress.Country;
                         request.StateProvinceFrom = originAddress.StateProvince;
                         request.ZipPostalCodeFrom = originAddress.ZipPostalCode;
+                        request.CountyFrom = originAddress.County;
                         request.CityFrom = originAddress.City;
                         request.AddressFrom = originAddress.Address1;
                     }
 
+                    //whether this product should be shipped separately from other ones
                     if (product.ShipSeparately)
                     {
-                        //ship separately
-                        separateRequests.Add(request);
+                        //whether product items should be shipped separately
+                        if (_shippingSettings.ShipSeparatelyOneItemEach)
+                        {
+                            //add item with overridden quantity 1
+                            request.Items.Add(new GetShippingOptionRequest.PackageItem(sci, 1));
+
+                            //create separate requests for all product quantity
+                            for (int i = 0; i < sci.Quantity; i++)
+                            {
+                                separateRequests.Add(request);
+                            }
+                        }
+                        else
+                        {
+                            //all of product items should be shipped in a single box, so create the single separate request 
+                            request.Items.Add(new GetShippingOptionRequest.PackageItem(sci));
+                            separateRequests.Add(request);
+                        }
                     }
                     else
                     {
                         //usual request
+                        request.Items.Add(new GetShippingOptionRequest.PackageItem(sci));
                         requests.Add(warehouseId, request);
                     }
                 }

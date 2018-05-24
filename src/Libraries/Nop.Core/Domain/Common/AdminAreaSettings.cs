@@ -28,12 +28,12 @@ namespace Nop.Core.Domain.Common
         public string RichEditorAdditionalSettings { get; set; }
 
         /// <summary>
-        ///A value indicating whether to javascript is supported in rich editor
+        /// A value indicating whether to javascript is supported in rich editor
         /// </summary>
         public bool RichEditorAllowJavaScript { get; set; }
 
         /// <summary>
-        ///A value indicating whether to use rich editor on message templates and campaigns details pages
+        /// A value indicating whether to use rich editor on message templates and campaigns details pages
         /// </summary>
         public bool UseRichEditorInMessageTemplates { get; set; }
 
@@ -48,9 +48,9 @@ namespace Nop.Core.Domain.Common
         public string LastNewsTitleAdminArea { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether to use IsoDateTimeConverter in JSON results (used for avoiding issue with dates in KendoUI grids)
+        /// Gets or sets a value indicating whether to use IsoDateFormat in JSON results (used for avoiding issue with dates in KendoUI grids)
         /// </summary>
-        public bool UseIsoDateTimeConverterInJson { get; set; }
+        public bool UseIsoDateFormatInJsonResult { get; set; }
 
         /// <summary>
         /// Indicates whether to use nested setting design

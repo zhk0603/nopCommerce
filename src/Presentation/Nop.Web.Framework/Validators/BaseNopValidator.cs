@@ -1,8 +1,9 @@
 using System.Linq;
-using System.Linq.Dynamic;
+using System.Linq.Dynamic.Core;
 using FluentValidation;
 using Nop.Core.Infrastructure;
 using Nop.Data;
+using Nop.Data.Extensions;
 using Nop.Services.Localization;
 
 namespace Nop.Web.Framework.Validators
@@ -60,7 +61,7 @@ namespace Nop.Web.Framework.Validators
                 .Select(p => p.Name).ToArray();
 
             var maxLength = dbContext.GetColumnsMaxLength(dbObjectType.Name, names);
-            var expression = maxLength.Keys.ToDictionary(name => name, name => DynamicExpression.ParseLambda<T, string>(name, null));
+            var expression = maxLength.Keys.ToDictionary(name => name, name => DynamicExpressionParser.ParseLambda<T, string>(null, false, name));
 
             foreach (var expr in expression)
             {
@@ -87,7 +88,7 @@ namespace Nop.Web.Framework.Validators
                 .Select(p => p.Name).ToArray();
 
             var maxValues = dbContext.GetDecimalMaxValue(dbObjectType.Name, names);
-            var expression = maxValues.Keys.ToDictionary(name => name, name => DynamicExpression.ParseLambda<T, decimal>(name, null));
+            var expression = maxValues.Keys.ToDictionary(name => name, name => DynamicExpressionParser.ParseLambda<T, decimal>(null, false, name));
 
             foreach (var expr in expression)
             {

@@ -41,6 +41,7 @@ using Nop.Services.Seo;
 using Nop.Services.Shipping;
 using Nop.Services.Shipping.Tracking;
 using Nop.Services.Stores;
+using Nop.Services.Vendors;
 
 namespace Nop.Services.Messages
 {
@@ -63,6 +64,7 @@ namespace Nop.Services.Messages
         private readonly IProductAttributeParser _productAttributeParser;
         private readonly IAddressAttributeFormatter _addressAttributeFormatter;
         private readonly ICustomerAttributeFormatter _customerAttributeFormatter;
+        private readonly IVendorAttributeFormatter _vendorAttributeFormatter;
         private readonly IStoreService _storeService;
         private readonly IStoreContext _storeContext;
         private readonly IUrlHelperFactory _urlHelperFactory;
@@ -101,6 +103,7 @@ namespace Nop.Services.Messages
         /// <param name="productAttributeParser">Product attribute parser</param>
         /// <param name="addressAttributeFormatter">Address attribute formatter</param>
         /// <param name="customerAttributeFormatter">Customer attribute formatter</param>
+        /// <param name="vendorAttributeFormatter">Vendor attribute formatter</param>
         /// <param name="urlHelperFactory">URL Helper factory</param>
         /// <param name="actionContextAccessor">Action context accessor</param>
         /// <param name="templatesSettings">Templates settings</param>
@@ -125,6 +128,7 @@ namespace Nop.Services.Messages
             IProductAttributeParser productAttributeParser,
             IAddressAttributeFormatter addressAttributeFormatter,
             ICustomerAttributeFormatter customerAttributeFormatter,
+            IVendorAttributeFormatter vendorAttributeFormatter,
             IUrlHelperFactory urlHelperFactory,
             IActionContextAccessor actionContextAccessor,
             MessageTemplatesSettings templatesSettings,
@@ -148,6 +152,7 @@ namespace Nop.Services.Messages
             this._productAttributeParser = productAttributeParser;
             this._addressAttributeFormatter = addressAttributeFormatter;
             this._customerAttributeFormatter = customerAttributeFormatter;
+            this._vendorAttributeFormatter = vendorAttributeFormatter;
             this._urlHelperFactory = urlHelperFactory;
             this._actionContextAccessor = actionContextAccessor;
             this._storeService = storeService;
@@ -227,6 +232,7 @@ namespace Nop.Services.Messages
                     "%Order.BillingAddress1%",
                     "%Order.BillingAddress2%",
                     "%Order.BillingCity%",
+                    "%Order.BillingCounty%",
                     "%Order.BillingStateProvince%",
                     "%Order.BillingZipPostalCode%",
                     "%Order.BillingCountry%",
@@ -242,6 +248,7 @@ namespace Nop.Services.Messages
                     "%Order.ShippingAddress1%",
                     "%Order.ShippingAddress2%",
                     "%Order.ShippingCity%",
+                    "%Order.ShippingCounty%",
                     "%Order.ShippingStateProvince%",
                     "%Order.ShippingZipPostalCode%",
                     "%Order.ShippingCountry%",
@@ -350,7 +357,8 @@ namespace Nop.Services.Messages
                 _allowedTokens.Add(TokenGroupNames.VendorTokens, new[]
                 {
                     "%Vendor.Name%",
-                    "%Vendor.Email%"
+                    "%Vendor.Email%",
+                    "%Vendor.VendorAttributes%"
                 });
 
                 //gift card tokens
@@ -934,6 +942,7 @@ namespace Nop.Services.Messages
             tokens.Add(new Token("Order.BillingAddress1", order.BillingAddress.Address1));
             tokens.Add(new Token("Order.BillingAddress2", order.BillingAddress.Address2));
             tokens.Add(new Token("Order.BillingCity", order.BillingAddress.City));
+            tokens.Add(new Token("Order.BillingCounty", order.BillingAddress.County));
             tokens.Add(new Token("Order.BillingStateProvince", order.BillingAddress.StateProvince != null ? order.BillingAddress.StateProvince.GetLocalized(x => x.Name) : string.Empty));
             tokens.Add(new Token("Order.BillingZipPostalCode", order.BillingAddress.ZipPostalCode));
             tokens.Add(new Token("Order.BillingCountry", order.BillingAddress.Country != null ? order.BillingAddress.Country.GetLocalized(x => x.Name) : string.Empty));
@@ -950,6 +959,7 @@ namespace Nop.Services.Messages
             tokens.Add(new Token("Order.ShippingAddress1", order.ShippingAddress != null ? order.ShippingAddress.Address1 : string.Empty));
             tokens.Add(new Token("Order.ShippingAddress2", order.ShippingAddress != null ? order.ShippingAddress.Address2 : string.Empty));
             tokens.Add(new Token("Order.ShippingCity", order.ShippingAddress != null ? order.ShippingAddress.City : string.Empty));
+            tokens.Add(new Token("Order.ShippingCounty", order.ShippingAddress != null ? order.ShippingAddress.County : string.Empty));
             tokens.Add(new Token("Order.ShippingStateProvince", order.ShippingAddress != null && order.ShippingAddress.StateProvince != null ? order.ShippingAddress.StateProvince.GetLocalized(x => x.Name) : string.Empty));
             tokens.Add(new Token("Order.ShippingZipPostalCode", order.ShippingAddress != null ? order.ShippingAddress.ZipPostalCode : string.Empty));
             tokens.Add(new Token("Order.ShippingCountry", order.ShippingAddress != null && order.ShippingAddress.Country != null ? order.ShippingAddress.Country.GetLocalized(x => x.Name) : string.Empty));
@@ -1159,6 +1169,9 @@ namespace Nop.Services.Messages
         {
             tokens.Add(new Token("Vendor.Name", vendor.Name));
             tokens.Add(new Token("Vendor.Email", vendor.Email));
+
+            var vendorAttributesXml = vendor.GetAttribute<string>(VendorAttributeNames.VendorAttributes);
+            tokens.Add(new Token("Vendor.VendorAttributes", _vendorAttributeFormatter.FormatAttributes(vendorAttributesXml), true));
 
             //event notification
             _eventPublisher.EntityTokensAdded(vendor, tokens);

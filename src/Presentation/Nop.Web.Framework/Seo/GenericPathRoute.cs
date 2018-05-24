@@ -81,7 +81,7 @@ namespace Nop.Web.Framework.Seo
         /// <returns>Task of the routing</returns>
         public override Task RouteAsync(RouteContext context)
         {
-            if (!DataSettingsHelper.DatabaseIsInstalled())
+            if (!DataSettingsManager.DatabaseIsInstalled)
                 return Task.CompletedTask;
 
             //try to get slug from the route data
@@ -149,6 +149,12 @@ namespace Nop.Web.Framework.Seo
                     currentRouteData.Values["controller"] = "Product";
                     currentRouteData.Values["action"] = "ProductDetails";
                     currentRouteData.Values["productid"] = urlRecord.EntityId;
+                    currentRouteData.Values["SeName"] = urlRecord.Slug;
+                    break;
+                case "producttag":
+                    currentRouteData.Values["controller"] = "Catalog";
+                    currentRouteData.Values["action"] = "ProductsByTag";
+                    currentRouteData.Values["productTagId"] = urlRecord.EntityId;
                     currentRouteData.Values["SeName"] = urlRecord.Slug;
                     break;
                 case "category":
