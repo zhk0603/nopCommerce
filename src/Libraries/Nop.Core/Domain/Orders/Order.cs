@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Nop.Core.Domain.Common;
 using Nop.Core.Domain.Customers;
@@ -55,7 +55,7 @@ namespace Nop.Core.Domain.Orders
         /// <summary>
         /// Gets or sets a value indicating whether a customer chose "pick up in store" shipping option
         /// </summary>
-        public bool PickUpInStore { get; set; }
+        public bool PickupInStore { get; set; }
 
         /// <summary>
         /// Gets or sets an order status identifier
@@ -166,7 +166,7 @@ namespace Nop.Core.Domain.Orders
         /// Gets or sets the reward points history entry identifier when reward points were earned (gained) for placing this order
         /// </summary>
         public int? RewardPointsHistoryEntryId { get; set; }
-        
+
         /// <summary>
         /// Gets or sets the checkout attribute description
         /// </summary>
@@ -266,14 +266,14 @@ namespace Nop.Core.Domain.Orders
         /// Gets or sets the paid date and time
         /// </summary>
         public DateTime? PaidDateUtc { get; set; }
-        
+
         /// <summary>
         /// Gets or sets the shipping method
         /// </summary>
         public string ShippingMethod { get; set; }
 
         /// <summary>
-        /// Gets or sets the shipping rate computation method identifier or the pickup point provider identifier (if PickUpInStore is true)
+        /// Gets or sets the shipping rate computation method identifier or the pickup point provider identifier (if PickupInStore is true)
         /// </summary>
         public string ShippingRateComputationMethodSystemName { get; set; }
 
@@ -410,11 +410,6 @@ namespace Nop.Core.Domain.Orders
             get => (TaxDisplayType)CustomerTaxDisplayTypeId;
             set => CustomerTaxDisplayTypeId = (int)value;
         }
-
-        /// <summary>
-        /// Gets the applied tax rates
-        /// </summary>
-        public SortedDictionary<decimal, decimal> TaxRatesDictionary => this.ParseTaxRates(TaxRates);
 
         #endregion
     }

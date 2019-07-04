@@ -23,12 +23,11 @@ using Nop.Services.Orders;
 using Nop.Services.Payments;
 using Nop.Services.Security;
 using Nop.Services.Shipping;
-using Nop.Web.Areas.Admin.Extensions;
 using Nop.Web.Areas.Admin.Factories;
+using Nop.Web.Areas.Admin.Infrastructure.Mapper.Extensions;
 using Nop.Web.Areas.Admin.Models.Orders;
-using Nop.Web.Extensions;
+using Nop.Web.Areas.Admin.Models.Reports;
 using Nop.Web.Framework.Controllers;
-using Nop.Web.Framework.Kendoui;
 using Nop.Web.Framework.Mvc;
 using Nop.Web.Framework.Mvc.Filters;
 
@@ -39,7 +38,6 @@ namespace Nop.Web.Areas.Admin.Controllers
         #region Fields
 
         private readonly IAddressAttributeParser _addressAttributeParser;
-        private readonly IAddressAttributeService _addressAttributeService;
         private readonly IAddressService _addressService;
         private readonly ICustomerActivityService _customerActivityService;
         private readonly IDateTimeHelper _dateTimeHelper;
@@ -48,6 +46,7 @@ namespace Nop.Web.Areas.Admin.Controllers
         private readonly IExportManager _exportManager;
         private readonly IGiftCardService _giftCardService;
         private readonly ILocalizationService _localizationService;
+        private readonly INotificationService _notificationService;
         private readonly IOrderModelFactory _orderModelFactory;
         private readonly IOrderProcessingService _orderProcessingService;
         private readonly IOrderService _orderService;
@@ -71,7 +70,6 @@ namespace Nop.Web.Areas.Admin.Controllers
         #region Ctor
 
         public OrderController(IAddressAttributeParser addressAttributeParser,
-            IAddressAttributeService addressAttributeService,
             IAddressService addressService,
             ICustomerActivityService customerActivityService,
             IDateTimeHelper dateTimeHelper,
@@ -80,6 +78,7 @@ namespace Nop.Web.Areas.Admin.Controllers
             IExportManager exportManager,
             IGiftCardService giftCardService,
             ILocalizationService localizationService,
+            INotificationService notificationService,
             IOrderModelFactory orderModelFactory,
             IOrderProcessingService orderProcessingService,
             IOrderService orderService,
@@ -98,33 +97,33 @@ namespace Nop.Web.Areas.Admin.Controllers
             IWorkflowMessageService workflowMessageService,
             OrderSettings orderSettings)
         {
-            this._addressAttributeParser = addressAttributeParser;
-            this._addressAttributeService = addressAttributeService;
-            this._addressService = addressService;
-            this._customerActivityService = customerActivityService;
-            this._dateTimeHelper = dateTimeHelper;
-            this._downloadService = downloadService;
-            this._encryptionService = encryptionService;
-            this._exportManager = exportManager;
-            this._giftCardService = giftCardService;
-            this._localizationService = localizationService;
-            this._orderModelFactory = orderModelFactory;
-            this._orderProcessingService = orderProcessingService;
-            this._orderService = orderService;
-            this._paymentService = paymentService;
-            this._pdfService = pdfService;
-            this._permissionService = permissionService;
-            this._priceCalculationService = priceCalculationService;
-            this._productAttributeFormatter = productAttributeFormatter;
-            this._productAttributeParser = productAttributeParser;
-            this._productAttributeService = productAttributeService;
-            this._productService = productService;
-            this._shipmentService = shipmentService;
-            this._shippingService = shippingService;
-            this._shoppingCartService = shoppingCartService;
-            this._workContext = workContext;
-            this._workflowMessageService = workflowMessageService;
-            this._orderSettings = orderSettings;
+            _addressAttributeParser = addressAttributeParser;
+            _addressService = addressService;
+            _customerActivityService = customerActivityService;
+            _dateTimeHelper = dateTimeHelper;
+            _downloadService = downloadService;
+            _encryptionService = encryptionService;
+            _exportManager = exportManager;
+            _giftCardService = giftCardService;
+            _localizationService = localizationService;
+            _notificationService = notificationService;
+            _orderModelFactory = orderModelFactory;
+            _orderProcessingService = orderProcessingService;
+            _orderService = orderService;
+            _paymentService = paymentService;
+            _pdfService = pdfService;
+            _permissionService = permissionService;
+            _priceCalculationService = priceCalculationService;
+            _productAttributeFormatter = productAttributeFormatter;
+            _productAttributeParser = productAttributeParser;
+            _productAttributeService = productAttributeService;
+            _productService = productService;
+            _shipmentService = shipmentService;
+            _shippingService = shippingService;
+            _shoppingCartService = shoppingCartService;
+            _workContext = workContext;
+            _workflowMessageService = workflowMessageService;
+            _orderSettings = orderSettings;
         }
 
         #endregion
@@ -196,7 +195,7 @@ namespace Nop.Web.Areas.Admin.Controllers
             var productAttributes = _productAttributeService.GetProductAttributeMappingsByProductId(product.Id);
             foreach (var attribute in productAttributes)
             {
-                var controlId = $"product_attribute_{attribute.Id}";
+                var controlId = $"{NopAttributePrefixDefaults.Product}{attribute.Id}";
                 StringValues ctrlAttributes;
 
                 switch (attribute.AttributeControlType)
@@ -213,7 +212,7 @@ namespace Nop.Web.Areas.Admin.Controllers
                             {
                                 //get quantity entered by customer
                                 var quantity = 1;
-                                var quantityStr = form[$"product_attribute_{attribute.Id}_{selectedAttributeId}_qty"];
+                                var quantityStr = form[$"{NopAttributePrefixDefaults.Product}{attribute.Id}_{selectedAttributeId}_qty"];
                                 if (!StringValues.IsNullOrEmpty(quantityStr) &&
                                     (!int.TryParse(quantityStr, out quantity) || quantity < 1))
                                     errors.Add(_localizationService.GetResource("ShoppingCart.QuantityShouldPositive"));
@@ -237,7 +236,7 @@ namespace Nop.Web.Areas.Admin.Controllers
 
                                 //get quantity entered by customer
                                 var quantity = 1;
-                                var quantityStr = form[$"product_attribute_{attribute.Id}_{item}_qty"];
+                                var quantityStr = form[$"{NopAttributePrefixDefaults.Product}{attribute.Id}_{item}_qty"];
                                 if (!StringValues.IsNullOrEmpty(quantityStr) &&
                                     (!int.TryParse(quantityStr, out quantity) || quantity < 1))
                                     errors.Add(_localizationService.GetResource("ShoppingCart.QuantityShouldPositive"));
@@ -258,7 +257,7 @@ namespace Nop.Web.Areas.Admin.Controllers
                         {
                             //get quantity entered by customer
                             var quantity = 1;
-                            var quantityStr = form[$"product_attribute_{attribute.Id}_{selectedAttributeId}_qty"];
+                            var quantityStr = form[$"{NopAttributePrefixDefaults.Product}{attribute.Id}_{selectedAttributeId}_qty"];
                             if (!StringValues.IsNullOrEmpty(quantityStr) &&
                                 (!int.TryParse(quantityStr, out quantity) || quantity < 1))
                                 errors.Add(_localizationService.GetResource("ShoppingCart.QuantityShouldPositive"));
@@ -420,7 +419,7 @@ namespace Nop.Web.Areas.Admin.Controllers
             return RedirectToAction("List");
         }
 
-        public virtual IActionResult List(List<int> orderStatusIds = null, List<int> paymentStatusIds = null, List<int> shippingStatusIds = null)
+        public virtual IActionResult List(List<int> orderStatuses = null, List<int> paymentStatuses = null, List<int> shippingStatuses = null)
         {
             if (!_permissionService.Authorize(StandardPermissionProvider.ManageOrders))
                 return AccessDeniedView();
@@ -428,9 +427,9 @@ namespace Nop.Web.Areas.Admin.Controllers
             //prepare model
             var model = _orderModelFactory.PrepareOrderSearchModel(new OrderSearchModel
             {
-                OrderStatusIds = orderStatusIds,
-                PaymentStatusIds = paymentStatusIds,
-                ShippingStatusIds = shippingStatusIds
+                OrderStatusIds = orderStatuses,
+                PaymentStatusIds = paymentStatuses,
+                ShippingStatusIds = shippingStatuses
             });
 
             return View(model);
@@ -440,7 +439,7 @@ namespace Nop.Web.Areas.Admin.Controllers
         public virtual IActionResult OrderList(OrderSearchModel searchModel)
         {
             if (!_permissionService.Authorize(StandardPermissionProvider.ManageOrders))
-                return AccessDeniedKendoGridJson();
+                return AccessDeniedDataTablesJson();
 
             //prepare model
             var model = _orderModelFactory.PrepareOrderListModel(searchModel);
@@ -452,7 +451,7 @@ namespace Nop.Web.Areas.Admin.Controllers
         public virtual IActionResult ReportAggregates(OrderSearchModel searchModel)
         {
             if (!_permissionService.Authorize(StandardPermissionProvider.ManageOrders))
-                return AccessDeniedKendoGridJson();
+                return AccessDeniedDataTablesJson();
 
             //prepare model
             var model = _orderModelFactory.PrepareOrderAggregatorModel(searchModel);
@@ -561,11 +560,11 @@ namespace Nop.Web.Areas.Admin.Controllers
             {
                 var xml = _exportManager.ExportOrdersToXml(orders);
 
-                return File(Encoding.UTF8.GetBytes(xml), "application/xml", "orders.xml");
+                return File(Encoding.UTF8.GetBytes(xml), MimeTypes.ApplicationXml, "orders.xml");
             }
             catch (Exception exc)
             {
-                ErrorNotification(exc);
+                _notificationService.ErrorNotification(exc);
                 return RedirectToAction("List");
             }
         }
@@ -588,7 +587,7 @@ namespace Nop.Web.Areas.Admin.Controllers
 
             var xml = _exportManager.ExportOrdersToXml(orders);
 
-            return File(Encoding.UTF8.GetBytes(xml), "application/xml", "orders.xml");
+            return File(Encoding.UTF8.GetBytes(xml), MimeTypes.ApplicationXml, "orders.xml");
         }
 
         [HttpPost, ActionName("List")]
@@ -649,7 +648,7 @@ namespace Nop.Web.Areas.Admin.Controllers
             }
             catch (Exception exc)
             {
-                ErrorNotification(exc);
+                _notificationService.ErrorNotification(exc);
                 return RedirectToAction("List");
             }
         }
@@ -677,7 +676,7 @@ namespace Nop.Web.Areas.Admin.Controllers
             }
             catch (Exception exc)
             {
-                ErrorNotification(exc);
+                _notificationService.ErrorNotification(exc);
                 return RedirectToAction("List");
             }
         }
@@ -719,7 +718,7 @@ namespace Nop.Web.Areas.Admin.Controllers
                 //prepare model
                 var model = _orderModelFactory.PrepareOrderModel(null, order);
 
-                ErrorNotification(exc, false);
+                _notificationService.ErrorNotification(exc);
                 return View(model);
             }
         }
@@ -749,7 +748,7 @@ namespace Nop.Web.Areas.Admin.Controllers
                 var model = _orderModelFactory.PrepareOrderModel(null, order);
 
                 foreach (var error in errors)
-                    ErrorNotification(error, false);
+                    _notificationService.ErrorNotification(error);
 
                 return View(model);
             }
@@ -758,7 +757,7 @@ namespace Nop.Web.Areas.Admin.Controllers
                 //prepare model
                 var model = _orderModelFactory.PrepareOrderModel(null, order);
 
-                ErrorNotification(exc, false);
+                _notificationService.ErrorNotification(exc);
                 return View(model);
             }
         }
@@ -794,7 +793,7 @@ namespace Nop.Web.Areas.Admin.Controllers
                 //prepare model
                 var model = _orderModelFactory.PrepareOrderModel(null, order);
 
-                ErrorNotification(exc, false);
+                _notificationService.ErrorNotification(exc);
                 return View(model);
             }
         }
@@ -824,7 +823,7 @@ namespace Nop.Web.Areas.Admin.Controllers
                 var model = _orderModelFactory.PrepareOrderModel(null, order);
 
                 foreach (var error in errors)
-                    ErrorNotification(error, false);
+                    _notificationService.ErrorNotification(error);
 
                 return View(model);
             }
@@ -833,7 +832,7 @@ namespace Nop.Web.Areas.Admin.Controllers
                 //prepare model
                 var model = _orderModelFactory.PrepareOrderModel(null, order);
 
-                ErrorNotification(exc, false);
+                _notificationService.ErrorNotification(exc);
                 return View(model);
             }
         }
@@ -869,7 +868,7 @@ namespace Nop.Web.Areas.Admin.Controllers
                 //prepare model
                 var model = _orderModelFactory.PrepareOrderModel(null, order);
 
-                ErrorNotification(exc, false);
+                _notificationService.ErrorNotification(exc);
                 return View(model);
             }
         }
@@ -899,7 +898,7 @@ namespace Nop.Web.Areas.Admin.Controllers
                 var model = _orderModelFactory.PrepareOrderModel(null, order);
 
                 foreach (var error in errors)
-                    ErrorNotification(error, false);
+                    _notificationService.ErrorNotification(error);
 
                 return View(model);
             }
@@ -908,7 +907,7 @@ namespace Nop.Web.Areas.Admin.Controllers
                 //prepare model
                 var model = _orderModelFactory.PrepareOrderModel(null, order);
 
-                ErrorNotification(exc, false);
+                _notificationService.ErrorNotification(exc);
                 return View(model);
             }
         }
@@ -944,7 +943,7 @@ namespace Nop.Web.Areas.Admin.Controllers
                 //prepare model
                 var model = _orderModelFactory.PrepareOrderModel(null, order);
 
-                ErrorNotification(exc, false);
+                _notificationService.ErrorNotification(exc);
                 return View(model);
             }
         }
@@ -1018,7 +1017,7 @@ namespace Nop.Web.Areas.Admin.Controllers
                 model = _orderModelFactory.PrepareOrderModel(model, order);
 
                 foreach (var error in errors)
-                    ErrorNotification(error, false);
+                    _notificationService.ErrorNotification(error);
 
                 return View(model);
             }
@@ -1027,7 +1026,7 @@ namespace Nop.Web.Areas.Admin.Controllers
                 //prepare model
                 model = _orderModelFactory.PrepareOrderModel(model, order);
 
-                ErrorNotification(exc, false);
+                _notificationService.ErrorNotification(exc);
                 return View(model);
             }
         }
@@ -1056,7 +1055,7 @@ namespace Nop.Web.Areas.Admin.Controllers
                 //add a note
                 order.OrderNotes.Add(new OrderNote
                 {
-                    Note = $"Order status has been edited. New status: {order.OrderStatus.GetLocalizedEnum(_localizationService, _workContext)}",
+                    Note = $"Order status has been edited. New status: {_localizationService.GetLocalizedEnum(order.OrderStatus)}",
                     DisplayToCustomer = false,
                     CreatedOnUtc = DateTime.UtcNow
                 });
@@ -1073,7 +1072,7 @@ namespace Nop.Web.Areas.Admin.Controllers
                 //prepare model
                 model = _orderModelFactory.PrepareOrderModel(model, order);
 
-                ErrorNotification(exc, false);
+                _notificationService.ErrorNotification(exc);
                 return View(model);
             }
         }
@@ -1242,7 +1241,7 @@ namespace Nop.Web.Areas.Admin.Controllers
             //ensure that we at least one order selected
             if (!orders.Any())
             {
-                ErrorNotification(_localizationService.GetResource("Admin.Orders.PdfInvoice.NoOrders"));
+                _notificationService.ErrorNotification(_localizationService.GetResource("Admin.Orders.PdfInvoice.NoOrders"));
                 return RedirectToAction("List");
             }
 
@@ -1423,8 +1422,8 @@ namespace Nop.Web.Areas.Admin.Controllers
             //prepare model
             model = _orderModelFactory.PrepareOrderModel(model, order);
 
-            //selected tab
-            SaveSelectedTabName(persistForTheNextRequest: false);
+            //selected panel
+            SaveSelectedPanelName("order-billing-shipping", persistForTheNextRequest: false);
 
             return View(model);
         }
@@ -1528,10 +1527,10 @@ namespace Nop.Web.Areas.Admin.Controllers
             var model = _orderModelFactory.PrepareOrderModel(null, order);
 
             foreach (var warning in updateOrderParameters.Warnings)
-                WarningNotification(warning, false);
+                _notificationService.WarningNotification(warning);
 
-            //selected tab
-            SaveSelectedTabName(persistForTheNextRequest: false);
+            //selected panel
+            SaveSelectedPanelName("order-products", persistForTheNextRequest: false);
 
             return View(model);
         }
@@ -1569,10 +1568,10 @@ namespace Nop.Web.Areas.Admin.Controllers
                 //prepare model
                 var model = _orderModelFactory.PrepareOrderModel(null, order);
 
-                ErrorNotification(_localizationService.GetResource("Admin.Orders.OrderItem.DeleteAssociatedGiftCardRecordError"), false);
+                _notificationService.ErrorNotification(_localizationService.GetResource("Admin.Orders.OrderItem.DeleteAssociatedGiftCardRecordError"));
 
-                //selected tab
-                SaveSelectedTabName(persistForTheNextRequest: false);
+                //selected panel
+                SaveSelectedPanelName("order-products", persistForTheNextRequest: false);
 
                 return View(model);
             }
@@ -1607,10 +1606,10 @@ namespace Nop.Web.Areas.Admin.Controllers
                 var model = _orderModelFactory.PrepareOrderModel(null, order);
 
                 foreach (var warning in updateOrderParameters.Warnings)
-                    WarningNotification(warning, false);
+                    _notificationService.WarningNotification(warning);
 
-                //selected tab
-                SaveSelectedTabName(persistForTheNextRequest: false);
+                //selected panel
+                SaveSelectedPanelName("order-products", persistForTheNextRequest: false);
 
                 return View(model);
             }
@@ -1648,8 +1647,8 @@ namespace Nop.Web.Areas.Admin.Controllers
             //prepare model
             var model = _orderModelFactory.PrepareOrderModel(null, order);
 
-            //selected tab
-            SaveSelectedTabName(persistForTheNextRequest: false);
+            //selected panel
+            SaveSelectedPanelName("order-products", persistForTheNextRequest: false);
 
             return View(model);
         }
@@ -1686,9 +1685,8 @@ namespace Nop.Web.Areas.Admin.Controllers
             //prepare model
             var model = _orderModelFactory.PrepareOrderModel(null, order);
 
-            //selected tab
-            SaveSelectedTabName(persistForTheNextRequest: false);
-
+            //selected panel
+            SaveSelectedPanelName("order-products", persistForTheNextRequest: false);
             return View(model);
         }
 
@@ -1806,7 +1804,7 @@ namespace Nop.Web.Areas.Admin.Controllers
         public virtual IActionResult AddProductToOrder(AddProductToOrderSearchModel searchModel)
         {
             if (!_permissionService.Authorize(StandardPermissionProvider.ManageOrders))
-                return AccessDeniedKendoGridJson();
+                return AccessDeniedDataTablesJson();
 
             //try to get an order with the specified id
             var order = _orderService.GetOrderById(searchModel.OrderId)
@@ -1878,7 +1876,7 @@ namespace Nop.Web.Areas.Admin.Controllers
 
             //gift cards
             attributesXml = AddGiftCards(form, product, attributesXml, out var recipientName, out var recipientEmail, out var senderName, out var senderEmail, out var giftCardMessage);
-            
+
             //rental product
             DateTime? rentalStartDate = null;
             DateTime? rentalEndDate = null;
@@ -1980,8 +1978,10 @@ namespace Nop.Web.Areas.Admin.Controllers
 
                 //redirect to order details page
                 foreach (var warning in updateOrderParameters.Warnings)
-                    WarningNotification(warning);
+                    _notificationService.WarningNotification(warning);
 
+                //selected panel
+                SaveSelectedPanelName("order-products");
                 return RedirectToAction("Edit", "Order", new { id = order.Id });
             }
 
@@ -2023,7 +2023,7 @@ namespace Nop.Web.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public virtual IActionResult AddressEdit(OrderAddressModel model)
+        public virtual IActionResult AddressEdit(OrderAddressModel model, IFormCollection form)
         {
             if (!_permissionService.Authorize(StandardPermissionProvider.ManageOrders))
                 return AccessDeniedView();
@@ -2042,7 +2042,7 @@ namespace Nop.Web.Areas.Admin.Controllers
                 ?? throw new ArgumentException("No address found with the specified id");
 
             //custom address attributes
-            var customAttributes = model.Form.ParseCustomAddressAttributes(_addressAttributeParser, _addressAttributeService);
+            var customAttributes = _addressAttributeParser.ParseCustomAddressAttributes(form);
             var customAttributeWarnings = _addressAttributeParser.GetAttributeWarnings(customAttributes);
             foreach (var error in customAttributeWarnings)
             {
@@ -2067,7 +2067,7 @@ namespace Nop.Web.Areas.Admin.Controllers
 
                 return RedirectToAction("AddressEdit", new { addressId = model.Address.Id, orderId = model.OrderId });
             }
-            
+
             //prepare model
             model = _orderModelFactory.PrepareOrderAddressModel(model, order, address);
 
@@ -2094,7 +2094,7 @@ namespace Nop.Web.Areas.Admin.Controllers
         public virtual IActionResult ShipmentListSelect(ShipmentSearchModel searchModel)
         {
             if (!_permissionService.Authorize(StandardPermissionProvider.ManageOrders))
-                return AccessDeniedKendoGridJson();
+                return AccessDeniedDataTablesJson();
 
             //prepare model
             var model = _orderModelFactory.PrepareShipmentListModel(searchModel);
@@ -2106,7 +2106,7 @@ namespace Nop.Web.Areas.Admin.Controllers
         public virtual IActionResult ShipmentsByOrder(OrderShipmentSearchModel searchModel)
         {
             if (!_permissionService.Authorize(StandardPermissionProvider.ManageOrders))
-                return AccessDeniedKendoGridJson();
+                return AccessDeniedDataTablesJson();
 
             //try to get an order with the specified id
             var order = _orderService.GetOrderById(searchModel.OrderId)
@@ -2126,7 +2126,7 @@ namespace Nop.Web.Areas.Admin.Controllers
         public virtual IActionResult ShipmentsItemsByShipmentId(ShipmentItemSearchModel searchModel)
         {
             if (!_permissionService.Authorize(StandardPermissionProvider.ManageOrders))
-                return AccessDeniedKendoGridJson();
+                return AccessDeniedDataTablesJson();
 
             //try to get a shipment with the specified id
             var shipment = _shipmentService.GetShipmentById(searchModel.ShipmentId)
@@ -2145,6 +2145,7 @@ namespace Nop.Web.Areas.Admin.Controllers
                 return Content(string.Empty);
 
             //prepare model
+            searchModel.SetGridPageSize();
             var model = _orderModelFactory.PrepareShipmentItemListModel(searchModel, shipment);
 
             return Json(model);
@@ -2202,7 +2203,7 @@ namespace Nop.Web.Areas.Admin.Controllers
                     continue;
 
                 //ensure that this product can be shipped (have at least one item to ship)
-                var maxQtyToAdd = orderItem.GetTotalNumberOfItemsCanBeAddedToShipment();
+                var maxQtyToAdd = _orderService.GetTotalNumberOfItemsCanBeAddedToShipment(orderItem);
                 if (maxQtyToAdd <= 0)
                     continue;
 
@@ -2298,13 +2299,13 @@ namespace Nop.Web.Areas.Admin.Controllers
                 _orderService.UpdateOrder(order);
                 LogEditOrder(order.Id);
 
-                SuccessNotification(_localizationService.GetResource("Admin.Orders.Shipments.Added"));
+                _notificationService.SuccessNotification(_localizationService.GetResource("Admin.Orders.Shipments.Added"));
                 return continueEditing
                            ? RedirectToAction("ShipmentDetails", new { id = shipment.Id })
                            : RedirectToAction("Edit", new { id = orderId });
             }
 
-            ErrorNotification(_localizationService.GetResource("Admin.Orders.Shipments.NoProductsSelected"));
+            _notificationService.ErrorNotification(_localizationService.GetResource("Admin.Orders.Shipments.NoProductsSelected"));
 
             return RedirectToAction("AddShipment", new { orderId });
         }
@@ -2368,7 +2369,7 @@ namespace Nop.Web.Areas.Admin.Controllers
             _orderService.UpdateOrder(order);
             LogEditOrder(order.Id);
 
-            SuccessNotification(_localizationService.GetResource("Admin.Orders.Shipments.Deleted"));
+            _notificationService.SuccessNotification(_localizationService.GetResource("Admin.Orders.Shipments.Deleted"));
             return RedirectToAction("Edit", new { id = orderId });
         }
 
@@ -2441,7 +2442,7 @@ namespace Nop.Web.Areas.Admin.Controllers
             catch (Exception exc)
             {
                 //error
-                ErrorNotification(exc);
+                _notificationService.ErrorNotification(exc);
                 return RedirectToAction("ShipmentDetails", new { id = shipment.Id });
             }
         }
@@ -2476,7 +2477,7 @@ namespace Nop.Web.Areas.Admin.Controllers
             catch (Exception exc)
             {
                 //error
-                ErrorNotification(exc);
+                _notificationService.ErrorNotification(exc);
                 return RedirectToAction("ShipmentDetails", new { id = shipment.Id });
             }
         }
@@ -2506,7 +2507,7 @@ namespace Nop.Web.Areas.Admin.Controllers
             catch (Exception exc)
             {
                 //error
-                ErrorNotification(exc);
+                _notificationService.ErrorNotification(exc);
                 return RedirectToAction("ShipmentDetails", new { id = shipment.Id });
             }
         }
@@ -2541,7 +2542,7 @@ namespace Nop.Web.Areas.Admin.Controllers
             catch (Exception exc)
             {
                 //error
-                ErrorNotification(exc);
+                _notificationService.ErrorNotification(exc);
                 return RedirectToAction("ShipmentDetails", new { id = shipment.Id });
             }
         }
@@ -2608,7 +2609,7 @@ namespace Nop.Web.Areas.Admin.Controllers
             //ensure that we at least one shipment selected
             if (!shipments.Any())
             {
-                ErrorNotification(_localizationService.GetResource("Admin.Orders.Shipments.NoShipmentsSelected"));
+                _notificationService.ErrorNotification(_localizationService.GetResource("Admin.Orders.Shipments.NoShipmentsSelected"));
                 return RedirectToAction("ShipmentList");
             }
 
@@ -2646,7 +2647,7 @@ namespace Nop.Web.Areas.Admin.Controllers
             //ensure that we at least one shipment selected
             if (!shipments.Any())
             {
-                ErrorNotification(_localizationService.GetResource("Admin.Orders.Shipments.NoShipmentsSelected"));
+                _notificationService.ErrorNotification(_localizationService.GetResource("Admin.Orders.Shipments.NoShipmentsSelected"));
                 return RedirectToAction("ShipmentList");
             }
 
@@ -2732,7 +2733,7 @@ namespace Nop.Web.Areas.Admin.Controllers
         public virtual IActionResult OrderNotesSelect(OrderNoteSearchModel searchModel)
         {
             if (!_permissionService.Authorize(StandardPermissionProvider.ManageOrders))
-                return AccessDeniedKendoGridJson();
+                return AccessDeniedDataTablesJson();
 
             //try to get an order with the specified id
             var order = _orderService.GetOrderById(searchModel.OrderId)
@@ -2753,14 +2754,17 @@ namespace Nop.Web.Areas.Admin.Controllers
             if (!_permissionService.Authorize(StandardPermissionProvider.ManageOrders))
                 return AccessDeniedView();
 
+            if (string.IsNullOrEmpty(message))
+                return ErrorJson(_localizationService.GetResource("Admin.Orders.OrderNotes.Fields.Note.Validation"));
+            
             //try to get an order with the specified id
             var order = _orderService.GetOrderById(orderId);
             if (order == null)
-                return Json(new { Result = false });
+                return ErrorJson("Order cannot be loaded");
 
             //a vendor does not have access to this functionality
             if (_workContext.CurrentVendor != null)
-                return Json(new { Result = false });
+                return ErrorJson("No access for vendors");
 
             var orderNote = new OrderNote
             {
@@ -2777,8 +2781,7 @@ namespace Nop.Web.Areas.Admin.Controllers
             if (displayToCustomer)
             {
                 //email
-                _workflowMessageService.SendNewOrderNoteAddedCustomerNotification(
-                    orderNote, _workContext.WorkingLanguage.Id);
+                _workflowMessageService.SendNewOrderNoteAddedCustomerNotification(orderNote, _workContext.WorkingLanguage.Id);
             }
 
             return Json(new { Result = true });
@@ -2815,7 +2818,7 @@ namespace Nop.Web.Areas.Admin.Controllers
         public virtual IActionResult BestsellersBriefReportByQuantityList(BestsellerBriefSearchModel searchModel)
         {
             if (!_permissionService.Authorize(StandardPermissionProvider.ManageOrders))
-                return AccessDeniedKendoGridJson();
+                return AccessDeniedDataTablesJson();
 
             //prepare model
             var model = _orderModelFactory.PrepareBestsellerBriefListModel(searchModel);
@@ -2827,7 +2830,7 @@ namespace Nop.Web.Areas.Admin.Controllers
         public virtual IActionResult BestsellersBriefReportByAmountList(BestsellerBriefSearchModel searchModel)
         {
             if (!_permissionService.Authorize(StandardPermissionProvider.ManageOrders))
-                return AccessDeniedKendoGridJson();
+                return AccessDeniedDataTablesJson();
 
             //prepare model
             var model = _orderModelFactory.PrepareBestsellerBriefListModel(searchModel);
@@ -2835,103 +2838,34 @@ namespace Nop.Web.Areas.Admin.Controllers
             return Json(model);
         }
 
-        public virtual IActionResult BestsellersReport()
-        {
-            if (!_permissionService.Authorize(StandardPermissionProvider.ManageOrders))
-                return AccessDeniedView();
-
-            //prepare model
-            var model = _orderModelFactory.PrepareBestsellerSearchModel(new BestsellerSearchModel());
-
-            return View(model);
-        }
-
         [HttpPost]
-        public virtual IActionResult BestsellersReportList(BestsellerSearchModel searchModel)
+        public virtual IActionResult OrderAverageReportList(OrderAverageReportSearchModel searchModel)
         {
             if (!_permissionService.Authorize(StandardPermissionProvider.ManageOrders))
-                return AccessDeniedKendoGridJson();
-
-            //prepare model
-            var model = _orderModelFactory.PrepareBestsellerListModel(searchModel);
-
-            return Json(model);
-        }
-
-        public virtual IActionResult NeverSoldReport()
-        {
-            if (!_permissionService.Authorize(StandardPermissionProvider.ManageOrders))
-                return AccessDeniedView();
-
-            //prepare model
-            var model = _orderModelFactory.PrepareNeverSoldReportSearchModel(new NeverSoldReportSearchModel());
-
-            return View(model);
-        }
-
-        [HttpPost]
-        public virtual IActionResult NeverSoldReportList(NeverSoldReportSearchModel searchModel)
-        {
-            if (!_permissionService.Authorize(StandardPermissionProvider.ManageOrders))
-                return AccessDeniedKendoGridJson();
-
-            //prepare model
-            var model = _orderModelFactory.PrepareNeverSoldReportListModel(searchModel);
-
-            return Json(model);
-        }
-
-        [HttpPost]
-        public virtual IActionResult OrderAverageReportList(DataSourceRequest command)
-        {
-            if (!_permissionService.Authorize(StandardPermissionProvider.ManageOrders))
-                return AccessDeniedKendoGridJson();
+                return AccessDeniedDataTablesJson();
 
             //a vendor doesn't have access to this report
             if (_workContext.CurrentVendor != null)
                 return Content(string.Empty);
 
             //prepare model
-            var model = _orderModelFactory.PrepareOrderAverageReportListModel();
+            var model = _orderModelFactory.PrepareOrderAverageReportListModel(searchModel);
 
             return Json(model);
         }
 
         [HttpPost]
-        public virtual IActionResult OrderIncompleteReportList()
+        public virtual IActionResult OrderIncompleteReportList(OrderIncompleteReportSearchModel searchModel)
         {
             if (!_permissionService.Authorize(StandardPermissionProvider.ManageOrders))
-                return AccessDeniedKendoGridJson();
+                return AccessDeniedDataTablesJson();
 
             //a vendor doesn't have access to this report
             if (_workContext.CurrentVendor != null)
                 return Content(string.Empty);
 
             //prepare model
-            var model = _orderModelFactory.PrepareOrderIncompleteReportListModel();
-
-            return Json(model);
-        }
-
-        public virtual IActionResult CountryReport()
-        {
-            if (!_permissionService.Authorize(StandardPermissionProvider.OrderCountryReport))
-                return AccessDeniedView();
-
-            //prepare model
-            var model = _orderModelFactory.PrepareCountryReportSearchModel(new CountryReportSearchModel());
-
-            return View(model);
-        }
-
-        [HttpPost]
-        public virtual IActionResult CountryReportList(CountryReportSearchModel searchModel)
-        {
-            if (!_permissionService.Authorize(StandardPermissionProvider.OrderCountryReport))
-                return AccessDeniedKendoGridJson();
-
-            //prepare model
-            var model = _orderModelFactory.PrepareCountryReportListModel(searchModel);
+            var model = _orderModelFactory.PrepareOrderIncompleteReportListModel(searchModel);
 
             return Json(model);
         }

@@ -53,6 +53,26 @@ namespace Nop.Core.Domain.Customers
         public int PasswordMinLength { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether password are have least one lowercase
+        /// </summary>
+        public bool PasswordRequireLowercase { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether password are have least one uppercase
+        /// </summary>
+        public bool PasswordRequireUppercase { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether password are have least one non alphanumeric character
+        /// </summary>
+        public bool PasswordRequireNonAlphanumeric { get; set; }
+        
+        /// <summary>
+        /// Gets or sets a value indicating whether password are have least one digit
+        /// </summary>
+        public bool PasswordRequireDigit { get; set; }
+
+        /// <summary>
         /// Gets or sets a number of passwords that should not be the same as the previous one; 0 if the customer can use the same password time after time
         /// </summary>
         public int UnduplicatedPasswordsNumber { get; set; }
@@ -186,6 +206,11 @@ namespace Nop.Core.Domain.Customers
         /// Gets or sets a value indicating whether registration is required for downloadable products
         /// </summary>
         public bool RequireRegistrationForDownloadableProducts { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to check gift card balance
+        /// </summary>
+        public bool AllowCustomersToCheckGiftCardBalance { get; set; }
 
         /// <summary>
         /// Gets or sets interval (in minutes) with which the Delete Guest Task runs

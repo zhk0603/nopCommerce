@@ -5,6 +5,7 @@ using Nop.Core;
 using Nop.Core.Data;
 using Nop.Core.Domain.Customers;
 using Nop.Core.Domain.Gdpr;
+using Nop.Data.Extensions;
 using Nop.Services.Authentication.External;
 using Nop.Services.Blogs;
 using Nop.Services.Catalog;
@@ -46,24 +47,6 @@ namespace Nop.Services.Gdpr
 
         #region Ctor
 
-        /// <summary>
-        /// Ctor
-        /// </summary>
-        /// <param name="addressService">Address service</param>
-        /// <param name="backInStockSubscriptionService">Back in stock subscription service</param>
-        /// <param name="blogService">Blog service</param>
-        /// <param name="customerService">Customer service</param>
-        /// <param name="externalAuthenticationService">External authentication service</param>
-        /// <param name="eventPublisher">Event publisher</param>
-        /// <param name="forumService">Forum service</param>
-        /// <param name="genericAttributeService">Generic attribute service</param>
-        /// <param name="newsService">News service</param>
-        /// <param name="newsLetterSubscriptionService">NewsLetter subscription service</param>
-        /// <param name="productService">Product service</param>
-        /// <param name="gdprConsentRepository">GDPR consent repository</param>
-        /// <param name="gdprLogRepository">GDPR log repository</param>
-        /// <param name="shoppingCartService">Shopping cart service</param>
-        /// <param name="storeService">Store service</param>
         public GdprService(IAddressService addressService,
             IBackInStockSubscriptionService backInStockSubscriptionService,
             IBlogService blogService,
@@ -80,21 +63,21 @@ namespace Nop.Services.Gdpr
             IShoppingCartService shoppingCartService,
             IStoreService storeService)
         {
-            this._addressService = addressService;
-            this._backInStockSubscriptionService = backInStockSubscriptionService;
-            this._blogService = blogService;
-            this._customerService = customerService;
-            this._externalAuthenticationService = externalAuthenticationService;
-            this._eventPublisher = eventPublisher;
-            this._forumService = forumService;
-            this._genericAttributeService = genericAttributeService;
-            this._newsService = newsService;
-            this._newsLetterSubscriptionService = newsLetterSubscriptionService;
-            this._productService = productService;
-            this._gdprConsentRepository = gdprConsentRepository;
-            this._gdprLogRepository = gdprLogRepository;
-            this._shoppingCartService = shoppingCartService;
-            this._storeService = storeService;
+            _addressService = addressService;
+            _backInStockSubscriptionService = backInStockSubscriptionService;
+            _blogService = blogService;
+            _customerService = customerService;
+            _externalAuthenticationService = externalAuthenticationService;
+            _eventPublisher = eventPublisher;
+            _forumService = forumService;
+            _genericAttributeService = genericAttributeService;
+            _newsService = newsService;
+            _newsLetterSubscriptionService = newsLetterSubscriptionService;
+            _productService = productService;
+            _gdprConsentRepository = gdprConsentRepository;
+            _gdprLogRepository = gdprLogRepository;
+            _shoppingCartService = shoppingCartService;
+            _storeService = storeService;
         }
 
         #endregion
@@ -233,17 +216,20 @@ namespace Nop.Services.Gdpr
             {
                 query = query.Where(log => log.CustomerId == customerId);
             }
+
             if (consentId > 0)
             {
                 query = query.Where(log => log.ConsentId == consentId);
             }
-            if (!String.IsNullOrEmpty(customerInfo))
+
+            if (!string.IsNullOrEmpty(customerInfo))
             {
                 query = query.Where(log => log.CustomerInfo == customerInfo);
             }
+
             if (requestType != null)
             {
-                int requestTypeId = (int)requestType;
+                var requestTypeId = (int)requestType;
                 query = query.Where(log => log.RequestTypeId == requestTypeId);
             }
 
@@ -359,23 +345,22 @@ namespace Nop.Services.Gdpr
             //external authentication record
             foreach (var ear in customer.ExternalAuthenticationRecords)
                 _externalAuthenticationService.DeleteExternalAuthenticationRecord(ear);
-            
+
             //forum subscriptions
-            var forumSubscriptions = _forumService.GetAllSubscriptions(customerId: customer.Id);
+            var forumSubscriptions = _forumService.GetAllSubscriptions(customer.Id);
             foreach (var forumSubscription in forumSubscriptions)
                 _forumService.DeleteSubscription(forumSubscription);
 
             //shopping cart items
             foreach (var sci in customer.ShoppingCartItems)
                 _shoppingCartService.DeleteShoppingCartItem(sci);
-             
+
             //private messages (sent)
-            foreach (var pm in _forumService.GetAllPrivateMessages(storeId: 0, fromCustomerId: customer.Id, toCustomerId: 0,
-                isRead: null, isDeletedByAuthor: null, isDeletedByRecipient: null, keywords: null))
+            foreach (var pm in _forumService.GetAllPrivateMessages(0, customer.Id, 0, null, null, null, null))
                 _forumService.DeletePrivateMessage(pm);
+
             //private messages (received)
-            foreach (var pm in _forumService.GetAllPrivateMessages(storeId: 0, fromCustomerId: 0, toCustomerId: customer.Id,
-                isRead: null, isDeletedByAuthor: null, isDeletedByRecipient: null, keywords: null))
+            foreach (var pm in _forumService.GetAllPrivateMessages(0, 0, customer.Id, null, null, null, null))
                 _forumService.DeletePrivateMessage(pm);
 
             //newsletter
@@ -390,14 +375,14 @@ namespace Nop.Services.Gdpr
             //addresses
             foreach (var address in customer.Addresses)
             {
-                customer.RemoveAddress(address);
+                _customerService.RemoveCustomerAddress(customer, address);
                 _customerService.UpdateCustomer(customer);
                 //now delete the address record
                 _addressService.DeleteAddress(address);
             }
 
             //generic attributes
-            var keyGroup = customer.GetType().BaseType.Name;
+            var keyGroup = customer.GetUnproxiedEntityType().Name;
             var genericAttributes = _genericAttributeService.GetAttributesForEntity(customer.Id, keyGroup);
             _genericAttributeService.DeleteAttributes(genericAttributes);
 
@@ -414,22 +399,23 @@ namespace Nop.Services.Gdpr
             //remove from Registered role, add to Guest one
             if (customer.IsRegistered())
             {
-                var registeredRole = _customerService.GetCustomerRoleBySystemName(SystemCustomerRoleNames.Registered);
-                customer.CustomerCustomerRoleMappings
-                    .Remove(customer.CustomerCustomerRoleMappings.FirstOrDefault(mapping => mapping.CustomerRoleId == registeredRole.Id));
+                var registeredRole = _customerService.GetCustomerRoleBySystemName(NopCustomerDefaults.RegisteredRoleName);
+                customer.RemoveCustomerRoleMapping(
+                    customer.CustomerCustomerRoleMappings.FirstOrDefault(mapping => mapping.CustomerRoleId == registeredRole.Id));
             }
+
             if (!customer.IsGuest())
             {
-                var guestRole = _customerService.GetCustomerRoleBySystemName(SystemCustomerRoleNames.Guests);
-                customer.CustomerCustomerRoleMappings.Add(new CustomerCustomerRoleMapping { CustomerRole = guestRole });
+                var guestRole = _customerService.GetCustomerRoleBySystemName(NopCustomerDefaults.GuestsRoleName);
+                customer.AddCustomerRoleMapping(new CustomerCustomerRoleMapping { CustomerRole = guestRole });
             }
 
             var email = customer.Email;
 
             //clear other information
-            customer.Email = "";
-            customer.EmailToRevalidate = "";
-            customer.Username = "";
+            customer.Email = string.Empty;
+            customer.EmailToRevalidate = string.Empty;
+            customer.Username = string.Empty;
             customer.Active = false;
             customer.Deleted = true;
             _customerService.UpdateCustomer(customer);
